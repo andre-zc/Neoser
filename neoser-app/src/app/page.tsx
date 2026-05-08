@@ -198,7 +198,7 @@ export default function HomePage() {
                   <p className="hero-subtitle mb-8 max-w-lg">{slide.sub}</p>
                   <div className="hero-ctas flex flex-wrap gap-4">
                     {slide.ctas.map((cta) => (
-                      <a key={cta.text} href={cta.href} {...(cta.ext ? { target: "_blank", rel: "noopener noreferrer" } : {})} className={cta.cls}>
+                      <a key={cta.text} href={cta.href} {...("ext" in cta && cta.ext ? { target: "_blank", rel: "noopener noreferrer" } : {})} className={cta.cls}>
                         <cta.icon className="h-5 w-5" /> {cta.text}
                       </a>
                     ))}
