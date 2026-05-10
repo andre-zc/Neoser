@@ -22,7 +22,10 @@ import {
   Trophy,
   ArrowRight,
   Camera,
+  HeartPulse,
+  ImageIcon,
 } from "lucide-react";
+import Image from "next/image";
 import { ContactLeadForm } from "@/components/contact-lead-form";
 import { GoogleMapEmbed } from "@/components/google-map-embed";
 import { BookingPreform } from "@/components/booking-preform";
@@ -54,31 +57,83 @@ export default function HomePage() {
 
   const closeMobile = () => setMobileMenuOpen(false);
   const calBookingUrl = process.env.NEXT_PUBLIC_CAL_BOOKING_URL;
-  const bookingUrl =
-    calBookingUrl ||
-    "#contacto";
+  const bookingUrl = calBookingUrl || "#contacto";
 
   const services = [
-    { icon: Stethoscope, iconBg: "pink-bg", title: "Control Prenatal", desc: "Seguimiento personalizado de tu embarazo con ecografias, analisis y orientacion profesional para asegurar el bienestar de mama y bebe.", wa: "Control%20Prenatal" },
-    { icon: Baby, iconBg: "blue-bg", title: "Parto Humanizado", desc: "Acompanamiento respetuoso durante el nacimiento de tu bebe, respetando tus decisiones y promoviendo el vinculo inmediato madre-hijo.", wa: "Parto%20Humanizado" },
-    { icon: HandHeart, iconBg: "pink-bg", title: "Tecnica Rebozo", desc: "Tecnica ancestral mexicana para aliviar molestias del embarazo, facilitar el trabajo de parto y promover la relajacion profunda.", wa: "Tecnica%20Rebozo" },
-    { icon: BookHeart, iconBg: "blue-bg", title: "Preparacion al Parto", desc: "Sesiones teorico-practicas para prepararte fisica y emocionalmente para el momento del nacimiento con confianza y seguridad.", wa: "Preparacion%20al%20Parto" },
-    { icon: HeartHandshake, iconBg: "pink-bg", title: "Acompanamiento Postparto", desc: "Soporte integral despues del nacimiento: lactancia, recuperacion, cuidados del recien nacido y bienestar emocional de la mama.", wa: "Acompanamiento%20Postparto" },
-    { icon: ShieldCheck, iconBg: "blue-bg", title: "Obstetricia General", desc: "Atencion obstetrica completa con enfoque humanizado, desde la consulta ginecologica hasta el seguimiento integral de la salud reproductiva.", wa: "Obstetricia" },
+    { icon: Stethoscope, iconBg: "pink-bg", title: "Control Prenatal", desc: "Seguimiento personalizado de tu embarazo con ecografías, análisis y orientación profesional para asegurar el bienestar de mamá y bebé.", wa: "Control%20Prenatal" },
+    { icon: Baby, iconBg: "blue-bg", title: "Parto Humanizado", desc: "Acompañamiento respetuoso durante el nacimiento de tu bebé, respetando tus decisiones y promoviendo el vínculo inmediato madre-hijo.", wa: "Parto%20Humanizado" },
+    { icon: HandHeart, iconBg: "pink-bg", title: "Técnica Rebozo", desc: "Técnica ancestral mexicana para aliviar molestias del embarazo, facilitar el trabajo de parto y promover la relajación profunda.", wa: "Tecnica%20Rebozo" },
+    { icon: BookHeart, iconBg: "blue-bg", title: "Preparación al Parto", desc: "Sesiones teórico-prácticas para prepararte física y emocionalmente para el momento del nacimiento con confianza y seguridad.", wa: "Preparacion%20al%20Parto" },
+    { icon: HeartHandshake, iconBg: "pink-bg", title: "Acompañamiento Postparto", desc: "Soporte integral después del nacimiento: lactancia, recuperación, cuidados del recién nacido y bienestar emocional de la mamá.", wa: "Acompanamiento%20Postparto" },
+    { icon: ShieldCheck, iconBg: "blue-bg", title: "Obstetricia General", desc: "Atención obstétrica completa con enfoque humanizado, desde la consulta ginecológica hasta el seguimiento integral de la salud reproductiva.", wa: "Obstetricia" },
   ];
 
   const courses = [
-    { badge: "Presencial", badgeBg: "bg-pink", title: "Curso de Preparacion al Parto", desc: "Tecnicas de respiracion, posiciones de parto, plan de nacimiento y vinculo temprano.", price: "S/. 350", wa: "Curso%20de%20Preparacion%20al%20Parto" },
-    { badge: "Online", badgeBg: "bg-navy", title: "Diplomado en Parto Humanizado", desc: "Formacion integral para profesionales de salud en atencion humanizada del nacimiento.", price: "S/. 1,200", wa: "Diplomado%20en%20Parto%20Humanizado" },
-    { badge: "Hibrido", badgeBg: "bg-pink", title: "Tecnica Rebozo Certificacion", desc: "Certificacion internacional en tecnica Rebozo con reconocimiento de Spinning Babies.", price: "S/. 800", wa: "Certificacion%20Rebozo" },
-    { badge: "Presencial", badgeBg: "bg-pink", title: "Taller de Lactancia Materna", desc: "Taller practico sobre tecnicas de lactancia, posiciones y resolucion de problemas comunes.", price: "S/. 180", wa: "Taller%20de%20Lactancia" },
+    { badge: "Presencial", badgeBg: "bg-pink", title: "Curso de Preparación al Parto", desc: "Técnicas de respiración, posiciones de parto, plan de nacimiento y vínculo temprano.", price: "S/. 350", wa: "Curso%20de%20Preparacion%20al%20Parto" },
+    { badge: "Online", badgeBg: "bg-navy", title: "Diplomado en Parto Humanizado", desc: "Formación integral para profesionales de salud en atención humanizada del nacimiento.", price: "S/. 1,200", wa: "Diplomado%20en%20Parto%20Humanizado" },
+    { badge: "Híbrido", badgeBg: "bg-pink", title: "Técnica Rebozo Certificación", desc: "Certificación internacional en técnica Rebozo con reconocimiento de Spinning Babies.", price: "S/. 800", wa: "Certificacion%20Rebozo" },
+    { badge: "Presencial", badgeBg: "bg-pink", title: "Taller de Lactancia Materna", desc: "Taller práctico sobre técnicas de lactancia, posiciones y resolución de problemas comunes.", price: "S/. 180", wa: "Taller%20de%20Lactancia" },
   ];
 
   const testimonials = [
-    { initials: "MC", quote: "El diplomado cambio completamente mi manera de ver la atencion del parto. Ahora aplico la medicina humanizada en cada consulta.", name: "Maria Carmen R.", role: "Obstetra - Trujillo" },
-    { initials: "LP", quote: "Gracias a NeoSer tuve el parto que sonaba. Me senti acompanada, respetada y empoderada en cada momento.", name: "Lucia Perez T.", role: "Mama NeoSer - Chiclayo" },
-    { initials: "AV", quote: "La certificacion en Rebozo fue una experiencia transformadora. El equipo de NeoSer es increiblemente profesional y calido.", name: "Andrea Vargas M.", role: "Doula - Lima" },
-    { initials: "RS", quote: "Excelente formacion. Los docentes tienen una pasion genuina por la maternidad humanizada. 100% recomendado.", name: "Rosa Sanchez L.", role: "Enfermera - Chiclayo" },
+    { initials: "MC", quote: "El diplomado cambió completamente mi manera de ver la atención del parto. Ahora aplico la medicina humanizada en cada consulta.", name: "María Carmen R.", role: "Obstetra - Trujillo" },
+    { initials: "LP", quote: "Gracias a NeoSer tuve el parto que soñaba. Me sentí acompañada, respetada y empoderada en cada momento.", name: "Lucía Pérez T.", role: "Mamá NeoSer - Chiclayo" },
+    { initials: "AV", quote: "La certificación en Rebozo fue una experiencia transformadora. El equipo de NeoSer es increíblemente profesional y cálido.", name: "Andrea Vargas M.", role: "Doula - Lima" },
+    { initials: "RS", quote: "Excelente formación. Los docentes tienen una pasión genuina por la maternidad humanizada. 100% recomendado.", name: "Rosa Sánchez L.", role: "Enfermera - Chiclayo" },
+  ];
+
+  const heroSlides = [
+    {
+      bg: "hero-bg-1",
+      script: '"Cada nacimiento es único"',
+      title: <>Maternidad y <br /><span className="highlight">Medicina Humanizada</span></>,
+      sub: "Acompañamos y atendemos nacimientos humanizados en Chiclayo. Tu bienestar y el de tu bebé son nuestra prioridad.",
+      ctas: [
+        { href: "#servicios", cls: "btn-primary", icon: Heart, text: "Nuestros Servicios" },
+        { href: bookingUrl, cls: "btn-secondary", icon: Calendar, text: "Reserva tu Cita", ext: true },
+      ],
+      mediaIcon: HeartPulse,
+      mediaLabel: "Foto de sesión profesional",
+      badgeIcon: Baby,
+      badgeText: <>Parto<br />Humanizado</>,
+    },
+    {
+      bg: "hero-bg-2",
+      script: "NeoSer",
+      title: <>Porque nacer y vivir<br /><span className="highlight">con amor cambia el mundo</span></>,
+      sub: "Más de 1,000 alumnos formados y 500 partos humanizados acompañados con calidez y profesionalismo.",
+      ctas: [{ href: "#nosotros", cls: "btn-primary", icon: Users, text: "Conócenos" }],
+      mediaIcon: Users,
+      mediaLabel: "Foto del equipo NeoSer",
+      badgeIcon: Heart,
+      badgeText: <>Equipo<br />Profesional</>,
+    },
+    {
+      bg: "hero-bg-3",
+      script: "Escuela NeoSer",
+      scriptWhite: true,
+      title: <>Cursos y <br /><span className="text-white/90">Certificaciones</span></>,
+      sub: "Diplomados, talleres y certificaciones internacionales en parto humanizado, técnica Rebozo y lactancia materna.",
+      ctas: [
+        { href: "#cursos", cls: "btn-secondary !border-white !text-white", icon: GraduationCap, text: "Ver Cursos" },
+        { href: "#contacto", cls: "btn-primary !bg-white !text-pink-dark !border-white", icon: MessageCircle, text: "Solicitar información" },
+      ],
+      mediaIcon: GraduationCap,
+      mediaLabel: "Foto del aula / certificación",
+      badgeIcon: Award,
+      badgeText: <>Certificación<br />Internacional</>,
+    },
+    {
+      bg: "hero-bg-4",
+      script: '"Tu parto, tu decisión"',
+      title: <>Acompañamiento<br /><span className="highlight">Integral y Respetuoso</span></>,
+      sub: "Desde el embarazo hasta el postparto, te acompañamos en cada paso de tu viaje como mamá.",
+      ctas: [{ href: bookingUrl, cls: "btn-primary", icon: Calendar, text: "Agenda tu Cita", ext: true }],
+      mediaIcon: HandHeart,
+      mediaLabel: "Foto mamá y bebé",
+      badgeIcon: HeartHandshake,
+      badgeText: <>Acompañamiento<br />Postparto</>,
+    },
   ];
 
   return (
@@ -86,9 +141,11 @@ export default function HomePage() {
       {/* ===== NAVBAR ===== */}
       <nav className={`navbar ${navScrolled ? "scrolled" : ""}`}>
         <div className="container-main flex items-center justify-between">
-          <a href="#inicio" className="flex-shrink-0">
-            <span className="logo-white text-2xl font-bold text-white" style={{ fontFamily: "var(--font-playfair), serif" }}>NeoSer</span>
-            <span className="logo-color text-2xl font-bold text-navy" style={{ fontFamily: "var(--font-playfair), serif" }}>NeoSer</span>
+          <a href="#inicio" className="navbar-logo flex-shrink-0 flex items-center gap-3">
+            <span className="logo-img-wrap">
+              <Image src="/assets/logo-white.png" alt="NeoSer" width={200} height={80} className="logo-white h-16 w-auto md:h-20" priority />
+              <Image src="/assets/logo-color.png" alt="NeoSer" width={200} height={80} className="logo-color h-16 w-auto md:h-20" priority />
+            </span>
           </a>
           <div className="hidden items-center gap-8 lg:flex">
             <a href="#inicio" className="nav-link">Inicio</a>
@@ -98,8 +155,8 @@ export default function HomePage() {
             <a href="#nosotros" className="nav-link">Nosotros</a>
             <a href="#noticias" className="nav-link">Noticias</a>
             <a href="#contacto" className="nav-link">Contacto</a>
-            <a href={bookingUrl} target="_blank" rel="noopener noreferrer" className="btn-primary text-sm">
-              <MessageCircle className="h-4 w-4" /> Reserva tu Cita
+            <a href="#reserva" className="btn-nav-cta text-sm">
+              <Calendar className="h-4 w-4" /> Reserva tu Cita
             </a>
           </div>
           <div className={`hamburger lg:hidden ${mobileMenuOpen ? "active" : ""}`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -114,20 +171,15 @@ export default function HomePage() {
         {["inicio","servicios","cursos","reserva","nosotros","noticias","contacto"].map((s) => (
           <a key={s} href={`#${s}`} className="nav-link" onClick={closeMobile}>{s.charAt(0).toUpperCase()+s.slice(1)}</a>
         ))}
-        <a href={bookingUrl} target="_blank" rel="noopener noreferrer" className="btn-primary mt-6 justify-center">
-          <MessageCircle className="h-5 w-5" /> Reserva tu Cita
+        <a href="#reserva" onClick={closeMobile} className="btn-primary mt-6 justify-center">
+          <Calendar className="h-5 w-5" /> Reserva tu Cita
         </a>
       </div>
 
       {/* ===== HERO SLIDER ===== */}
       <section id="inicio" className="hero-slider-section">
         <div className="relative w-full" style={{ height: "100vh" }}>
-          {[
-            { bg: "hero-bg-1", script: '"Cada nacimiento es unico"', title: <>Maternidad y <br /><span className="highlight">Medicina Humanizada</span></>, sub: "Acompanamos y atendemos nacimientos humanizados en Chiclayo. Tu bienestar y el de tu bebe son nuestra prioridad.", ctas: [{ href: "#servicios", cls: "btn-primary", icon: Heart, text: "Nuestros Servicios" }, { href: bookingUrl, cls: "btn-secondary", icon: Calendar, text: "Reserva tu Cita", ext: true }] },
-            { bg: "hero-bg-2", script: "NeoSer", title: <>Porque nacer y vivir<br /><span className="highlight">con amor cambia el mundo</span></>, sub: "Mas de 1,000 alumnos formados y 500 partos humanizados acompanados con calidez y profesionalismo.", ctas: [{ href: "#nosotros", cls: "btn-primary", icon: Users, text: "Conocenos" }] },
-            { bg: "hero-bg-3", script: "Escuela NeoSer", scriptWhite: true, title: <>Cursos y <br /><span className="text-white/90">Certificaciones</span></>, sub: "Diplomados, talleres y certificaciones internacionales en parto humanizado, tecnica Rebozo y lactancia materna.", ctas: [{ href: "#cursos", cls: "btn-secondary !border-white !text-white", icon: GraduationCap, text: "Ver Cursos" }, { href: "#contacto", cls: "btn-primary !bg-white !text-pink-dark !border-white", icon: MessageCircle, text: "Solicitar informacion" }] },
-            { bg: "hero-bg-4", script: '"Tu parto, tu decision"', title: <>Acompanamiento<br /><span className="highlight">Integral y Respetuoso</span></>, sub: "Desde el embarazo hasta el postparto, te acompanamos en cada paso de tu viaje como mama.", ctas: [{ href: bookingUrl, cls: "btn-primary", icon: Calendar, text: "Agenda tu Cita", ext: true }] },
-          ].map((slide, i) => (
+          {heroSlides.map((slide, i) => (
             <div key={i} className={`absolute inset-0 flex items-center overflow-hidden transition-opacity duration-700 ${slide.bg} ${activeSlide === i ? "opacity-100 z-10" : "opacity-0 z-0"}`}>
               <div className="hero-particles">
                 <span className="particle particle-circle" style={{ width: 320, height: 320, top: -60, right: -80, background: "#e8879b", opacity: 0.07 }} />
@@ -137,16 +189,31 @@ export default function HomePage() {
                 <span className="particle particle-ring" style={{ width: 120, height: 120, bottom: "15%", right: "12%" }} />
                 <span className="particle particle-diamond" style={{ top: "25%", right: "18%" }} />
               </div>
-              <div className="relative z-10 container-main text-center">
-                <p className={`hero-script mb-4 ${slide.scriptWhite ? "!text-white" : ""}`}>{slide.script}</p>
-                <h1 className="hero-title mb-6">{slide.title}</h1>
-                <p className="hero-subtitle mx-auto mb-8 max-w-xl">{slide.sub}</p>
-                <div className="flex flex-wrap justify-center gap-4">
-                  {slide.ctas.map((cta) => (
-                    <a key={cta.text} href={cta.href} {...(cta.ext ? { target: "_blank", rel: "noopener noreferrer" } : {})} className={cta.cls}>
-                      <cta.icon className="h-5 w-5" /> {cta.text}
-                    </a>
-                  ))}
+              <div className="hero-slide-grid container-main">
+                <div className="hero-slide-content">
+                  <p className={`hero-script mb-4 ${slide.scriptWhite ? "!text-white" : ""}`}>{slide.script}</p>
+                  <h1 className="hero-title mb-6">{slide.title}</h1>
+                  <p className="hero-subtitle mb-8 max-w-lg">{slide.sub}</p>
+                  <div className="hero-ctas flex flex-wrap gap-4">
+                    {slide.ctas.map((cta) => (
+                      <a key={cta.text} href={cta.href} {...("ext" in cta && cta.ext ? { target: "_blank", rel: "noopener noreferrer" } : {})} className={cta.cls}>
+                        <cta.icon className="h-5 w-5" /> {cta.text}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <div className="hero-slide-media">
+                  <div className="hero-image-card hero-image-card-main">
+                    <div className="hero-image-icon"><slide.mediaIcon /></div>
+                    <div className="hero-image-placeholder">
+                      <ImageIcon className="h-12 w-12" />
+                      <span>{slide.mediaLabel}</span>
+                    </div>
+                  </div>
+                  <div className="hero-image-card hero-image-card-badge">
+                    <div className="hero-image-icon-circle"><slide.badgeIcon /></div>
+                    <p>{slide.badgeText}</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -165,7 +232,7 @@ export default function HomePage() {
             <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
               {[
                 { val: "+1,000", label: "Alumnos formados" },
-                { val: "+500", label: "Partos acompanados" },
+                { val: "+500", label: "Partos acompañados" },
                 { val: "+4 Ed.", label: "Ediciones de cursos" },
               ].map((s) => (
                 <div key={s.label} className="text-center">
@@ -175,7 +242,7 @@ export default function HomePage() {
               ))}
               <div className="text-center">
                 <div className="flex items-center justify-center text-2xl font-bold text-white md:text-3xl"><MapPin className="h-6 w-6" /></div>
-                <div className="mt-1 text-xs text-white/60 md:text-sm">Chiclayo, Peru</div>
+                <div className="mt-1 text-xs text-white/60 md:text-sm">Chiclayo, Perú</div>
               </div>
             </div>
           </div>
@@ -190,7 +257,7 @@ export default function HomePage() {
             <h2 className="section-title mb-4">Nuestros Servicios</h2>
             <div className="section-divider mx-auto" />
             <p className="mx-auto mt-4 max-w-2xl text-gray-500">
-              Brindamos atencion integral para cada etapa de tu maternidad, con profesionales comprometidos con el respeto y la calidez humana.
+              Brindamos atención integral para cada etapa de tu maternidad, con profesionales comprometidos con el respeto y la calidez humana.
             </p>
           </div>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -216,7 +283,7 @@ export default function HomePage() {
             <h2 className="section-title mb-4">Nuestros Cursos</h2>
             <div className="section-divider mx-auto" />
             <p className="mx-auto mt-4 max-w-2xl text-gray-500">
-              Formacion profesional y vivencial para quienes desean transformar la atencion materna con un enfoque humanizado y basado en evidencia.
+              Formación profesional y vivencial para quienes desean transformar la atención materna con un enfoque humanizado y basado en evidencia.
             </p>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" data-aos="fade-up" data-aos-delay="100">
@@ -230,21 +297,21 @@ export default function HomePage() {
                   <p className="mb-4 text-sm text-gray-500">{c.desc}</p>
                   <div className="flex items-center justify-between">
                     <span className="course-price">{c.price}</span>
-                    <a href="#contacto" className="btn-pink-outline text-xs">Ver mas</a>
+                    <a href="#contacto" className="btn-pink-outline text-xs">Ver más</a>
                   </div>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Proximos Eventos */}
+          {/* Próximos Eventos */}
           <div className="mt-20" data-aos="fade-up">
-            <h3 className="mb-8 text-center text-2xl font-bold text-navy">Proximos Eventos</h3>
+            <h3 className="mb-8 text-center text-2xl font-bold text-navy">Próximos Eventos</h3>
             <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-3">
               {[
-                { month: "Abril 2026", title: "V Edicion - Diplomado Parto Humanizado", desc: "Modalidad hibrida. Inscripciones abiertas." },
-                { month: "Mayo 2026", title: "Seminario: Movimiento en el Parto", desc: "Taller intensivo de un dia. Cupos limitados." },
-                { month: "Junio 2026", title: "Certificacion Rebozo - Nivel II", desc: "Para egresados del Nivel I. Con aval internacional." },
+                { month: "Abril 2026", title: "V Edición - Diplomado Parto Humanizado", desc: "Modalidad híbrida. Inscripciones abiertas." },
+                { month: "Mayo 2026", title: "Seminario: Movimiento en el Parto", desc: "Taller intensivo de un día. Cupos limitados." },
+                { month: "Junio 2026", title: "Certificación Rebozo - Nivel II", desc: "Para egresados del Nivel I. Con aval internacional." },
               ].map((ev) => (
                 <div key={ev.title} className="timeline-item pb-6">
                   <span className="text-xs font-semibold uppercase tracking-wide text-pink">{ev.month}</span>
@@ -282,7 +349,7 @@ export default function HomePage() {
         <div className="container-main">
           <div className="mb-16 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Nuestra historia</p>
-            <h2 className="section-title mb-4">Quienes Somos</h2>
+            <h2 className="section-title mb-4">Quiénes Somos</h2>
             <div className="section-divider mx-auto" />
           </div>
 
@@ -290,18 +357,18 @@ export default function HomePage() {
           <div className="mb-20 grid items-center gap-12 lg:grid-cols-2" data-aos="fade-up">
             <div>
               <h3 className="mb-4 text-2xl font-bold text-navy">
-                Nacimos con un proposito: <span className="text-pink">humanizar la maternidad</span>
+                Nacimos con un propósito: <span className="text-pink">humanizar la maternidad</span>
               </h3>
               <p className="mb-4 leading-relaxed text-gray-500">
-                NeoSer nace en Chiclayo con la vision de transformar la atencion materna en el Peru.
+                NeoSer nace en Chiclayo con la visión de transformar la atención materna en el Perú.
                 Fundado por la Obst. Diana Silva y el Dr. Chacaliaza, nuestro centro combina la
-                medicina basada en evidencia con el respeto profundo por la fisiologia del nacimiento.
+                medicina basada en evidencia con el respeto profundo por la fisiología del nacimiento.
               </p>
               <p className="mb-6 leading-relaxed text-gray-500">
-                Creemos que cada mujer merece ser escuchada, acompanada y respetada en una de las
-                experiencias mas trascendentes de su vida. Por eso, ofrecemos atencion integral
-                que abarca desde el embarazo hasta el postparto, asi como formacion profesional
-                para quienes comparten nuestra vision.
+                Creemos que cada mujer merece ser escuchada, acompañada y respetada en una de las
+                experiencias más trascendentes de su vida. Por eso, ofrecemos atención integral
+                que abarca desde el embarazo hasta el postparto, así como formación profesional
+                para quienes comparten nuestra visión.
               </p>
               <p className="font-script text-xl text-pink">&quot;Porque nacer es un acto de amor&quot;</p>
             </div>
@@ -325,10 +392,10 @@ export default function HomePage() {
             <h3 className="mb-10 text-center text-2xl font-bold text-navy">Nuestro Equipo</h3>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                { initials: "DS", name: "Obst. Diana Silva", role: "Fundadora & Directora", desc: "Obstetra especialista en parto humanizado. Certificada en Spinning Babies y Tecnica Rebozo." },
-                { initials: "DC", name: "Dr. Chacaliaza", role: "Co-Fundador & Director Medico", desc: "Medico ginecologo-obstetra con enfoque en medicina humanizada y nacimiento respetado." },
-                { initials: "ED", name: "Equipo Docente", role: "Docentes Especializados", desc: "Profesionales de la salud con formacion en maternidad humanizada y pedagogia." },
-                { initials: "EA", name: "Equipo Asistencial", role: "Soporte & Atencion", desc: "Personal dedicado a brindarte la mejor experiencia en cada visita y consulta." },
+                { initials: "DS", name: "Obst. Diana Silva", role: "Fundadora & Directora", desc: "Obstetra especialista en parto humanizado. Certificada en Spinning Babies y Técnica Rebozo." },
+                { initials: "DC", name: "Dr. Chacaliaza", role: "Co-Fundador & Director Médico", desc: "Médico ginecólogo-obstetra con enfoque en medicina humanizada y nacimiento respetado." },
+                { initials: "ED", name: "Equipo Docente", role: "Docentes Especializados", desc: "Profesionales de la salud con formación en maternidad humanizada y pedagogía." },
+                { initials: "EA", name: "Equipo Asistencial", role: "Soporte & Atención", desc: "Personal dedicado a brindarte la mejor experiencia en cada visita y consulta." },
               ].map((m) => (
                 <div key={m.initials} className="team-member">
                   <div className="team-photo">{m.initials}</div>
@@ -345,9 +412,9 @@ export default function HomePage() {
             <h3 className="mb-8 text-center text-2xl font-bold text-navy">Reconocimientos y Alianzas</h3>
             <div className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {[
-                { icon: Award, iconColor: "text-pink", iconBg: "bg-pink-light", title: "Spinning Babies", desc: "Beca y certificacion internacional en tecnicas de posicionamiento fetal." },
-                { icon: Globe, iconColor: "text-blue", iconBg: "bg-blue-light", title: "Convenios Internacionales", desc: "Alianzas con instituciones de salud materna en Latinoamerica y Europa." },
-                { icon: Trophy, iconColor: "text-pink", iconBg: "bg-pink-light", title: "Reconocimiento Regional", desc: "Pioneros en atencion de parto humanizado en la region Lambayeque." },
+                { icon: Award, iconColor: "text-pink", iconBg: "bg-pink-light", title: "Spinning Babies", desc: "Beca y certificación internacional en técnicas de posicionamiento fetal." },
+                { icon: Globe, iconColor: "text-blue", iconBg: "bg-blue-light", title: "Convenios Internacionales", desc: "Alianzas con instituciones de salud materna en Latinoamérica y Europa." },
+                { icon: Trophy, iconColor: "text-pink", iconBg: "bg-pink-light", title: "Reconocimiento Regional", desc: "Pioneros en atención de parto humanizado en la región Lambayeque." },
               ].map((r) => (
                 <div key={r.title} className="recognition-card flex items-start gap-4">
                   <div className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl ${r.iconBg}`}>
@@ -365,7 +432,7 @@ export default function HomePage() {
           {/* Counters */}
           <div className="grid grid-cols-2 gap-6 rounded-3xl bg-white p-8 shadow-sm md:grid-cols-4" data-aos="fade-up">
             {[
-              { val: "5+", label: "Anos de experiencia" },
+              { val: "5+", label: "Años de experiencia" },
               { val: "+1,000", label: "Alumnos formados" },
               { val: "4 ediciones", label: "Diplomados realizados" },
               { val: "+500", label: "Partos humanizados" },
@@ -389,9 +456,9 @@ export default function HomePage() {
           </div>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {[
-              { day: "15", month: "Mar 2026", title: "Beca Spinning Babies para NeoSer", desc: "NeoSer recibio la prestigiosa beca de Spinning Babies para la formacion avanzada en tecnicas de posicionamiento fetal, consolidando su liderazgo en la region.", icon: Award },
-              { day: "02", month: "Feb 2026", title: "Dr. Chacaliaza: Reconocimiento Nacional", desc: "El Dr. Chacaliaza fue reconocido por su contribucion a la medicina humanizada en el Peru, destacando su labor en la promocion del parto respetado.", icon: Stethoscope },
-              { day: "20", month: "Ene 2026", title: "La Historia de NeoSer: 5 Anos Transformando Vidas", desc: "Desde un sueno compartido hasta convertirnos en referentes de la maternidad humanizada en Lambayeque. Conoce nuestra historia.", icon: Heart },
+              { day: "15", month: "Mar 2026", title: "Beca Spinning Babies para NeoSer", desc: "NeoSer recibió la prestigiosa beca de Spinning Babies para la formación avanzada en técnicas de posicionamiento fetal, consolidando su liderazgo en la región.", icon: Award },
+              { day: "02", month: "Feb 2026", title: "Dr. Chacaliaza: Reconocimiento Nacional", desc: "El Dr. Chacaliaza fue reconocido por su contribución a la medicina humanizada en el Perú, destacando su labor en la promoción del parto respetado.", icon: Stethoscope },
+              { day: "20", month: "Ene 2026", title: "La Historia de NeoSer: 5 Años Transformando Vidas", desc: "Desde un sueño compartido hasta convertirnos en referentes de la maternidad humanizada en Lambayeque. Conoce nuestra historia.", icon: Heart },
             ].map((n, i) => (
               <div key={n.title} className="news-card" data-aos="fade-up" data-aos-delay={i * 100}>
                 <div className="news-image">
@@ -405,7 +472,7 @@ export default function HomePage() {
                   <h3 className="mb-2 text-lg font-bold text-navy">{n.title}</h3>
                   <p className="mb-4 text-sm leading-relaxed text-gray-500">{n.desc}</p>
                   <a href="#" className="inline-flex items-center gap-1 text-sm font-semibold text-pink transition-colors hover:text-pink-dark">
-                    Leer mas <ArrowRight className="h-4 w-4" />
+                    Leer más <ArrowRight className="h-4 w-4" />
                   </a>
                 </div>
               </div>
@@ -418,11 +485,11 @@ export default function HomePage() {
       <section id="reserva" className="bg-cream py-20 md:py-28">
         <div className="container-main">
           <div className="mb-16 text-center" data-aos="fade-up">
-            <p className="section-tag mb-2">Agenda tu atencion</p>
+            <p className="section-tag mb-2">Agenda tu atención</p>
             <h2 className="section-title mb-4">Reserva de Citas</h2>
             <div className="section-divider mx-auto" />
             <p className="mx-auto mt-4 max-w-2xl text-gray-500">
-              Elige el horario disponible que mejor te convenga. Si prefieres atencion directa, usa nuestro formulario de contacto.
+              Elige el horario disponible que mejor te convenga. Si prefieres atención directa, usa nuestro formulario de contacto.
             </p>
           </div>
           <div className="grid gap-8 lg:grid-cols-3" data-aos="fade-up">
@@ -431,18 +498,20 @@ export default function HomePage() {
               <div className="surface-card space-y-4 p-6">
               <h3 className="text-xl font-bold text-navy">Antes de reservar</h3>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>Comparte tu nombre y telefono para confirmar la cita.</li>
-                <li>Selecciona el tipo de atencion y horario disponible.</li>
-                <li>Recibiras confirmacion automatica de la reserva.</li>
+                <li>Comparte tu nombre y teléfono para confirmar la cita.</li>
+                <li>Selecciona el tipo de atención y horario disponible.</li>
+                <li>Recibirás confirmación automática de la reserva.</li>
               </ul>
-              <a
-                href={bookingUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary w-full justify-center"
-              >
-                <Calendar className="h-5 w-5" /> Abrir calendario de reservas
-              </a>
+              {calBookingUrl && (
+                <a
+                  href={calBookingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary w-full justify-center"
+                >
+                  <Calendar className="h-5 w-5" /> Abrir calendario de reservas
+                </a>
+              )}
             </div>
             </div>
             <div className="surface-card overflow-hidden lg:col-span-2">
@@ -458,7 +527,7 @@ export default function HomePage() {
                 <div className="flex h-[420px] flex-col items-center justify-center gap-3 p-10 text-center text-gray-500">
                   <Calendar className="h-12 w-12 text-navy/30" />
                   <p className="max-w-md text-sm">
-                    El calendario de reservas aun no esta configurado. Usa el boton para solicitar una cita mientras activamos Cal.com.
+                    El calendario de reservas aún no está configurado. Usa el botón para solicitar una cita mientras activamos Cal.com.
                   </p>
                 </div>
               )}
@@ -472,19 +541,19 @@ export default function HomePage() {
         <div className="container-main">
           <div className="mb-16 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Estamos para ti</p>
-            <h2 className="section-title mb-4">Contactanos</h2>
+            <h2 className="section-title mb-4">Contáctanos</h2>
             <div className="section-divider mx-auto" />
           </div>
           <div className="grid gap-12 lg:grid-cols-2" data-aos="fade-up">
             <div>
               <div className="contact-info-card mb-8">
-                <h3 className="mb-6 text-xl font-bold text-navy">Informacion de Contacto</h3>
+                <h3 className="mb-6 text-xl font-bold text-navy">Información de Contacto</h3>
                 <div className="space-y-5">
                   {[
-                    { icon: MapPin, iconColor: "text-pink", iconBg: "bg-pink-light", label: "Direccion", value: "Calle Los Sauces 542, Urb. Santa Victoria, Chiclayo, Lambayeque, Peru" },
-                    { icon: Phone, iconColor: "text-blue", iconBg: "bg-blue-light", label: "Telefono", value: "+51 932 713 071" },
+                    { icon: MapPin, iconColor: "text-pink", iconBg: "bg-pink-light", label: "Dirección", value: "Calle Los Sauces 542, Urb. Santa Victoria, Chiclayo, Lambayeque, Perú" },
+                    { icon: Phone, iconColor: "text-blue", iconBg: "bg-blue-light", label: "Teléfono", value: "+51 978 822 368" },
                     { icon: Mail, iconColor: "text-pink", iconBg: "bg-pink-light", label: "Email", value: "contacto@neoser.pe" },
-                    { icon: Clock, iconColor: "text-blue", iconBg: "bg-blue-light", label: "Horario", value: "Lunes a Sabado: 8:00 AM - 7:00 PM" },
+                    { icon: Clock, iconColor: "text-blue", iconBg: "bg-blue-light", label: "Horario", value: "Lunes a Sábado: 8:00 AM - 7:00 PM" },
                   ].map((c) => (
                     <div key={c.label} className="flex items-start gap-4">
                       <div className={`contact-icon ${c.iconBg}`}><c.icon className={`h-5 w-5 ${c.iconColor}`} /></div>
@@ -496,7 +565,7 @@ export default function HomePage() {
                   ))}
                 </div>
                 <div className="mt-8 border-t border-gray-100 pt-6">
-                  <p className="mb-3 text-sm font-semibold text-navy">Siguenos</p>
+                  <p className="mb-3 text-sm font-semibold text-navy">Síguenos</p>
                   <div className="flex gap-3">
                     <a href="https://www.instagram.com/neoserper" target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items-center justify-center rounded-xl bg-pink-light text-pink transition-all hover:bg-pink hover:text-white">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/></svg>
@@ -511,14 +580,17 @@ export default function HomePage() {
                 </div>
               </div>
               <a href={bookingUrl} target="_blank" rel="noopener noreferrer" className="btn-primary w-full justify-center py-4 text-lg">
-                <MessageCircle className="h-6 w-6" /> Contactanos
+                <MessageCircle className="h-6 w-6" /> Contáctanos
               </a>
             </div>
             <div className="space-y-6">
               <ContactLeadForm />
-              <div className="surface-card p-4">
-                <GoogleMapEmbed query="Calle Los Sauces 542, Urbanizacion Santa Victoria, Chiclayo, Lambayeque, Peru" />
-              </div>
+              <GoogleMapEmbed
+                query="Los Sauces 542, Chiclayo 14008"
+                addressLine1="Calle Los Sauces 542"
+                addressLine2="Urb. Santa Victoria — Chiclayo"
+                mapsUrl="https://www.google.com/maps/place/Los+Sauces+542,+Chiclayo+14008/@-6.7804921,-79.8443951,19z"
+              />
             </div>
           </div>
         </div>
@@ -529,13 +601,13 @@ export default function HomePage() {
         <div className="container-main">
           <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
             <div>
-              <p className="mb-4 text-2xl font-bold text-white" style={{ fontFamily: "var(--font-playfair), serif" }}>NeoSer</p>
+              <Image src="/assets/logo-white.png" alt="NeoSer" width={240} height={96} className="footer-logo mb-4" />
               <p className="text-sm leading-relaxed opacity-70">
-                Centro de maternidad y medicina humanizada en Chiclayo. Acompanamos cada etapa de tu maternidad con calidez y profesionalismo.
+                Centro de maternidad y medicina humanizada en Chiclayo. Acompañamos cada etapa de tu maternidad con calidez y profesionalismo.
               </p>
             </div>
             <div>
-              <h4 className="mb-4 font-semibold text-white">Enlaces Rapidos</h4>
+              <h4 className="mb-4 font-semibold text-white">Enlaces Rápidos</h4>
               <ul className="space-y-2 text-sm">
                 {["inicio","servicios","cursos","nosotros","noticias"].map((l) => (
                   <li key={l}><a href={`#${l}`}>{l.charAt(0).toUpperCase()+l.slice(1)}</a></li>
@@ -545,7 +617,7 @@ export default function HomePage() {
             <div>
               <h4 className="mb-4 font-semibold text-white">Servicios</h4>
               <ul className="space-y-2 text-sm">
-                {["Control Prenatal","Parto Humanizado","Tecnica Rebozo","Preparacion al Parto","Postparto"].map((s) => (
+                {["Control Prenatal","Parto Humanizado","Técnica Rebozo","Preparación al Parto","Postparto"].map((s) => (
                   <li key={s}><a href="#servicios">{s}</a></li>
                 ))}
               </ul>
@@ -554,7 +626,7 @@ export default function HomePage() {
               <h4 className="mb-4 font-semibold text-white">Contacto</h4>
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2"><MapPin className="h-4 w-4 flex-shrink-0 text-pink" /> Calle Los Sauces 542, Chiclayo</li>
-                <li className="flex items-center gap-2"><Phone className="h-4 w-4 flex-shrink-0 text-pink" /> +51 932 713 071</li>
+                <li className="flex items-center gap-2"><Phone className="h-4 w-4 flex-shrink-0 text-pink" /> +51 978 822 368</li>
                 <li className="flex items-center gap-2"><Mail className="h-4 w-4 flex-shrink-0 text-pink" /> contacto@neoser.pe</li>
               </ul>
               <div className="mt-4 flex gap-3">

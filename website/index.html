@@ -9,7 +9,16 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Brush Script MT fallback usando una alternativa web-safe similar */
+    @font-face {
+      font-family: 'Brush Script MT';
+      src: local('Brush Script MT Italic'), local('Brush Script MT'), local('Brush Script Std');
+      font-style: italic;
+      font-weight: 400;
+    }
+  </style>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -46,9 +55,11 @@
   <nav id="navbar" class="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
       <!-- Logo -->
-      <a href="#inicio" class="flex-shrink-0">
-        <img src="assets/logo-white.png" alt="NeoSer" class="logo-white h-12 md:h-14">
-        <img src="assets/logo-color.png" alt="NeoSer" class="logo-color h-12 md:h-14">
+      <a href="#inicio" class="flex-shrink-0 navbar-logo flex items-center gap-3">
+        <span class="logo-img-wrap">
+          <img src="assets/logo-white.png" alt="NeoSer" class="logo-white h-16 md:h-20">
+          <img src="assets/logo-color.png" alt="NeoSer" class="logo-color h-16 md:h-20">
+        </span>
       </a>
 
       <!-- Desktop Nav -->
@@ -59,8 +70,8 @@
         <a href="#nosotros" class="nav-link">Nosotros</a>
         <a href="#noticias" class="nav-link">Noticias</a>
         <a href="#contacto" class="nav-link">Contacto</a>
-        <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20reservar%20una%20cita%20en%20NeoSer" target="_blank" rel="noopener" class="btn-primary text-sm">
-          <i data-lucide="message-circle" class="w-4 h-4"></i>
+        <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20reservar%20una%20cita%20en%20NeoSer" target="_blank" rel="noopener" class="btn-nav-cta text-sm">
+          <i data-lucide="calendar" class="w-4 h-4"></i>
           Reserva tu Cita
         </a>
       </div>
@@ -109,25 +120,39 @@
               <span class="particle particle-cross" style="top:15%;right:35%;animation-delay:-1s;"></span>
               <span class="particle particle-cross" style="bottom:20%;left:30%;animation-delay:-3.5s;"></span>
             </div>
-            <div class="hero-slide-content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <p class="hero-script mb-4">"Cada nacimiento es unico"</p>
-              <h1 class="hero-title mb-6">
-                Maternidad y <br>
-                <span class="highlight">Medicina Humanizada</span>
-              </h1>
-              <p class="hero-subtitle mb-8 max-w-lg">
-                Acompanamos y atendemos nacimientos humanizados en Chiclayo.
-                Tu bienestar y el de tu bebe son nuestra prioridad.
-              </p>
-              <div class="hero-ctas flex flex-wrap gap-4">
-                <a href="#servicios" class="btn-primary">
-                  <i data-lucide="heart" class="w-5 h-5"></i>
-                  Nuestros Servicios
-                </a>
-                <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20reservar%20una%20cita%20en%20NeoSer" target="_blank" rel="noopener" class="btn-secondary">
-                  <i data-lucide="calendar" class="w-5 h-5"></i>
-                  Reserva tu Cita
-                </a>
+            <div class="hero-slide-grid max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div class="hero-slide-content">
+                <h1 class="hero-title">
+                  Maternidad y
+                  <span class="highlight">Medicina Humanizada</span>
+                </h1>
+                <p class="hero-subtitle mb-8 max-w-lg">
+                  Acompañamos y atendemos nacimientos humanizados en Chiclayo.
+                  Tu bienestar y el de tu bebé son nuestra prioridad.
+                </p>
+                <div class="hero-ctas flex flex-wrap gap-4">
+                  <a href="#servicios" class="btn-primary">
+                    <i data-lucide="heart" class="w-5 h-5"></i>
+                    Nuestros Servicios
+                  </a>
+                  <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20reservar%20una%20cita%20en%20NeoSer" target="_blank" rel="noopener" class="btn-white-pink">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                    Reserva tu Cita
+                  </a>
+                </div>
+              </div>
+              <div class="hero-slide-media">
+                <div class="hero-image-card hero-image-card-main">
+                  <div class="hero-image-icon"><i data-lucide="heart-pulse"></i></div>
+                  <div class="hero-image-placeholder">
+                    <i data-lucide="image" class="w-12 h-12"></i>
+                    <span>Foto de sesión profesional</span>
+                  </div>
+                </div>
+                <div class="hero-image-card hero-image-card-badge">
+                  <div class="hero-image-icon-circle"><i data-lucide="baby"></i></div>
+                  <p>Parto<br>Humanizado</p>
+                </div>
               </div>
             </div>
           </div>
@@ -148,21 +173,36 @@
               <span class="particle particle-cross" style="top:18%;left:35%;animation-delay:-2s;"></span>
               <span class="particle particle-cross" style="bottom:35%;right:10%;animation-delay:-4.5s;"></span>
             </div>
-            <div class="hero-slide-content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <p class="hero-script mb-4">NeoSer</p>
-              <h1 class="hero-title mb-6">
-                Porque nacer y vivir<br>
-                <span class="highlight">con amor cambia el mundo</span>
-              </h1>
-              <p class="hero-subtitle mb-8 max-w-lg">
-                Mas de 1,000 alumnos formados y 500 partos humanizados
-                acompanados con calidez y profesionalismo.
-              </p>
-              <div class="hero-ctas flex flex-wrap gap-4">
-                <a href="#nosotros" class="btn-primary">
-                  <i data-lucide="users" class="w-5 h-5"></i>
-                  Conocenos
-                </a>
+            <div class="hero-slide-grid max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div class="hero-slide-content">
+                <p class="hero-script mb-4">NeoSer</p>
+                <h1 class="hero-title mb-6">
+                  Porque nacer y vivir<br>
+                  <span class="highlight">con amor cambia el mundo</span>
+                </h1>
+                <p class="hero-subtitle mb-8 max-w-lg">
+                  Más de 1,000 alumnos formados y 500 partos humanizados
+                  acompañados con calidez y profesionalismo.
+                </p>
+                <div class="hero-ctas flex flex-wrap gap-4">
+                  <a href="#nosotros" class="btn-primary">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    Conocenos
+                  </a>
+                </div>
+              </div>
+              <div class="hero-slide-media">
+                <div class="hero-image-card hero-image-card-main">
+                  <div class="hero-image-icon"><i data-lucide="users"></i></div>
+                  <div class="hero-image-placeholder">
+                    <i data-lucide="image" class="w-12 h-12"></i>
+                    <span>Foto del equipo NeoSer</span>
+                  </div>
+                </div>
+                <div class="hero-image-card hero-image-card-badge">
+                  <div class="hero-image-icon-circle"><i data-lucide="heart"></i></div>
+                  <p>Equipo<br>Profesional</p>
+                </div>
               </div>
             </div>
           </div>
@@ -183,25 +223,40 @@
               <span class="particle particle-cross" style="bottom:25%;right:18%;animation-delay:-3s;"></span>
               <span class="particle particle-cross" style="top:45%;left:10%;animation-delay:-1.5s;"></span>
             </div>
-            <div class="hero-slide-content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <p class="hero-script mb-4" style="color: var(--white);">Escuela NeoSer</p>
-              <h1 class="hero-title mb-6">
-                Cursos y <br>
-                <span style="color: var(--white); opacity: 0.9;">Certificaciones</span>
-              </h1>
-              <p class="hero-subtitle mb-8 max-w-lg">
-                Diplomados, talleres y certificaciones internacionales en parto humanizado,
-                tecnica Rebozo y lactancia materna.
-              </p>
-              <div class="hero-ctas flex flex-wrap gap-4">
-                <a href="#cursos" class="btn-secondary" style="border-color: var(--white); color: var(--white);">
-                  <i data-lucide="graduation-cap" class="w-5 h-5"></i>
-                  Ver Cursos
-                </a>
-                <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20info%20de%20los%20cursos%20de%20NeoSer" target="_blank" rel="noopener" class="btn-primary" style="background: var(--white); color: var(--pink-dark); border-color: var(--white);">
-                  <i data-lucide="message-circle" class="w-5 h-5"></i>
-                  Inscribete
-                </a>
+            <div class="hero-slide-grid max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div class="hero-slide-content">
+                <p class="hero-script mb-4" style="color: var(--white);">Escuela NeoSer</p>
+                <h1 class="hero-title mb-6">
+                  Cursos y <br>
+                  <span style="color: var(--white); opacity: 0.9;">Certificaciones</span>
+                </h1>
+                <p class="hero-subtitle mb-8 max-w-lg">
+                  Diplomados, talleres y certificaciones internacionales en parto humanizado,
+                  técnica Rebozo y lactancia materna.
+                </p>
+                <div class="hero-ctas flex flex-wrap gap-4">
+                  <a href="#cursos" class="btn-secondary" style="border-color: var(--white); color: var(--white);">
+                    <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                    Ver Cursos
+                  </a>
+                  <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20info%20de%20los%20cursos%20de%20NeoSer" target="_blank" rel="noopener" class="btn-primary" style="background: var(--white); color: var(--pink-dark); border-color: var(--white);">
+                    <i data-lucide="message-circle" class="w-5 h-5"></i>
+                    Inscríbete
+                  </a>
+                </div>
+              </div>
+              <div class="hero-slide-media">
+                <div class="hero-image-card hero-image-card-main">
+                  <div class="hero-image-icon"><i data-lucide="graduation-cap"></i></div>
+                  <div class="hero-image-placeholder">
+                    <i data-lucide="image" class="w-12 h-12"></i>
+                    <span>Foto del aula / certificación</span>
+                  </div>
+                </div>
+                <div class="hero-image-card hero-image-card-badge">
+                  <div class="hero-image-icon-circle"><i data-lucide="award"></i></div>
+                  <p>Certificación<br>Internacional</p>
+                </div>
               </div>
             </div>
           </div>
@@ -222,21 +277,36 @@
               <span class="particle particle-diamond" style="top:35%;left:18%;animation-delay:-3.5s;"></span>
               <span class="particle particle-cross" style="top:20%;left:40%;animation-delay:-2s;"></span>
             </div>
-            <div class="hero-slide-content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <p class="hero-script mb-4">"Tu parto, tu decision"</p>
-              <h1 class="hero-title mb-6">
-                Acompanamiento<br>
-                <span class="highlight">Integral y Respetuoso</span>
-              </h1>
-              <p class="hero-subtitle mb-8 max-w-lg">
-                Desde el embarazo hasta el postparto, te acompanamos
-                en cada paso de tu viaje como mama.
-              </p>
-              <div class="hero-ctas flex flex-wrap gap-4">
-                <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20reservar%20una%20cita%20en%20NeoSer" target="_blank" rel="noopener" class="btn-primary">
-                  <i data-lucide="calendar" class="w-5 h-5"></i>
-                  Agenda tu Cita
-                </a>
+            <div class="hero-slide-grid max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div class="hero-slide-content">
+                <p class="hero-script">“Tu parto, tu decisión”</p>
+                <h1 class="hero-title">
+                  Acompañamiento
+                  <span class="highlight">Integral y Respetuoso</span>
+                </h1>
+                <p class="hero-subtitle mb-8 max-w-lg">
+                  Desde el embarazo hasta el postparto, te acompañamos
+                  en cada paso de tu viaje como mamá.
+                </p>
+                <div class="hero-ctas flex flex-wrap gap-4">
+                  <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20reservar%20una%20cita%20en%20NeoSer" target="_blank" rel="noopener" class="btn-primary">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                    Agenda tu Cita
+                  </a>
+                </div>
+              </div>
+              <div class="hero-slide-media">
+                <div class="hero-image-card hero-image-card-main">
+                  <div class="hero-image-icon"><i data-lucide="hand-heart"></i></div>
+                  <div class="hero-image-placeholder">
+                    <i data-lucide="image" class="w-12 h-12"></i>
+                    <span>Foto mamá y bebé</span>
+                  </div>
+                </div>
+                <div class="hero-image-card hero-image-card-badge">
+                  <div class="hero-image-icon-circle"><i data-lucide="heart-handshake"></i></div>
+                  <p>Acompañamiento<br>Postparto</p>
+                </div>
               </div>
             </div>
           </div>
@@ -265,7 +335,7 @@
             <div class="stat-number">
               <i data-lucide="map-pin" class="w-6 h-6 inline-block mb-1"></i>
             </div>
-            <div class="stat-label">Chiclayo, Peru</div>
+            <div class="stat-label">Chiclayo, Perú</div>
           </div>
         </div>
       </div>
@@ -281,7 +351,7 @@
         <h2 class="section-title mb-4">Nuestros Servicios</h2>
         <div class="section-divider mx-auto"></div>
         <p class="mt-4 text-gray-500 max-w-2xl mx-auto">
-          Brindamos atencion integral para cada etapa de tu maternidad, con profesionales
+          Brindamos atención integral para cada etapa de tu maternidad, con profesionales
           comprometidos con el respeto y la calidez humana.
         </p>
       </div>
@@ -293,10 +363,10 @@
           <div class="service-icon pink-bg">
             <i data-lucide="stethoscope"></i>
           </div>
-          <h3 class="text-xl font-bold text-navy mb-3" style="font-family: 'Playfair Display', serif">Control Prenatal</h3>
+          <h3 class="text-xl font-bold text-navy mb-3">Control Prenatal</h3>
           <p class="text-gray-500 mb-5 text-sm leading-relaxed">
-            Seguimiento personalizado de tu embarazo con ecografias, analisis y orientacion
-            profesional para asegurar el bienestar de mama y bebe.
+            Seguimiento personalizado de tu embarazo con ecografías, análisis y orientación
+            profesional para asegurar el bienestar de mamá y bebé.
           </p>
           <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20informacion%20sobre%20Control%20Prenatal" target="_blank" rel="noopener" class="btn-pink-outline text-sm">
             <i data-lucide="message-circle" class="w-4 h-4"></i>
@@ -309,10 +379,10 @@
           <div class="service-icon blue-bg">
             <i data-lucide="baby"></i>
           </div>
-          <h3 class="text-xl font-bold text-navy mb-3" style="font-family: 'Playfair Display', serif">Parto Humanizado</h3>
+          <h3 class="text-xl font-bold text-navy mb-3">Parto Humanizado</h3>
           <p class="text-gray-500 mb-5 text-sm leading-relaxed">
-            Acompanamiento respetuoso durante el nacimiento de tu bebe, respetando
-            tus decisiones y promoviendo el vinculo inmediato madre-hijo.
+            Acompañamiento respetuoso durante el nacimiento de tu bebé, respetando
+            tus decisiones y promoviendo el vínculo inmediato madre-hijo.
           </p>
           <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20informacion%20sobre%20Parto%20Humanizado" target="_blank" rel="noopener" class="btn-pink-outline text-sm">
             <i data-lucide="message-circle" class="w-4 h-4"></i>
@@ -325,10 +395,10 @@
           <div class="service-icon pink-bg">
             <i data-lucide="hand-heart"></i>
           </div>
-          <h3 class="text-xl font-bold text-navy mb-3" style="font-family: 'Playfair Display', serif">Tecnica Rebozo</h3>
+          <h3 class="text-xl font-bold text-navy mb-3">Técnica Rebozo</h3>
           <p class="text-gray-500 mb-5 text-sm leading-relaxed">
-            Tecnica ancestral mexicana para aliviar molestias del embarazo, facilitar
-            el trabajo de parto y promover la relajacion profunda.
+            Técnica ancestral mexicana para aliviar molestias del embarazo, facilitar
+            el trabajo de parto y promover la relajación profunda.
           </p>
           <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20informacion%20sobre%20Tecnica%20Rebozo" target="_blank" rel="noopener" class="btn-pink-outline text-sm">
             <i data-lucide="message-circle" class="w-4 h-4"></i>
@@ -341,9 +411,9 @@
           <div class="service-icon blue-bg">
             <i data-lucide="book-heart"></i>
           </div>
-          <h3 class="text-xl font-bold text-navy mb-3" style="font-family: 'Playfair Display', serif">Preparacion al Parto</h3>
+          <h3 class="text-xl font-bold text-navy mb-3">Preparación al Parto</h3>
           <p class="text-gray-500 mb-5 text-sm leading-relaxed">
-            Sesiones teorico-practicas para prepararte fisica y emocionalmente para el
+            Sesiones teórico-prácticas para prepararte física y emocionalmente para el
             momento del nacimiento con confianza y seguridad.
           </p>
           <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20informacion%20sobre%20Preparacion%20al%20Parto" target="_blank" rel="noopener" class="btn-pink-outline text-sm">
@@ -357,10 +427,10 @@
           <div class="service-icon pink-bg">
             <i data-lucide="heart-handshake"></i>
           </div>
-          <h3 class="text-xl font-bold text-navy mb-3" style="font-family: 'Playfair Display', serif">Acompanamiento Postparto</h3>
+          <h3 class="text-xl font-bold text-navy mb-3">Acompañamiento Postparto</h3>
           <p class="text-gray-500 mb-5 text-sm leading-relaxed">
-            Soporte integral despues del nacimiento: lactancia, recuperacion,
-            cuidados del recien nacido y bienestar emocional de la mama.
+            Soporte integral después del nacimiento: lactancia, recuperación,
+            cuidados del recién nacido y bienestar emocional de la mamá.
           </p>
           <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20informacion%20sobre%20Acompanamiento%20Postparto" target="_blank" rel="noopener" class="btn-pink-outline text-sm">
             <i data-lucide="message-circle" class="w-4 h-4"></i>
@@ -373,10 +443,10 @@
           <div class="service-icon blue-bg">
             <i data-lucide="shield-check"></i>
           </div>
-          <h3 class="text-xl font-bold text-navy mb-3" style="font-family: 'Playfair Display', serif">Obstetricia General</h3>
+          <h3 class="text-xl font-bold text-navy mb-3">Obstetricia General</h3>
           <p class="text-gray-500 mb-5 text-sm leading-relaxed">
-            Atencion obstetrica completa con enfoque humanizado, desde la consulta
-            ginecologica hasta el seguimiento integral de la salud reproductiva.
+            Atención obstétrica completa con enfoque humanizado, desde la consulta
+            ginecológica hasta el seguimiento integral de la salud reproductiva.
           </p>
           <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20informacion%20sobre%20Obstetricia" target="_blank" rel="noopener" class="btn-pink-outline text-sm">
             <i data-lucide="message-circle" class="w-4 h-4"></i>
@@ -396,8 +466,8 @@
         <h2 class="section-title mb-4">Nuestros Cursos</h2>
         <div class="section-divider mx-auto"></div>
         <p class="mt-4 text-gray-500 max-w-2xl mx-auto">
-          Formacion profesional y vivencial para quienes desean transformar
-          la atencion materna con un enfoque humanizado y basado en evidencia.
+          Formación profesional y vivencial para quienes desean transformar
+          la atención materna con un enfoque humanizado y basado en evidencia.
         </p>
       </div>
 
@@ -413,11 +483,11 @@
                   <img src="assets/highlight-perine.jpg" alt="Preparacion al Parto" class="course-img">
                 </div>
                 <div class="course-body">
-                  <h3 class="font-bold text-navy text-lg mb-2" style="font-family: 'Playfair Display', serif">Curso de Preparacion al Parto</h3>
-                  <p class="text-gray-500 text-sm mb-4">Tecnicas de respiracion, posiciones de parto, plan de nacimiento y vinculo temprano.</p>
+                  <h3 class="font-bold text-navy text-lg mb-2">Curso de Preparación al Parto</h3>
+                  <p class="text-gray-500 text-sm mb-4">Técnicas de respiración, posiciones de parto, plan de nacimiento y vínculo temprano.</p>
                   <div class="flex items-center justify-between">
                     <span class="course-price">S/. 350</span>
-                    <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20info%20del%20Curso%20de%20Preparacion%20al%20Parto" target="_blank" rel="noopener" class="btn-pink-outline text-xs">Ver mas</a>
+                    <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20info%20del%20Curso%20de%20Preparacion%20al%20Parto" target="_blank" rel="noopener" class="btn-pink-outline text-xs">Ver más</a>
                   </div>
                 </div>
               </div>
@@ -431,11 +501,11 @@
                   <img src="assets/highlight-prenatal.jpg" alt="Diplomado Parto Humanizado" class="course-img">
                 </div>
                 <div class="course-body">
-                  <h3 class="font-bold text-navy text-lg mb-2" style="font-family: 'Playfair Display', serif">Diplomado en Parto Humanizado</h3>
-                  <p class="text-gray-500 text-sm mb-4">Formacion integral para profesionales de salud en atencion humanizada del nacimiento.</p>
+                  <h3 class="font-bold text-navy text-lg mb-2">Diplomado en Parto Humanizado</h3>
+                  <p class="text-gray-500 text-sm mb-4">Formación integral para profesionales de salud en atención humanizada del nacimiento.</p>
                   <div class="flex items-center justify-between">
                     <span class="course-price">S/. 1,200</span>
-                    <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20info%20del%20Diplomado%20en%20Parto%20Humanizado" target="_blank" rel="noopener" class="btn-pink-outline text-xs">Ver mas</a>
+                    <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20info%20del%20Diplomado%20en%20Parto%20Humanizado" target="_blank" rel="noopener" class="btn-pink-outline text-xs">Ver más</a>
                   </div>
                 </div>
               </div>
@@ -445,15 +515,15 @@
             <div class="swiper-slide">
               <div class="course-card">
                 <div class="course-image course-image-placeholder" data-label="Foto: Certificacion Rebozo">
-                  <span class="course-badge">Hibrido</span>
+                  <span class="course-badge">Híbrido</span>
                   <img src="assets/highlight-cursos.jpg" alt="Certificacion Rebozo" class="course-img">
                 </div>
                 <div class="course-body">
-                  <h3 class="font-bold text-navy text-lg mb-2" style="font-family: 'Playfair Display', serif">Tecnica Rebozo Certificacion</h3>
-                  <p class="text-gray-500 text-sm mb-4">Certificacion internacional en tecnica Rebozo con reconocimiento de Spinning Babies.</p>
+                  <h3 class="font-bold text-navy text-lg mb-2">Técnica Rebozo Certificación</h3>
+                  <p class="text-gray-500 text-sm mb-4">Certificación internacional en técnica Rebozo con reconocimiento de Spinning Babies.</p>
                   <div class="flex items-center justify-between">
                     <span class="course-price">S/. 800</span>
-                    <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20info%20de%20la%20Certificacion%20Rebozo" target="_blank" rel="noopener" class="btn-pink-outline text-xs">Ver mas</a>
+                    <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20info%20de%20la%20Certificacion%20Rebozo" target="_blank" rel="noopener" class="btn-pink-outline text-xs">Ver más</a>
                   </div>
                 </div>
               </div>
@@ -467,11 +537,11 @@
                   <img src="assets/highlight-bebe.jpg" alt="Taller Lactancia Materna" class="course-img">
                 </div>
                 <div class="course-body">
-                  <h3 class="font-bold text-navy text-lg mb-2" style="font-family: 'Playfair Display', serif">Taller de Lactancia Materna</h3>
-                  <p class="text-gray-500 text-sm mb-4">Taller practico sobre tecnicas de lactancia, posiciones y resolucion de problemas comunes.</p>
+                  <h3 class="font-bold text-navy text-lg mb-2">Taller de Lactancia Materna</h3>
+                  <p class="text-gray-500 text-sm mb-4">Taller práctico sobre técnicas de lactancia, posiciones y resolución de problemas comunes.</p>
                   <div class="flex items-center justify-between">
                     <span class="course-price">S/. 180</span>
-                    <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20info%20del%20Taller%20de%20Lactancia" target="_blank" rel="noopener" class="btn-pink-outline text-xs">Ver mas</a>
+                    <a href="https://wa.me/51978822368?text=Hola%2C%20quiero%20info%20del%20Taller%20de%20Lactancia" target="_blank" rel="noopener" class="btn-pink-outline text-xs">Ver más</a>
                   </div>
                 </div>
               </div>
@@ -485,27 +555,27 @@
       </div>
 
       <!-- Upcoming Events -->
-      <div class="mt-20" data-aos="fade-up">
-        <h3 class="text-2xl font-bold text-navy mb-8 text-center" style="font-family: 'Playfair Display', serif">Proximos Eventos</h3>
+      <div class="mt-16" data-aos="fade-up">
+        <h3 class="text-2xl font-bold text-navy mb-8 text-center">Próximos Eventos</h3>
         <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
           <div class="timeline-item pb-6">
             <div>
               <span class="text-xs font-semibold text-pink uppercase tracking-wide">Abril 2026</span>
-              <h4 class="font-bold text-navy mt-1">V Edicion - Diplomado Parto Humanizado</h4>
-              <p class="text-sm text-gray-500 mt-1">Modalidad hibrida. Inscripciones abiertas.</p>
+              <h4 class="font-bold text-navy mt-1">V Edición - Diplomado<br>Parto Humanizado</h4>
+              <p class="text-sm text-gray-500 mt-1">Modalidad híbrida. Inscripciones abiertas.</p>
             </div>
           </div>
           <div class="timeline-item pb-6">
             <div>
               <span class="text-xs font-semibold text-pink uppercase tracking-wide">Mayo 2026</span>
-              <h4 class="font-bold text-navy mt-1">Seminario: Movimiento en el Parto</h4>
-              <p class="text-sm text-gray-500 mt-1">Taller intensivo de un dia. Cupos limitados.</p>
+              <h4 class="font-bold text-navy mt-1">Seminario: Movimiento<br>en el Parto</h4>
+              <p class="text-sm text-gray-500 mt-1">Taller intensivo de un día. Cupos limitados.</p>
             </div>
           </div>
           <div class="timeline-item pb-6">
             <div>
               <span class="text-xs font-semibold text-pink uppercase tracking-wide">Junio 2026</span>
-              <h4 class="font-bold text-navy mt-1">Certificacion Rebozo - Nivel II</h4>
+              <h4 class="font-bold text-navy mt-1">Certificación Rebozo<br>Nivel II</h4>
               <p class="text-sm text-gray-500 mt-1">Para egresados del Nivel I. Con aval internacional.</p>
             </div>
           </div>
@@ -513,21 +583,21 @@
       </div>
 
       <!-- Testimonials -->
-      <div class="mt-20" data-aos="fade-up">
-        <h3 class="text-2xl font-bold text-navy mb-8 text-center" style="font-family: 'Playfair Display', serif">Lo que dicen nuestros alumnos</h3>
+      <div class="mt-12" data-aos="fade-up">
+        <h3 class="text-2xl font-bold text-navy mb-8 text-center">Lo que dicen nuestros alumnos</h3>
         <div class="swiper testimonials-swiper pb-14">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
               <div class="testimonial-card">
-                <span class="quote-icon">"</span>
+                <span class="quote-icon">“</span>
                 <p class="testimonial-text mt-8 mb-6">
-                  "El diplomado cambio completamente mi manera de ver la atencion del parto.
-                  Ahora aplico la medicina humanizada en cada consulta."
+                  “El diplomado cambió completamente mi manera de ver la atención del parto.
+                  Ahora aplico la medicina humanizada en cada consulta.”
                 </p>
                 <div class="flex items-center gap-3">
-                  <div class="testimonial-avatar">MC</div>
+                  <div class="testimonial-avatar avatar-1">MC</div>
                   <div>
-                    <p class="font-semibold text-navy text-sm">Maria Carmen R.</p>
+                    <p class="font-semibold text-navy text-sm">María Carmen R.</p>
                     <p class="text-xs text-gray-400">Obstetra - Trujillo</p>
                   </div>
                 </div>
@@ -535,29 +605,29 @@
             </div>
             <div class="swiper-slide">
               <div class="testimonial-card">
-                <span class="quote-icon">"</span>
+                <span class="quote-icon">“</span>
                 <p class="testimonial-text mt-8 mb-6">
-                  "Gracias a NeoSer tuve el parto que sonaba. Me sentii acompanada, respetada
-                  y empoderada en cada momento."
+                  “Gracias a NeoSer tuve el parto que soñaba. Me sentí acompañada, respetada
+                  y empoderada en cada momento.”
                 </p>
                 <div class="flex items-center gap-3">
-                  <div class="testimonial-avatar">LP</div>
+                  <div class="testimonial-avatar avatar-2">LP</div>
                   <div>
-                    <p class="font-semibold text-navy text-sm">Lucia Perez T.</p>
-                    <p class="text-xs text-gray-400">Mama NeoSer - Chiclayo</p>
+                    <p class="font-semibold text-navy text-sm">Lucía Pérez T.</p>
+                    <p class="text-xs text-gray-400">Mamá NeoSer - Chiclayo</p>
                   </div>
                 </div>
               </div>
             </div>
             <div class="swiper-slide">
               <div class="testimonial-card">
-                <span class="quote-icon">"</span>
+                <span class="quote-icon">“</span>
                 <p class="testimonial-text mt-8 mb-6">
-                  "La certificacion en Rebozo fue una experiencia transformadora. El equipo de NeoSer
-                  es increiblemente profesional y calido."
+                  “La certificación en Rebozo fue una experiencia transformadora. El equipo de NeoSer
+                  es increíblemente profesional y cálido.”
                 </p>
                 <div class="flex items-center gap-3">
-                  <div class="testimonial-avatar">AV</div>
+                  <div class="testimonial-avatar avatar-3">AV</div>
                   <div>
                     <p class="font-semibold text-navy text-sm">Andrea Vargas M.</p>
                     <p class="text-xs text-gray-400">Doula - Lima</p>
@@ -567,15 +637,15 @@
             </div>
             <div class="swiper-slide">
               <div class="testimonial-card">
-                <span class="quote-icon">"</span>
+                <span class="quote-icon">“</span>
                 <p class="testimonial-text mt-8 mb-6">
-                  "Excelente formacion. Los docentes tienen una pasion genuina por la
-                  maternidad humanizada. 100% recomendado."
+                  “Excelente formación. Los docentes tienen una pasión genuina por la
+                  maternidad humanizada. 100% recomendado.”
                 </p>
                 <div class="flex items-center gap-3">
-                  <div class="testimonial-avatar">RS</div>
+                  <div class="testimonial-avatar avatar-4">RS</div>
                   <div>
-                    <p class="font-semibold text-navy text-sm">Rosa Sanchez L.</p>
+                    <p class="font-semibold text-navy text-sm">Rosa Sánchez L.</p>
                     <p class="text-xs text-gray-400">Enfermera - Chiclayo</p>
                   </div>
                 </div>
@@ -594,28 +664,28 @@
       <!-- Header -->
       <div class="text-center mb-16" data-aos="fade-up">
         <p class="section-tag mb-2">Nuestra historia</p>
-        <h2 class="section-title mb-4">Quienes Somos</h2>
+        <h2 class="section-title mb-4">Quiénes Somos</h2>
         <div class="section-divider mx-auto"></div>
       </div>
 
       <!-- Story -->
-      <div class="grid lg:grid-cols-2 gap-12 items-center mb-20" data-aos="fade-up">
+      <div class="grid lg:grid-cols-2 gap-12 items-center mb-16" data-aos="fade-up">
         <div>
-          <h3 class="text-2xl font-bold text-navy mb-4" style="font-family: 'Playfair Display', serif">
-            Nacimos con un proposito: <span class="text-pink">humanizar la maternidad</span>
+          <h3 class="text-2xl font-bold text-navy mb-4">
+            Nacimos con un propósito: <span class="text-pink">humanizar la maternidad</span>
           </h3>
           <p class="text-gray-500 leading-relaxed mb-4">
-            NeoSer nace en Chiclayo con la vision de transformar la atencion materna en el Peru.
-            Fundado por la Obst. Diana Silva y el Dr. Chacaliaza, nuestro centro combina la
-            medicina basada en evidencia con el respeto profundo por la fisiologia del nacimiento.
+            NeoSer nace en Chiclayo con la visión de transformar la atención materna en el Perú.
+            Fundado por la Obst. Diana Silva y el Dr. José Chacaliaza, nuestro centro combina la
+            medicina basada en evidencia con el respeto profundo por la fisiología del nacimiento.
           </p>
           <p class="text-gray-500 leading-relaxed mb-6">
-            Creemos que cada mujer merece ser escuchada, acompanada y respetada en una de las
-            experiencias mas trascendentes de su vida. Por eso, ofrecemos atencion integral
-            que abarca desde el embarazo hasta el postparto, asi como formacion profesional
-            para quienes comparten nuestra vision.
+            Creemos que cada mujer merece ser escuchada, acompañada y respetada en una de las
+            experiencias más trascendentes de su vida. Por eso, ofrecemos atención integral
+            que abarca desde el embarazo hasta el postparto, así como formación profesional
+            para quienes comparten nuestra visión.
           </p>
-          <p class="font-script text-pink text-xl">"Porque nacer es un acto de amor"</p>
+          <p class="font-brush text-pink text-2xl">“Porque nacer es un acto de amor”</p>
         </div>
         <div class="flex justify-center">
           <div class="w-full max-w-md rounded-3xl overflow-hidden border-4 border-white shadow-lg relative">
@@ -632,94 +702,86 @@
       </div>
 
       <!-- Team -->
-      <div class="mb-20" data-aos="fade-up">
-        <h3 class="text-2xl font-bold text-navy mb-10 text-center" style="font-family: 'Playfair Display', serif">Nuestro Equipo</h3>
+      <div class="mb-12" data-aos="fade-up">
+        <h3 class="text-2xl font-bold text-navy mb-10 text-center">Nuestro Equipo</h3>
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div class="team-member">
-            <div class="team-photo team-photo-placeholder" data-initials="DS">
-              <!-- Reemplazar con: <img src="assets/team-diana.jpg" alt="Obst. Diana Silva"> -->
-            </div>
+            <div class="team-photo team-photo-placeholder" data-initials="DS"></div>
             <h4 class="font-bold text-navy text-lg">Obst. Diana Silva</h4>
             <p class="text-pink text-sm font-medium">Fundadora & Directora</p>
-            <p class="text-gray-400 text-xs mt-2 max-w-xs mx-auto">Obstetra especialista en parto humanizado. Certificada en Spinning Babies y Tecnica Rebozo.</p>
+            <p class="text-gray-400 text-xs team-bio">Obstetra especialista en parto humanizado. Certificada en Spinning Babies y Técnica Rebozo.</p>
           </div>
           <div class="team-member">
-            <div class="team-photo team-photo-placeholder" data-initials="DC">
-              <!-- Reemplazar con: <img src="assets/team-chacaliaza.jpg" alt="Dr. Chacaliaza"> -->
-            </div>
-            <h4 class="font-bold text-navy text-lg">Dr. Chacaliaza</h4>
-            <p class="text-pink text-sm font-medium">Co-Fundador & Director Medico</p>
-            <p class="text-gray-400 text-xs mt-2 max-w-xs mx-auto">Medico ginecologo-obstetra con enfoque en medicina humanizada y nacimiento respetado.</p>
+            <div class="team-photo team-photo-placeholder" data-initials="JC"></div>
+            <h4 class="font-bold text-navy text-lg">Dr. José Chacaliaza</h4>
+            <p class="text-pink text-sm font-medium">Co-Fundador & Director Médico</p>
+            <p class="text-gray-400 text-xs team-bio">Médico ginecólogo-obstetra con enfoque en medicina humanizada y nacimiento respetado.</p>
           </div>
           <div class="team-member">
-            <div class="team-photo team-photo-placeholder" data-initials="ED">
-              <!-- Reemplazar con: <img src="assets/team-docentes.jpg" alt="Equipo Docente"> -->
-            </div>
+            <div class="team-photo team-photo-placeholder" data-initials="ED"></div>
             <h4 class="font-bold text-navy text-lg">Equipo Docente</h4>
             <p class="text-pink text-sm font-medium">Docentes Especializados</p>
-            <p class="text-gray-400 text-xs mt-2 max-w-xs mx-auto">Profesionales de la salud con formacion en maternidad humanizada y pedagogia.</p>
+            <p class="text-gray-400 text-xs team-bio">Profesionales de la salud con formación en maternidad humanizada y pedagogía.</p>
           </div>
           <div class="team-member">
-            <div class="team-photo team-photo-placeholder" data-initials="EA">
-              <!-- Reemplazar con: <img src="assets/team-asistencial.jpg" alt="Equipo Asistencial"> -->
-            </div>
+            <div class="team-photo team-photo-placeholder" data-initials="EA"></div>
             <h4 class="font-bold text-navy text-lg">Equipo Asistencial</h4>
-            <p class="text-pink text-sm font-medium">Soporte & Atencion</p>
-            <p class="text-gray-400 text-xs mt-2 max-w-xs mx-auto">Personal dedicado a brindarte la mejor experiencia en cada visita y consulta.</p>
+            <p class="text-pink text-sm font-medium">Soporte & Atención</p>
+            <p class="text-gray-400 text-xs team-bio">Personal dedicado a brindarte la mejor experiencia en cada visita y consulta.</p>
           </div>
         </div>
       </div>
 
       <!-- Recognitions -->
       <div class="mb-16" data-aos="fade-up">
-        <h3 class="text-2xl font-bold text-navy mb-8 text-center" style="font-family: 'Playfair Display', serif">Reconocimientos y Alianzas</h3>
+        <h3 class="text-2xl font-bold text-navy mb-8 text-center">Reconocimientos y Alianzas</h3>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
           <div class="recognition-card flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl bg-pink-light flex items-center justify-center flex-shrink-0">
-              <i data-lucide="award" class="w-6 h-6 text-pink"></i>
+            <div class="w-16 h-16 rounded-xl bg-pink-light flex items-center justify-center flex-shrink-0">
+              <i data-lucide="award" class="w-8 h-8 text-pink"></i>
             </div>
             <div>
               <h4 class="font-bold text-navy text-sm">Spinning Babies</h4>
-              <p class="text-gray-400 text-xs mt-1">Beca y certificacion internacional en tecnicas de posicionamiento fetal.</p>
+              <p class="text-gray-400 text-xs mt-1">Beca y certificación internacional en técnicas de posicionamiento fetal.</p>
             </div>
           </div>
           <div class="recognition-card flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl bg-blue-light flex items-center justify-center flex-shrink-0">
-              <i data-lucide="globe" class="w-6 h-6 text-blue"></i>
+            <div class="w-16 h-16 rounded-xl bg-blue-light flex items-center justify-center flex-shrink-0">
+              <i data-lucide="globe" class="w-8 h-8 text-blue"></i>
             </div>
             <div>
               <h4 class="font-bold text-navy text-sm">Convenios Internacionales</h4>
-              <p class="text-gray-400 text-xs mt-1">Alianzas con instituciones de salud materna en Latinoamerica y Europa.</p>
+              <p class="text-gray-400 text-xs mt-1">Alianzas con instituciones de salud materna en Latinoamérica y Europa.</p>
             </div>
           </div>
           <div class="recognition-card flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl bg-pink-light flex items-center justify-center flex-shrink-0">
-              <i data-lucide="trophy" class="w-6 h-6 text-pink"></i>
+            <div class="w-16 h-16 rounded-xl bg-pink-light flex items-center justify-center flex-shrink-0">
+              <i data-lucide="trophy" class="w-8 h-8 text-pink"></i>
             </div>
             <div>
               <h4 class="font-bold text-navy text-sm">Reconocimiento Regional</h4>
-              <p class="text-gray-400 text-xs mt-1">Pioneros en atencion de parto humanizado en la region Lambayeque.</p>
+              <p class="text-gray-400 text-xs mt-1">Pioneros en atención de parto humanizado en la región Lambayeque.</p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Counters -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 bg-white rounded-3xl p-8 shadow-sm" data-aos="fade-up">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white rounded-3xl p-6 md:p-8 shadow-sm" data-aos="fade-up">
         <div class="counter-box">
-          <div class="counter-number" data-counter="5" data-suffix="+">0</div>
-          <div class="counter-label">Anos de experiencia</div>
+          <div class="counter-number" data-counter="5" data-prefix="+" data-suffix=" años">+0</div>
+          <div class="counter-label">de experiencia</div>
         </div>
         <div class="counter-box">
-          <div class="counter-number" data-counter="1000" data-prefix="+" data-suffix="">0</div>
+          <div class="counter-number" data-counter="1000" data-prefix="+" data-suffix="">+0</div>
           <div class="counter-label">Alumnos formados</div>
         </div>
         <div class="counter-box">
-          <div class="counter-number" data-counter="4" data-suffix=" ediciones">0</div>
+          <div class="counter-number" data-counter="4" data-prefix="" data-suffix=" ediciones">0</div>
           <div class="counter-label">Diplomados realizados</div>
         </div>
         <div class="counter-box">
-          <div class="counter-number" data-counter="500" data-prefix="+" data-suffix="">0</div>
+          <div class="counter-number" data-counter="500" data-prefix="+" data-suffix="">+0</div>
           <div class="counter-label">Partos humanizados</div>
         </div>
       </div>
@@ -749,15 +811,15 @@
             <i data-lucide="award" class="w-16 h-16 text-navy/20"></i>
           </div>
           <div class="news-body">
-            <h3 class="font-bold text-navy text-lg mb-2" style="font-family: 'Playfair Display', serif">
+            <h3 class="font-bold text-navy text-lg mb-2">
               Beca Spinning Babies para NeoSer
             </h3>
             <p class="text-gray-500 text-sm leading-relaxed mb-4">
-              NeoSer recibio la prestigiosa beca de Spinning Babies para la formacion
-              avanzada en tecnicas de posicionamiento fetal, consolidando su liderazgo en la region.
+              NeoSer recibió la prestigiosa beca de Spinning Babies para la formación
+              avanzada en técnicas de posicionamiento fetal, consolidando su liderazgo en la región.
             </p>
-            <a href="#" class="text-pink font-semibold text-sm hover:text-pink-dark transition-colors inline-flex items-center gap-1">
-              Leer mas <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            <a href="#" class="text-pink font-semibold text-sm hover:text-pink-dark transition-colors inline-flex items-center gap-1 whitespace-nowrap">
+              Leer más <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </a>
           </div>
         </div>
@@ -773,15 +835,15 @@
             <i data-lucide="stethoscope" class="w-16 h-16 text-navy/20"></i>
           </div>
           <div class="news-body">
-            <h3 class="font-bold text-navy text-lg mb-2" style="font-family: 'Playfair Display', serif">
+            <h3 class="font-bold text-navy text-lg mb-2">
               Dr. Chacaliaza: Reconocimiento Nacional
             </h3>
             <p class="text-gray-500 text-sm leading-relaxed mb-4">
-              El Dr. Chacaliaza fue reconocido por su contribucion a la medicina humanizada
-              en el Peru, destacando su labor en la promocion del parto respetado.
+              El Dr. Chacaliaza fue reconocido por su contribución a la medicina humanizada
+              en el Perú, destacando su labor en la promoción del parto respetado.
             </p>
-            <a href="#" class="text-pink font-semibold text-sm hover:text-pink-dark transition-colors inline-flex items-center gap-1">
-              Leer mas <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            <a href="#" class="text-pink font-semibold text-sm hover:text-pink-dark transition-colors inline-flex items-center gap-1 whitespace-nowrap">
+              Leer más <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </a>
           </div>
         </div>
@@ -797,15 +859,15 @@
             <i data-lucide="heart" class="w-16 h-16 text-navy/20"></i>
           </div>
           <div class="news-body">
-            <h3 class="font-bold text-navy text-lg mb-2" style="font-family: 'Playfair Display', serif">
-              La Historia de NeoSer: 5 Anos Transformando Vidas
+            <h3 class="font-bold text-navy text-lg mb-2">
+              La Historia de NeoSer: 5 Años Transformando Vidas
             </h3>
             <p class="text-gray-500 text-sm leading-relaxed mb-4">
-              Desde un sueno compartido hasta convertirnos en referentes de la maternidad
+              Desde un sueño compartido hasta convertirnos en referentes de la maternidad
               humanizada en Lambayeque. Conoce nuestra historia.
             </p>
-            <a href="#" class="text-pink font-semibold text-sm hover:text-pink-dark transition-colors inline-flex items-center gap-1">
-              Leer mas <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            <a href="#" class="text-pink font-semibold text-sm hover:text-pink-dark transition-colors inline-flex items-center gap-1 whitespace-nowrap">
+              Leer más <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </a>
           </div>
         </div>
@@ -819,7 +881,7 @@
       <!-- Header -->
       <div class="text-center mb-16" data-aos="fade-up">
         <p class="section-tag mb-2">Estamos para ti</p>
-        <h2 class="section-title mb-4">Contactanos</h2>
+        <h2 class="section-title mb-4">Contáctanos</h2>
         <div class="section-divider mx-auto"></div>
       </div>
 
@@ -827,29 +889,29 @@
         <!-- Contact Info -->
         <div>
           <div class="contact-info-card mb-8">
-            <h3 class="text-xl font-bold text-navy mb-6" style="font-family: 'Playfair Display', serif">Informacion de Contacto</h3>
+            <h3 class="text-xl font-bold text-navy mb-6">Información de Contacto</h3>
             <div class="space-y-5">
               <div class="flex items-start gap-4">
                 <div class="contact-icon bg-pink-light">
-                  <i data-lucide="map-pin" class="w-5 h-5 text-pink"></i>
+                  <i data-lucide="map-pin" class="text-pink"></i>
                 </div>
                 <div>
-                  <p class="font-semibold text-navy text-sm">Direccion</p>
-                  <p class="text-gray-500 text-sm">Chiclayo, Lambayeque, Peru</p>
+                  <p class="font-semibold text-navy text-sm">Dirección</p>
+                  <p class="text-gray-500 text-sm">Calle Los Sauces 542, Urb. Santa Victoria<br>Chiclayo, Lambayeque, Perú</p>
                 </div>
               </div>
               <div class="flex items-start gap-4">
                 <div class="contact-icon bg-blue-light">
-                  <i data-lucide="phone" class="w-5 h-5 text-blue"></i>
+                  <i data-lucide="phone" class="text-blue"></i>
                 </div>
                 <div>
-                  <p class="font-semibold text-navy text-sm">Telefono</p>
+                  <p class="font-semibold text-navy text-sm">Teléfono</p>
                   <p class="text-gray-500 text-sm">+51 978 822 368</p>
                 </div>
               </div>
               <div class="flex items-start gap-4">
                 <div class="contact-icon bg-pink-light">
-                  <i data-lucide="mail" class="w-5 h-5 text-pink"></i>
+                  <i data-lucide="mail" class="text-pink"></i>
                 </div>
                 <div>
                   <p class="font-semibold text-navy text-sm">Email</p>
@@ -858,11 +920,11 @@
               </div>
               <div class="flex items-start gap-4">
                 <div class="contact-icon bg-blue-light">
-                  <i data-lucide="clock" class="w-5 h-5 text-blue"></i>
+                  <i data-lucide="clock" class="text-blue"></i>
                 </div>
                 <div>
                   <p class="font-semibold text-navy text-sm">Horario</p>
-                  <p class="text-gray-500 text-sm">Lunes a Sabado: 8:00 AM - 7:00 PM</p>
+                  <p class="text-gray-500 text-sm">Lunes a Sábado: 8:00 AM - 7:00 PM</p>
                 </div>
               </div>
             </div>
@@ -895,13 +957,37 @@
 
         <!-- Map -->
         <div>
-          <div class="map-container border border-gray-200">
-            <div class="text-center">
-              <i data-lucide="map" class="w-16 h-16 text-navy/20 mx-auto mb-3"></i>
-              <p class="text-navy/30 text-sm">Mapa de Google Maps</p>
-              <p class="text-navy/20 text-xs mt-1">Se integrara con la direccion exacta</p>
-            </div>
+          <div class="map-container relative overflow-hidden rounded-2xl border border-gray-200 bg-blue-light">
+            <!-- Fallback (shown until iframe loads / if blocked) -->
+            <a class="map-fallback absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-0 no-underline"
+               href="https://www.google.com/maps/place/Los+Sauces+542,+Chiclayo+14008/@-6.7804921,-79.8443951,19z"
+               target="_blank" rel="noopener">
+              <i data-lucide="map-pin" class="w-12 h-12 text-pink mb-3"></i>
+              <p class="text-navy font-semibold">Calle Los Sauces 542</p>
+              <p class="text-gray-500 text-sm">Urb. Santa Victoria — Chiclayo</p>
+              <span class="mt-4 btn-pink-outline text-xs">
+                <i data-lucide="external-link" class="w-4 h-4"></i>
+                Abrir en Google Maps
+              </span>
+            </a>
+            <iframe
+              class="map-iframe relative z-10"
+              src="https://www.google.com/maps?q=Los+Sauces+542,+Chiclayo+14008&hl=es&z=18&output=embed"
+              width="100%"
+              height="100%"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Ubicación NeoSer en Google Maps">
+            </iframe>
           </div>
+          <a href="https://www.google.com/maps/place/Los+Sauces+542,+Chiclayo+14008/@-6.7804921,-79.8443951,19z"
+             target="_blank" rel="noopener"
+             class="mt-4 inline-flex items-center gap-2 text-pink hover:text-pink-dark text-sm font-semibold">
+            <i data-lucide="navigation" class="w-4 h-4"></i>
+            Cómo llegar
+          </a>
         </div>
       </div>
     </div>
@@ -913,16 +999,16 @@
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
         <!-- Brand -->
         <div class="lg:col-span-1">
-          <img src="assets/logo-white.png" alt="NeoSer" class="h-12 mb-4">
-          <p class="text-sm leading-relaxed opacity-70">
+          <img src="assets/logo-white.png" alt="NeoSer" class="footer-logo">
+          <p class="text-sm leading-relaxed opacity-70 mt-4">
             Centro de maternidad y medicina humanizada en Chiclayo.
-            Acompanamos cada etapa de tu maternidad con calidez y profesionalismo.
+            Acompañamos cada etapa de tu maternidad con calidez y profesionalismo.
           </p>
         </div>
 
         <!-- Quick Links -->
         <div>
-          <h4 class="text-white font-semibold mb-4">Enlaces Rapidos</h4>
+          <h4 class="text-white font-semibold mb-4">Enlaces Rápidos</h4>
           <ul class="space-y-2 text-sm">
             <li><a href="#inicio">Inicio</a></li>
             <li><a href="#servicios">Servicios</a></li>
@@ -938,8 +1024,8 @@
           <ul class="space-y-2 text-sm">
             <li><a href="#servicios">Control Prenatal</a></li>
             <li><a href="#servicios">Parto Humanizado</a></li>
-            <li><a href="#servicios">Tecnica Rebozo</a></li>
-            <li><a href="#servicios">Preparacion al Parto</a></li>
+            <li><a href="#servicios">Técnica Rebozo</a></li>
+            <li><a href="#servicios">Preparación al Parto</a></li>
             <li><a href="#servicios">Postparto</a></li>
           </ul>
         </div>
@@ -950,7 +1036,7 @@
           <ul class="space-y-2 text-sm">
             <li class="flex items-center gap-2">
               <i data-lucide="map-pin" class="w-4 h-4 text-pink flex-shrink-0"></i>
-              Chiclayo, Peru
+              Chiclayo, Perú
             </li>
             <li class="flex items-center gap-2">
               <i data-lucide="phone" class="w-4 h-4 text-pink flex-shrink-0"></i>

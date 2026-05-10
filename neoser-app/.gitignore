@@ -32,6 +32,12 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# excepcion: la plantilla SI debe subirse (no contiene secretos)
+!.env.example
+
+# scripts de debug/diagnostico locales (no subir: pueden imprimir
+# fragmentos de claves o insertar datos de prueba en la BD real)
+scripts/test-supabase.mjs
 
 # vercel
 .vercel
