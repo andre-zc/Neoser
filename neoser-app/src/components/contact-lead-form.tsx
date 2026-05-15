@@ -17,22 +17,23 @@ export function ContactLeadForm() {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
     setStatus("loading");
     setError("");
 
-    const formData = new FormData(event.currentTarget);
+    const formData = new FormData(form);
     const payload = {
       fullName: String(formData.get("fullName") || ""),
-      email: String(formData.get("email") || ""),
       phone: String(formData.get("phone") || ""),
       message: String(formData.get("message") || ""),
       source: String(formData.get("source") || "web"),
       waConsent: formData.get("waConsent") === "on",
-      serviceInterest: String(formData.get("serviceInterest") || ""),
+      email: (formData.get("email") as string) || undefined,
+      serviceInterest: (formData.get("serviceInterest") as string) || undefined,
       gestationWeeks: formData.get("gestationWeeks")
         ? Number(formData.get("gestationWeeks"))
         : undefined,
-      expectedDueDate: String(formData.get("expectedDueDate") || ""),
+      expectedDueDate: (formData.get("expectedDueDate") as string) || undefined,
     };
 
     try {
@@ -47,7 +48,7 @@ export function ContactLeadForm() {
         throw new Error(data.error || "No se pudo enviar");
       }
 
-      event.currentTarget.reset();
+      form.reset();
       setStatus("success");
     } catch (submitError) {
       setStatus("error");

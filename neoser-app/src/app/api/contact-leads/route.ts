@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/service";
 import { contactLeadSchema } from "@/lib/schemas";
 import { syncLeadToHubspot } from "@/lib/hubspot";
 
@@ -60,7 +61,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const supabase = await createClient();
+    const supabase = createServiceClient();
     const { data: lead, error } = await supabase
       .from("contact_leads")
       .insert({
