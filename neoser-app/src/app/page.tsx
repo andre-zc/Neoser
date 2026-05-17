@@ -28,6 +28,7 @@ import {
 import Image from "next/image";
 import { ContactLeadForm } from "@/components/contact-lead-form";
 import { GoogleMapEmbed } from "@/components/google-map-embed";
+import Cal, { getCalApi } from "@calcom/embed-react";
 
 export default function HomePage() {
   const [navScrolled, setNavScrolled] = useState(false);
@@ -54,8 +55,23 @@ export default function HomePage() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    (async function () {
+      const cal = await getCalApi();
+      cal("ui", {
+        theme: "light",
+        styles: { branding: { brandColor: "#1b3a6b" } },
+        hideEventTypeDetails: false,
+        layout: "month_view",
+      });
+    })();
+  }, []);
+
   const closeMobile = () => setMobileMenuOpen(false);
   const calBookingUrl = process.env.NEXT_PUBLIC_CAL_BOOKING_URL;
+  const calLink = calBookingUrl
+    ? new URL(calBookingUrl).pathname.replace(/^\//, "")
+    : null;
   const bookingUrl = calBookingUrl || "#contacto";
 
   const services = [
@@ -501,14 +517,12 @@ export default function HomePage() {
               <li>Recibirás una confirmación automática por correo.</li>
             </ul>
 
-            {calBookingUrl ? (
+            {calLink ? (
               <div className="overflow-hidden rounded-2xl border border-gray-100">
-                <iframe
-                  title="Calendario de reservas NeoSer"
-                  src={calBookingUrl}
-                  className="h-[720px] w-full border-0"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
+                <Cal
+                  calLink={calLink}
+                  style={{ width: "100%", height: "720px", overflow: "scroll" }}
+                  config={{ layout: "month_view", theme: "light" }}
                 />
               </div>
             ) : (
