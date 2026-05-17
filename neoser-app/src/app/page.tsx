@@ -28,7 +28,6 @@ import {
 import Image from "next/image";
 import { ContactLeadForm } from "@/components/contact-lead-form";
 import { GoogleMapEmbed } from "@/components/google-map-embed";
-import { BookingPreform } from "@/components/booking-preform";
 
 export default function HomePage() {
   const [navScrolled, setNavScrolled] = useState(false);
@@ -484,38 +483,26 @@ export default function HomePage() {
       {/* ===== RESERVA ===== */}
       <section id="reserva" className="bg-cream py-20 md:py-28">
         <div className="container-main">
-          <div className="mb-16 text-center" data-aos="fade-up">
+          <div className="mb-12 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Agenda tu atención</p>
             <h2 className="section-title mb-4">Reserva de Citas</h2>
             <div className="section-divider mx-auto" />
-            <p className="mx-auto mt-4 max-w-2xl text-gray-500">
-              Elige el horario disponible que mejor te convenga. Si prefieres atención directa, usa nuestro formulario de contacto.
-            </p>
           </div>
-          <div className="grid gap-8 lg:grid-cols-3" data-aos="fade-up">
-            <div className="space-y-6">
-              <BookingPreform />
-              <div className="surface-card space-y-4 p-6">
-              <h3 className="text-xl font-bold text-navy">Antes de reservar</h3>
-              <ul className="space-y-2 text-sm text-gray-600">
-                <li>Comparte tu nombre y teléfono para confirmar la cita.</li>
-                <li>Selecciona el tipo de atención y horario disponible.</li>
-                <li>Recibirás confirmación automática de la reserva.</li>
-              </ul>
-              {calBookingUrl && (
-                <a
-                  href={calBookingUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary w-full justify-center"
-                >
-                  <Calendar className="h-5 w-5" /> Abrir calendario de reservas
-                </a>
-              )}
-            </div>
-            </div>
-            <div className="surface-card overflow-hidden lg:col-span-2">
-              {calBookingUrl ? (
+
+          <div className="surface-card mx-auto max-w-4xl p-8 md:p-10" data-aos="fade-up">
+            <h3 className="mb-3 text-2xl font-bold text-navy">Antes de reservar</h3>
+            <p className="mb-6 text-sm text-gray-600">
+              Te pedimos unos minutos para revisar la información antes de elegir tu horario:
+            </p>
+
+            <ul className="mb-8 space-y-2 text-sm text-gray-600">
+              <li>Comparte tu nombre completo y teléfono de contacto.</li>
+              <li>Selecciona el tipo de atención y el horario disponible en el calendario.</li>
+              <li>Recibirás una confirmación automática por correo.</li>
+            </ul>
+
+            {calBookingUrl ? (
+              <div className="overflow-hidden rounded-2xl border border-gray-100">
                 <iframe
                   title="Calendario de reservas NeoSer"
                   src={calBookingUrl}
@@ -523,15 +510,15 @@ export default function HomePage() {
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                 />
-              ) : (
-                <div className="flex h-[420px] flex-col items-center justify-center gap-3 p-10 text-center text-gray-500">
-                  <Calendar className="h-12 w-12 text-navy/30" />
-                  <p className="max-w-md text-sm">
-                    El calendario de reservas aún no está configurado. Usa el botón para solicitar una cita mientras activamos Cal.com.
-                  </p>
-                </div>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className="flex h-[420px] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-gray-200 p-10 text-center text-gray-500">
+                <Calendar className="h-12 w-12 text-navy/30" />
+                <p className="max-w-md text-sm">
+                  El calendario de reservas aún no está configurado. Por favor utiliza el formulario de contacto mientras activamos Cal.com.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </section>
