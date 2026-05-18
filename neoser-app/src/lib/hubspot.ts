@@ -95,7 +95,7 @@ export async function syncLeadToHubspot(input: HubspotLeadInput) {
 
   await createDeal({
     dealname: `Lead Web - ${input.fullName}`,
-    dealstage: "lead_nueva",
+    dealstage: "1362213948",
     pipeline: "default",
     amount: undefined,
     neoser_servicio_interes: input.serviceInterest,
