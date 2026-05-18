@@ -91,7 +91,6 @@ export async function syncLeadToHubspot(input: HubspotLeadInput) {
     semanas_gestacion: input.gestationWeeks?.toString(),
     neoser_servicio_interes: input.serviceInterest,
     fecha_parto: input.expectedDueDate,
-    neoser_last_message: input.message,
   });
 
   await createDeal({
@@ -101,8 +100,6 @@ export async function syncLeadToHubspot(input: HubspotLeadInput) {
     amount: undefined,
     neoser_servicio_interes: input.serviceInterest,
     neoser_source: input.source,
-    neoser_wa_consent: input.waConsent ? "true" : "false",
-    neoser_contact_phone: input.phone,
   });
 
   return { skipped: false as const, ok: true as const };
@@ -118,7 +115,6 @@ export async function syncBookingToHubspot(input: HubspotBookingInput) {
     lastname,
     email: input.email || undefined,
     phone: input.phone,
-    neoser_last_booking_id: input.bookingId,
     neoser_servicio_interes: input.serviceInterest,
   });
 
@@ -130,7 +126,6 @@ export async function syncBookingToHubspot(input: HubspotBookingInput) {
     neoser_servicio_interes: input.serviceInterest,
     neoser_preferred_date: input.preferredDate,
     neoser_preferred_time: input.preferredTime,
-    neoser_contact_phone: input.phone,
   });
 
   return { skipped: false as const, ok: true as const };
