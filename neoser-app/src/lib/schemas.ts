@@ -98,3 +98,33 @@ export const createPaymentIntentSchema = z.object({
   courseId: z.string().uuid(),
   leadId: z.string().uuid().optional(),
 });
+
+// ============================================
+// Plataforma de cursos — guest enrollment + payment
+// ============================================
+
+export const guestEnrollmentSchema = z.object({
+  courseId: z.string().uuid(),
+  guestName: z.string().min(2).max(120),
+  guestEmail: z.string().email(),
+  guestPhone: z.string().min(7).max(20),
+  notes: z.string().max(500).optional(),
+  utmSource: z.string().max(80).optional(),
+});
+
+export const izipayWebhookSchema = z.object({
+  transactionId: z.string().min(1),
+  status: z.enum(["AUTHORIZED", "REFUSED", "CANCELLED", "PENDING", "REFUNDED"]),
+  orderReference: z.string().min(1),
+  amount: z.number().positive(),
+  currency: z.string().min(3),
+  metadata: z.object({
+    courseId: z.string().uuid(),
+    guestName: z.string().min(2),
+    guestEmail: z.string().email(),
+    guestPhone: z.string().min(7),
+    notes: z.string().optional(),
+    utmSource: z.string().optional(),
+  }),
+  raw: z.record(z.string(), z.unknown()).optional(),
+});

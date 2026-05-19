@@ -2,6 +2,13 @@ import type { MetadataRoute } from "next";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://neoser.pe";
 
+const COURSE_SLUGS = [
+  "prep-parto",
+  "diplomado-parto",
+  "rebozo-cert",
+  "taller-lactancia",
+] as const;
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
@@ -18,5 +25,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${SITE_URL}/cursos`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    ...COURSE_SLUGS.map((slug) => ({
+      url: `${SITE_URL}/cursos/${slug}`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
   ];
 }

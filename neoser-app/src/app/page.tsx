@@ -26,6 +26,7 @@ import {
   ImageIcon,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { ContactLeadForm } from "@/components/contact-lead-form";
 import { GoogleMapEmbed } from "@/components/google-map-embed";
 import Cal, { getCalApi } from "@calcom/embed-react";
@@ -84,10 +85,10 @@ export default function HomePage() {
   ];
 
   const courses = [
-    { badge: "Presencial", badgeBg: "bg-pink", title: "Curso de Preparación al Parto", desc: "Técnicas de respiración, posiciones de parto, plan de nacimiento y vínculo temprano.", price: "S/. 350", wa: "Curso%20de%20Preparacion%20al%20Parto" },
-    { badge: "Online", badgeBg: "bg-navy", title: "Diplomado en Parto Humanizado", desc: "Formación integral para profesionales de salud en atención humanizada del nacimiento.", price: "S/. 1,200", wa: "Diplomado%20en%20Parto%20Humanizado" },
-    { badge: "Híbrido", badgeBg: "bg-pink", title: "Técnica Rebozo Certificación", desc: "Certificación internacional en técnica Rebozo con reconocimiento de Spinning Babies.", price: "S/. 800", wa: "Certificacion%20Rebozo" },
-    { badge: "Presencial", badgeBg: "bg-pink", title: "Taller de Lactancia Materna", desc: "Taller práctico sobre técnicas de lactancia, posiciones y resolución de problemas comunes.", price: "S/. 180", wa: "Taller%20de%20Lactancia" },
+    { slug: "prep-parto", badge: "Presencial", badgeBg: "bg-pink", title: "Curso de Preparación al Parto", desc: "Técnicas de respiración, posiciones de parto, plan de nacimiento y vínculo temprano.", price: "S/. 350", wa: "Curso%20de%20Preparacion%20al%20Parto" },
+    { slug: "diplomado-parto", badge: "Online", badgeBg: "bg-navy", title: "Diplomado en Parto Humanizado", desc: "Formación integral para profesionales de salud en atención humanizada del nacimiento.", price: "S/. 1,200", wa: "Diplomado%20en%20Parto%20Humanizado" },
+    { slug: "rebozo-cert", badge: "Híbrido", badgeBg: "bg-pink", title: "Técnica Rebozo Certificación", desc: "Certificación internacional en técnica Rebozo con reconocimiento de Spinning Babies.", price: "S/. 800", wa: "Certificacion%20Rebozo" },
+    { slug: "taller-lactancia", badge: "Presencial", badgeBg: "bg-pink", title: "Taller de Lactancia Materna", desc: "Taller práctico sobre técnicas de lactancia, posiciones y resolución de problemas comunes.", price: "S/. 180", wa: "Taller%20de%20Lactancia" },
   ];
 
   const testimonials = [
@@ -312,7 +313,7 @@ export default function HomePage() {
                   <p className="mb-4 text-sm text-gray-500">{c.desc}</p>
                   <div className="flex items-center justify-between">
                     <span className="course-price">{c.price}</span>
-                    <a href="#contacto" className="btn-pink-outline text-xs">Ver más</a>
+                    <Link href={`/cursos/${c.slug}`} className="btn-pink-outline text-xs">Ver más</Link>
                   </div>
                 </div>
               </div>
@@ -584,15 +585,27 @@ export default function HomePage() {
                 <MessageCircle className="h-6 w-6" /> Contáctanos
               </a>
             </div>
-            <div className="space-y-6">
+            <div>
               <ContactLeadForm />
-              <GoogleMapEmbed
-                query="Los Sauces 542, Chiclayo 14008"
-                addressLine1="Calle Los Sauces 542"
-                addressLine2="Urb. Santa Victoria — Chiclayo"
-                mapsUrl="https://www.google.com/maps/place/Los+Sauces+542,+Chiclayo+14008/@-6.7804921,-79.8443951,19z"
-              />
             </div>
+          </div>
+
+          {/* Mapa "Cómo llegar" */}
+          <div className="mt-20 text-center" data-aos="fade-up">
+            <p className="section-tag mb-2">Visítanos</p>
+            <h2 className="section-title mb-4">Cómo llegar</h2>
+            <div className="section-divider mx-auto" />
+            <p className="mx-auto mt-4 max-w-2xl text-gray-500">
+              Nuestro consultorio en el corazón de Santa Victoria, Chiclayo.
+            </p>
+          </div>
+          <div className="mx-auto mt-10 w-full max-w-4xl" data-aos="fade-up">
+            <GoogleMapEmbed
+              query="Los Sauces 542, Chiclayo 14008"
+              addressLine1="Calle Los Sauces 542"
+              addressLine2="Urb. Santa Victoria — Chiclayo"
+              mapsUrl="https://www.google.com/maps/place/Los+Sauces+542,+Chiclayo+14008/@-6.7804921,-79.8443951,19z"
+            />
           </div>
         </div>
       </section>
@@ -641,9 +654,8 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <div className="footer-divider mt-10 flex flex-col items-center justify-between gap-4 pt-8 md:flex-row">
+          <div className="footer-divider mt-10 flex flex-col items-center justify-center gap-4 pt-8">
             <p className="text-sm opacity-60">&copy; 2026 NeoSer - Maternidad y Medicina Humanizada. Todos los derechos reservados.</p>
-            <p className="text-xs opacity-40">Desarrollado por <a href="https://cofoundy.dev" target="_blank" rel="noopener noreferrer" className="hover:text-pink">Cofoundy</a></p>
           </div>
         </div>
       </footer>

@@ -10,7 +10,7 @@ export default function CheckoutFailurePage() {
         formulario de contacto.
       </p>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <Link href="/checkout" className="btn-primary">
+        <Link href="/cursos" className="btn-primary">
           Reintentar pago
         </Link>
         <Link href="/#contacto" className="rounded-full border border-[var(--navy)] px-6 py-3 text-[var(--navy)]">

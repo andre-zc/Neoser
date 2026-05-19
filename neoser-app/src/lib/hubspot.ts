@@ -20,6 +20,16 @@ type HubspotBookingInput = {
   preferredTime?: string;
 };
 
+type HubspotEnrollmentInput = {
+  fullName: string;
+  email: string;
+  phone: string;
+  courseName: string;
+  amount: number;
+  orderReference: string;
+  source: string;
+};
+
 const HUBSPOT_BASE_URL = "https://api.hubapi.com";
 
 function getHubspotToken() {
@@ -126,6 +136,32 @@ export async function syncBookingToHubspot(input: HubspotBookingInput) {
     neoser_servicio_interes: input.serviceInterest,
     neoser_preferred_date: input.preferredDate,
     neoser_preferred_time: input.preferredTime,
+  });
+
+  return { skipped: false as const, ok: true as const };
+}
+
+export async function syncEnrollmentToHubspot(input: HubspotEnrollmentInput) {
+  const token = getHubspotToken();
+  if (!token) return { skipped: true as const };
+
+  const { firstname, lastname } = splitName(input.fullName);
+  await createOrUpsertContact({
+    firstname,
+    lastname,
+    email: input.email,
+    phone: input.phone,
+    fuente_origen: input.source,
+    neoser_servicio_interes: input.courseName,
+  });
+
+  await createDeal({
+    dealname: `Inscripción Curso - ${input.courseName} - ${input.fullName}`,
+    dealstage: "closedwon",
+    pipeline: "default",
+    amount: input.amount,
+    neoser_servicio_interes: input.courseName,
+    neoser_source: input.source,
   });
 
   return { skipped: false as const, ok: true as const };
