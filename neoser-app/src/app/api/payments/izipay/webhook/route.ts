@@ -7,6 +7,7 @@ import {
   isMockMode,
 } from "@/lib/payments/izipay";
 import { syncEnrollmentToHubspot } from "@/lib/hubspot";
+import { syncEnrollmentToBrevo } from "@/lib/brevo";
 import { sendEmail, buildEnrollmentConfirmationEmail } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
@@ -132,6 +133,19 @@ export async function POST(request: NextRequest) {
       });
     } catch (error) {
       console.error("HubSpot enrollment sync failed:", error);
+    }
+
+    // Sync a Brevo (no-bloqueante)
+    try {
+      await syncEnrollmentToBrevo({
+        email: metadata.guestEmail,
+        fullName: metadata.guestName,
+        phone: metadata.guestPhone,
+        courseName: courseTitle,
+        amount,
+      });
+    } catch (error) {
+      console.error("Brevo enrollment sync failed:", error);
     }
 
     // Email confirmación al cliente (no-bloqueante)

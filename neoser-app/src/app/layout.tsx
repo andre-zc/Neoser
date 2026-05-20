@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import Script from "next/script";
 import "./globals.css";
+import { WhatsappFab } from "@/components/whatsapp-button";
 
 const montserrat = localFont({
   src: "../../public/fonts/abhayalibre-semibold.ttf",
@@ -106,6 +107,8 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         {children}
+
+        <WhatsappFab />
 
         {GA_ID && (
           <>

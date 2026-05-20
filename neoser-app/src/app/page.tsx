@@ -10,9 +10,7 @@ import {
   Stethoscope,
   Baby,
   HandHeart,
-  BookHeart,
   HeartHandshake,
-  ShieldCheck,
   MapPin,
   Phone,
   Mail,
@@ -28,8 +26,11 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { ContactLeadForm } from "@/components/contact-lead-form";
+import { WhatsappInlineButton } from "@/components/whatsapp-button";
 import { GoogleMapEmbed } from "@/components/google-map-embed";
 import Cal, { getCalApi } from "@calcom/embed-react";
+import { services as servicesData } from "@/lib/services";
+import { ServicesCarousel } from "@/components/services-carousel";
 
 export default function HomePage() {
   const [navScrolled, setNavScrolled] = useState(false);
@@ -74,15 +75,6 @@ export default function HomePage() {
     ? new URL(calBookingUrl).pathname.replace(/^\//, "")
     : null;
   const bookingUrl = calBookingUrl || "#contacto";
-
-  const services = [
-    { icon: Stethoscope, iconBg: "pink-bg", title: "Control Prenatal", desc: "Seguimiento personalizado de tu embarazo con ecografías, análisis y orientación profesional para asegurar el bienestar de mamá y bebé.", wa: "Control%20Prenatal" },
-    { icon: Baby, iconBg: "blue-bg", title: "Parto Humanizado", desc: "Acompañamiento respetuoso durante el nacimiento de tu bebé, respetando tus decisiones y promoviendo el vínculo inmediato madre-hijo.", wa: "Parto%20Humanizado" },
-    { icon: HandHeart, iconBg: "pink-bg", title: "Técnica Rebozo", desc: "Técnica ancestral mexicana para aliviar molestias del embarazo, facilitar el trabajo de parto y promover la relajación profunda.", wa: "Tecnica%20Rebozo" },
-    { icon: BookHeart, iconBg: "blue-bg", title: "Preparación al Parto", desc: "Sesiones teórico-prácticas para prepararte física y emocionalmente para el momento del nacimiento con confianza y seguridad.", wa: "Preparacion%20al%20Parto" },
-    { icon: HeartHandshake, iconBg: "pink-bg", title: "Acompañamiento Postparto", desc: "Soporte integral después del nacimiento: lactancia, recuperación, cuidados del recién nacido y bienestar emocional de la mamá.", wa: "Acompanamiento%20Postparto" },
-    { icon: ShieldCheck, iconBg: "blue-bg", title: "Obstetricia General", desc: "Atención obstétrica completa con enfoque humanizado, desde la consulta ginecológica hasta el seguimiento integral de la salud reproductiva.", wa: "Obstetricia" },
-  ];
 
   const courses = [
     { slug: "prep-parto", badge: "Presencial", badgeBg: "bg-pink", title: "Curso de Preparación al Parto", desc: "Técnicas de respiración, posiciones de parto, plan de nacimiento y vínculo temprano.", price: "S/. 350", wa: "Curso%20de%20Preparacion%20al%20Parto" },
@@ -165,7 +157,7 @@ export default function HomePage() {
           </a>
           <div className="hidden items-center gap-8 lg:flex">
             <a href="#inicio" className="nav-link">Inicio</a>
-            <a href="#servicios" className="nav-link">Servicios</a>
+            <Link href="/servicios" className="nav-link">Servicios</Link>
             <a href="#cursos" className="nav-link">Cursos</a>
             <a href="#reserva" className="nav-link">Reserva</a>
             <a href="#nosotros" className="nav-link">Nosotros</a>
@@ -184,9 +176,13 @@ export default function HomePage() {
       {/* Mobile Menu */}
       <div className={`mobile-overlay ${mobileMenuOpen ? "active" : ""}`} onClick={closeMobile} />
       <div className={`mobile-menu ${mobileMenuOpen ? "active" : ""}`}>
-        {["inicio","servicios","cursos","reserva","nosotros","noticias","contacto"].map((s) => (
-          <a key={s} href={`#${s}`} className="nav-link" onClick={closeMobile}>{s.charAt(0).toUpperCase()+s.slice(1)}</a>
-        ))}
+        {["inicio","servicios","cursos","reserva","nosotros","noticias","contacto"].map((s) =>
+          s === "servicios" ? (
+            <Link key={s} href="/servicios" className="nav-link" onClick={closeMobile}>Servicios</Link>
+          ) : (
+            <a key={s} href={`#${s}`} className="nav-link" onClick={closeMobile}>{s.charAt(0).toUpperCase()+s.slice(1)}</a>
+          )
+        )}
         <a href="#reserva" onClick={closeMobile} className="btn-primary mt-6 justify-center">
           <Calendar className="h-5 w-5" /> Reserva tu Cita
         </a>
@@ -276,17 +272,15 @@ export default function HomePage() {
               Brindamos atención integral para cada etapa de tu maternidad, con profesionales comprometidos con el respeto y la calidez humana.
             </p>
           </div>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {services.map((s, i) => (
-              <div key={s.title} className="service-card" data-aos="fade-up" data-aos-delay={i % 3 * 100}>
-                <div className={`service-icon ${s.iconBg}`}><s.icon /></div>
-                <h3 className="mb-3 text-xl font-bold text-navy">{s.title}</h3>
-                <p className="mb-5 text-sm leading-relaxed text-gray-500">{s.desc}</p>
-                <a href="#contacto" className="btn-pink-outline text-sm">
-                  <MessageCircle className="h-4 w-4" /> Consultar
-                </a>
-              </div>
-            ))}
+
+          <div data-aos="fade-up">
+            <ServicesCarousel />
+          </div>
+
+          <div className="mt-12 text-center" data-aos="fade-up">
+            <Link href="/servicios" className="btn-primary">
+              Conoce todos nuestros servicios
+            </Link>
           </div>
         </div>
       </section>
@@ -498,7 +492,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== RESERVA ===== */}
-      <section id="reserva" className="bg-cream py-20 md:py-28">
+      <section id="reserva" className="bg-cream pt-20 pb-12 md:pt-28 md:pb-16">
         <div className="container-main">
           <div className="mb-12 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Agenda tu atención</p>
@@ -522,7 +516,7 @@ export default function HomePage() {
               <div className="overflow-hidden rounded-2xl border border-gray-100">
                 <Cal
                   calLink={calLink}
-                  style={{ width: "100%", height: "720px", overflow: "scroll" }}
+                  style={{ width: "100%", height: "640px", overflow: "scroll" }}
                   config={{ layout: "month_view", theme: "light" }}
                 />
               </div>
@@ -539,7 +533,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== CONTACTO ===== */}
-      <section id="contacto" className="bg-cream py-20 md:py-28">
+      <section id="contacto" className="bg-cream pt-12 pb-20 md:pt-16 md:pb-28">
         <div className="container-main">
           <div className="mb-16 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Estamos para ti</p>
@@ -581,9 +575,7 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-              <a href={bookingUrl} target="_blank" rel="noopener noreferrer" className="btn-primary w-full justify-center py-4 text-lg">
-                <MessageCircle className="h-6 w-6" /> Contáctanos
-              </a>
+              <WhatsappInlineButton />
             </div>
             <div>
               <ContactLeadForm />
@@ -631,8 +623,12 @@ export default function HomePage() {
             <div>
               <h4 className="mb-4 font-semibold text-white">Servicios</h4>
               <ul className="space-y-2 text-sm">
-                {["Control Prenatal","Parto Humanizado","Técnica Rebozo","Preparación al Parto","Postparto"].map((s) => (
-                  <li key={s}><a href="#servicios">{s}</a></li>
+                {servicesData.slice(0, 5).map((s) => (
+                  <li key={s.slug}>
+                    <Link href={`/servicios#${s.slug}`} className="hover:text-pink transition">
+                      {s.title}
+                    </Link>
+                  </li>
                 ))}
               </ul>
             </div>

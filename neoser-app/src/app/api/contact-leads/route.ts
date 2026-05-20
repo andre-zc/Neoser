@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { contactLeadSchema } from "@/lib/schemas";
 import { syncLeadToHubspot } from "@/lib/hubspot";
+import { syncLeadToBrevo } from "@/lib/brevo";
 
 export async function GET(request: NextRequest) {
   try {
@@ -97,6 +98,21 @@ export async function POST(request: Request) {
       });
     } catch (syncError) {
       console.error("HubSpot sync failed:", syncError);
+    }
+
+    // Sync a Brevo (no-bloqueante)
+    if (parsed.data.email) {
+      try {
+        await syncLeadToBrevo({
+          email: parsed.data.email,
+          fullName: parsed.data.fullName,
+          phone: parsed.data.phone,
+          source: parsed.data.source,
+          serviceInterest: parsed.data.serviceInterest,
+        });
+      } catch (error) {
+        console.error("Brevo lead sync failed:", error);
+      }
     }
 
     return NextResponse.json({ ok: true, leadId: lead.id }, { status: 201 });

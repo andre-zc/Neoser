@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { services } from "@/lib/services";
 
 const sourceOptions = [
   { value: "web", label: "Sitio web" },
@@ -78,11 +79,19 @@ export function ContactLeadForm() {
         placeholder="Email (opcional)"
         className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm"
       />
-      <input
+      <select
         name="serviceInterest"
-        placeholder="Servicio de interes (ej. Curso Prenatal)"
-        className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm"
-      />
+        defaultValue=""
+        className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm"
+      >
+        <option value="">Servicio de interés (opcional)</option>
+        {services.map((s) => (
+          <option key={s.slug} value={s.title}>
+            {s.title}
+          </option>
+        ))}
+        <option value="Otro">Otro / No listado</option>
+      </select>
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         <input
           name="gestationWeeks"

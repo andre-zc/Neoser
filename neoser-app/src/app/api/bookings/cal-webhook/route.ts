@@ -3,6 +3,7 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { calBookingWebhookSchema } from "@/lib/schemas";
 import { verifyCalWebhookSignature } from "@/lib/cal";
 import { syncBookingToHubspot } from "@/lib/hubspot";
+import { syncBookingToBrevo } from "@/lib/brevo";
 import { sendEmail } from "@/lib/email";
 
 function mapBookingStatus(status?: string): "pending" | "confirmed" | "cancelled" | "rescheduled" {
@@ -85,6 +86,21 @@ export async function POST(request: NextRequest) {
     });
   } catch (syncError) {
     console.error("HubSpot booking sync (cal webhook) failed:", syncError);
+  }
+
+  // Sync a Brevo (no-bloqueante). Solo si hay email (Brevo identifica por email).
+  if (booking.email) {
+    try {
+      await syncBookingToBrevo({
+        email: booking.email,
+        fullName: booking.full_name,
+        phone: booking.phone,
+        bookingId: booking.id,
+        serviceInterest: booking.service_interest || undefined,
+      });
+    } catch (error) {
+      console.error("Brevo booking sync failed:", error);
+    }
   }
 
   if (booking.email && bookingStatus === "confirmed") {

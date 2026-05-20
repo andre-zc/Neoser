@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { services } from "@/lib/services";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://neoser.pe";
 
@@ -25,6 +26,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${SITE_URL}/servicios`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    ...services.map((s) => ({
+      url: `${SITE_URL}/servicios/${s.slug}`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
     {
       url: `${SITE_URL}/cursos`,
       lastModified,
