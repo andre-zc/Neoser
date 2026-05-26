@@ -1,5 +1,7 @@
 "use client";
 
+import { useWhatsappModal } from "@/components/whatsapp-modal-provider";
+
 type WhatsAppIconProps = { className?: string };
 
 function WhatsAppIcon({ className }: WhatsAppIconProps) {
@@ -16,52 +18,39 @@ function WhatsAppIcon({ className }: WhatsAppIconProps) {
   );
 }
 
-function getWhatsappUrl(message?: string) {
-  const number =
-    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "51978822368";
-  const text =
-    message ||
-    "Hola NeoSer, me gustaría más información sobre sus servicios.";
-  return `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
-}
-
 export function WhatsappFab() {
+  const { open } = useWhatsappModal();
   return (
-    <a
-      href={getWhatsappUrl()}
-      target="_blank"
-      rel="noopener noreferrer"
+    <button
+      type="button"
+      onClick={open}
       aria-label="Escríbenos por WhatsApp"
       className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-white shadow-lg ring-1 ring-black/10 transition hover:bg-[#1ebe5d] hover:shadow-xl hover:-translate-y-0.5 md:bottom-6 md:right-6 md:px-5 print:hidden"
     >
       <WhatsAppIcon className="h-6 w-6" />
-      <span className="hidden text-sm font-semibold sm:inline">
-        Escríbenos
-      </span>
-    </a>
+      <span className="hidden text-sm font-semibold sm:inline">Escríbenos</span>
+    </button>
   );
 }
 
 type WhatsappInlineButtonProps = {
-  message?: string;
   label?: string;
   className?: string;
 };
 
 export function WhatsappInlineButton({
-  message,
   label = "Contáctanos",
   className = "",
 }: WhatsappInlineButtonProps) {
+  const { open } = useWhatsappModal();
   return (
-    <a
-      href={getWhatsappUrl(message)}
-      target="_blank"
-      rel="noopener noreferrer"
+    <button
+      type="button"
+      onClick={open}
       className={`inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-4 text-lg font-semibold text-white transition hover:bg-[#1ebe5d] hover:shadow-lg ${className}`}
     >
       <WhatsAppIcon className="h-6 w-6" />
       {label}
-    </a>
+    </button>
   );
 }
