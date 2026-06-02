@@ -6,6 +6,7 @@ import {
   categoryLabels,
   type ServiceCategory,
 } from "@/lib/services";
+import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
   title: "Nuestros Servicios",
@@ -18,8 +19,10 @@ const categoryOrder: ServiceCategory[] = ["medica", "somatica", "comunidad"];
 export default function ServiciosPage() {
   return (
     <main className="min-h-screen bg-cream">
+      <SiteHeader />
+
       {/* Hero */}
-      <section className="bg-white py-16 md:py-24">
+      <section className="bg-white pt-32 pb-16 md:pt-40 md:pb-24">
         <div className="container-main text-center">
           <p className="section-tag mb-2">Lo que hacemos por ti</p>
           <h1 className="section-title mb-4">Nuestros Servicios</h1>

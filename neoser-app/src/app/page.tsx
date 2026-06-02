@@ -31,17 +31,10 @@ import { GoogleMapEmbed } from "@/components/google-map-embed";
 import Cal, { getCalApi } from "@calcom/embed-react";
 import { services as servicesData } from "@/lib/services";
 import { ServicesCarousel } from "@/components/services-carousel";
+import { SiteHeader } from "@/components/site-header";
 
 export default function HomePage() {
-  const [navScrolled, setNavScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => setNavScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => setActiveSlide((p) => (p + 1) % 4), 6000);
@@ -69,7 +62,6 @@ export default function HomePage() {
     })();
   }, []);
 
-  const closeMobile = () => setMobileMenuOpen(false);
   const calBookingUrl = process.env.NEXT_PUBLIC_CAL_BOOKING_URL;
   const calLink = calBookingUrl
     ? new URL(calBookingUrl).pathname.replace(/^\//, "")
@@ -147,46 +139,7 @@ export default function HomePage() {
   return (
     <main>
       {/* ===== NAVBAR ===== */}
-      <nav className={`navbar ${navScrolled ? "scrolled" : ""}`}>
-        <div className="container-main flex items-center justify-between">
-          <a href="#inicio" className="navbar-logo flex-shrink-0 flex items-center gap-3">
-            <span className="logo-img-wrap">
-              <Image src="/assets/logo-white.png" alt="NeoSer" width={200} height={80} className="logo-white h-16 w-auto md:h-20" priority />
-              <Image src="/assets/logo-color.png" alt="NeoSer" width={200} height={80} className="logo-color h-16 w-auto md:h-20" priority />
-            </span>
-          </a>
-          <div className="hidden items-center gap-8 lg:flex">
-            <a href="#inicio" className="nav-link">Inicio</a>
-            <Link href="/servicios" className="nav-link">Servicios</Link>
-            <a href="#cursos" className="nav-link">Cursos</a>
-            <a href="#reserva" className="nav-link">Reserva</a>
-            <a href="#nosotros" className="nav-link">Nosotros</a>
-            <a href="#noticias" className="nav-link">Noticias</a>
-            <a href="#contacto" className="nav-link">Contacto</a>
-            <a href="#reserva" className="btn-nav-cta text-sm">
-              <Calendar className="h-4 w-4" /> Reserva tu Cita
-            </a>
-          </div>
-          <div className={`hamburger lg:hidden ${mobileMenuOpen ? "active" : ""}`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            <span /><span /><span />
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile Menu */}
-      <div className={`mobile-overlay ${mobileMenuOpen ? "active" : ""}`} onClick={closeMobile} />
-      <div className={`mobile-menu ${mobileMenuOpen ? "active" : ""}`}>
-        {["inicio","servicios","cursos","reserva","nosotros","noticias","contacto"].map((s) =>
-          s === "servicios" ? (
-            <Link key={s} href="/servicios" className="nav-link" onClick={closeMobile}>Servicios</Link>
-          ) : (
-            <a key={s} href={`#${s}`} className="nav-link" onClick={closeMobile}>{s.charAt(0).toUpperCase()+s.slice(1)}</a>
-          )
-        )}
-        <a href="#reserva" onClick={closeMobile} className="btn-primary mt-6 justify-center">
-          <Calendar className="h-5 w-5" /> Reserva tu Cita
-        </a>
-      </div>
+      <SiteHeader />
 
       {/* ===== HERO SLIDER ===== */}
       <section id="inicio" className="hero-slider-section">

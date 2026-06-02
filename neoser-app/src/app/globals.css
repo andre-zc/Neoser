@@ -68,7 +68,7 @@
   .navbar .logo-color { display: none; }
   .navbar.scrolled .logo-white { display: none; }
   .navbar.scrolled .logo-color { display: block; }
-  .nav-link { color: var(--white); font-weight: 500; font-size: 0.9rem; letter-spacing: 0.02em; transition: color 0.3s ease; position: relative; text-decoration: none; }
+  .nav-link { color: var(--white); font-weight: 500; font-size: 1.2rem; letter-spacing: 0.02em; transition: color 0.3s ease; position: relative; text-decoration: none; }
   .navbar.scrolled .nav-link { color: var(--navy); }
   .nav-link::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--pink); transition: width 0.3s ease; }
   .nav-link:hover::after { width: 100%; }
@@ -101,8 +101,8 @@
   .hero-bg-4 { background: linear-gradient(135deg,#1b3a6b 0%,#4a7fb5 100%); }
   .hero-title { font-family: var(--font-playfair), 'Abhaya Libre', serif; font-size: clamp(2.4rem,5.2vw,4rem); font-weight: 800; color: var(--white); line-height: 1.05; letter-spacing: -0.015em; margin-bottom: 1rem; }
   .hero-title .highlight { color: var(--pink); }
-  .hero-subtitle { font-size: clamp(1rem,2vw,1.2rem); color: rgba(255,255,255,0.85); font-weight: 400; line-height: 1.6; margin-top: 0.5rem; }
-  .hero-script { font-family: var(--font-dancing), 'Brush Script MT', cursive; font-style: italic; font-size: clamp(1.6rem,3vw,2.2rem); color: var(--pink); font-weight: 400; margin-bottom: 0.5rem; }
+  .hero-subtitle { font-size: clamp(1.15rem,2.3vw,1.45rem); color: rgba(255,255,255,0.9); font-weight: 400; line-height: 1.6; margin-top: 0.5rem; }
+  .hero-script { font-family: var(--font-dancing), 'Brush Script MT', cursive; font-style: italic; font-size: clamp(2.1rem,3.6vw,2.9rem); color: var(--pink); font-weight: 400; margin-bottom: 0.5rem; }
 
   /* -- Hero 2-column grid (redesign) -- */
   .hero-slide-grid { position: relative; z-index: 2; width: 100%; display: grid; grid-template-columns: 1.05fr 1fr; gap: 3rem; align-items: center; }
