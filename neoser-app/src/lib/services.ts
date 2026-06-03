@@ -22,7 +22,7 @@ export const services: Service[] = [
     description: [
       "Brindamos atención ginecológica a la mujer en sus diferentes etapas de vida, desde una atención integral, preventiva y centrada en el bienestar físico, emocional, hormonal y corporal.",
     ],
-    image: "/assets/servicios/neoser-334.webp",
+    image: "/assets/servicios/neoser-340.jpg",
     category: "medica",
     imageOrientation: "vertical",
   },
