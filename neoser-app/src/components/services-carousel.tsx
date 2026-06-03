@@ -53,13 +53,7 @@ export function ServicesCarousel() {
             data-card
             className="group snap-start flex-none w-[280px] sm:w-[320px] overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 transition hover:shadow-xl hover:-translate-y-1"
           >
-            <div
-              className={`relative overflow-hidden bg-gray-100 ${
-                s.imageOrientation === "vertical"
-                  ? "aspect-[2/3]"
-                  : "aspect-[4/3]"
-              }`}
-            >
+            <div className="relative aspect-[4/5] overflow-hidden bg-gray-100">
               <Image
                 src={s.image}
                 alt={s.title}

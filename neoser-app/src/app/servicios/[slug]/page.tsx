@@ -117,13 +117,7 @@ export default async function ServiceDetailPage({
                   href={`/servicios/${r.slug}`}
                   className="group overflow-hidden rounded-2xl bg-white shadow-sm transition hover:shadow-lg hover:-translate-y-1"
                 >
-                  <div
-                    className={`relative bg-gray-100 ${
-                      r.imageOrientation === "vertical"
-                        ? "aspect-[2/3]"
-                        : "aspect-[4/3]"
-                    }`}
-                  >
+                  <div className="relative aspect-[4/5] bg-gray-100">
                     <Image
                       src={r.image}
                       alt={r.title}
