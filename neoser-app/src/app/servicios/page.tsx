@@ -64,7 +64,11 @@ export default function ServiciosPage() {
                     className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12 scroll-mt-24"
                   >
                     <div
-                      className={`relative aspect-[4/3] overflow-hidden rounded-3xl shadow-md ${idx % 2 === 1 ? "lg:order-2" : ""}`}
+                      className={`relative overflow-hidden rounded-3xl shadow-md ${
+                        s.imageOrientation === "vertical"
+                          ? "aspect-[2/3] mx-auto w-full max-w-sm"
+                          : "aspect-[4/3]"
+                      } ${idx % 2 === 1 ? "lg:order-2" : ""}`}
                     >
                       <Image
                         src={s.image}

@@ -57,7 +57,13 @@ export default async function ServiceDetailPage({
 
         {/* Hero */}
         <div className="mt-6 grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-md">
+          <div
+            className={`relative overflow-hidden rounded-3xl shadow-md ${
+              service.imageOrientation === "vertical"
+                ? "aspect-[2/3] mx-auto w-full max-w-sm"
+                : "aspect-[4/3]"
+            }`}
+          >
             <Image
               src={service.image}
               alt={service.title}
@@ -111,7 +117,13 @@ export default async function ServiceDetailPage({
                   href={`/servicios/${r.slug}`}
                   className="group overflow-hidden rounded-2xl bg-white shadow-sm transition hover:shadow-lg hover:-translate-y-1"
                 >
-                  <div className="relative aspect-[4/3] bg-gray-100">
+                  <div
+                    className={`relative bg-gray-100 ${
+                      r.imageOrientation === "vertical"
+                        ? "aspect-[2/3]"
+                        : "aspect-[4/3]"
+                    }`}
+                  >
                     <Image
                       src={r.image}
                       alt={r.title}

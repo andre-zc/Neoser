@@ -7,6 +7,9 @@ export type Service = {
   description: string[]; // párrafos completos para /servicios
   image: string; // path relativo a /public
   category: ServiceCategory;
+  // Orientación nativa de la foto. Default "horizontal" (contenedor 4:3).
+  // "vertical" cambia el contenedor a 2:3 para que la foto encaje sin recortes.
+  imageOrientation?: "horizontal" | "vertical";
 };
 
 export const services: Service[] = [
@@ -21,6 +24,7 @@ export const services: Service[] = [
     ],
     image: "/assets/servicios/neoser-334.webp",
     category: "medica",
+    imageOrientation: "vertical",
   },
   {
     slug: "atencion-prenatal",
