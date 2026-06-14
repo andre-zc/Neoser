@@ -98,7 +98,7 @@
   .hero-bg-1 { background: linear-gradient(135deg,#0f2548 0%,#1b3a6b 50%,#4a7fb5 100%); }
   .hero-bg-2 { background: linear-gradient(135deg,#1b3a6b 0%,#1a4a8a 50%,#4a7fb5 100%); }
   .hero-bg-3 { background: linear-gradient(135deg,#e8879b 0%,#d4637a 100%); }
-  .hero-bg-4 { background: linear-gradient(135deg,#1b3a6b 0%,#4a7fb5 100%); }
+  .hero-bg-4 { background: linear-gradient(135deg,#d4637a 0%,#e8879b 50%,#f2a8b8 100%); }
   .hero-title { font-family: var(--font-playfair), 'Abhaya Libre', serif; font-size: clamp(2.4rem,5.2vw,4rem); font-weight: 800; color: var(--white); line-height: 1.05; letter-spacing: -0.015em; margin-bottom: 1rem; }
   .hero-title .highlight { color: var(--pink); }
   .hero-subtitle { font-size: clamp(1.15rem,2.3vw,1.45rem); color: rgba(255,255,255,0.9); font-weight: 400; line-height: 1.6; margin-top: 0.5rem; }
