@@ -48,11 +48,12 @@ export function SiteHeader() {
     <>
       <nav className={`navbar ${showScrolled ? "scrolled" : ""}`}>
         <div className="container-main flex items-center justify-between">
-          <Link href={isHome ? "#inicio" : "/"} className="navbar-logo flex-shrink-0 flex items-center gap-3">
+          <Link href={isHome ? "#inicio" : "/"} className="navbar-logo flex-shrink-0 flex flex-col items-start">
             <span className="logo-img-wrap">
               <Image src="/assets/logo-white.png" alt="NeoSer" width={320} height={128} className="logo-white h-24 w-auto md:h-32" priority={isHome} />
               <Image src="/assets/logo-color.png" alt="NeoSer" width={260} height={104} className="logo-color h-20 w-auto md:h-24" priority={!isHome} />
             </span>
+            <span className="navbar-script">&quot;Cada nacimiento es único&quot;</span>
           </Link>
           <div className="hidden items-center gap-8 lg:flex">
             <a href={anchorHref("inicio")} className="nav-link">Inicio</a>

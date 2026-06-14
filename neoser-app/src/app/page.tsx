@@ -22,6 +22,7 @@ import {
   Camera,
   HeartPulse,
   ImageIcon,
+  User2,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -341,7 +342,7 @@ export default function HomePage() {
                   <span className="quote-icon">&ldquo;</span>
                   <p className="testimonial-text mt-8 mb-6 text-sm">&ldquo;{t.quote}&rdquo;</p>
                   <div className="flex items-center gap-3">
-                    <div className="testimonial-avatar">{t.initials}</div>
+                    <div className="testimonial-avatar"><User2 className="h-7 w-7" /></div>
                     <div>
                       <p className="text-sm font-semibold text-navy">{t.name}</p>
                       <p className="text-xs text-gray-400">{t.role}</p>
@@ -408,7 +409,7 @@ export default function HomePage() {
                 { initials: "EA", name: "Equipo Asistencial", role: "Soporte & Atención", desc: "Personal dedicado a brindarte la mejor experiencia en cada visita y consulta." },
               ].map((m) => (
                 <div key={m.initials} className="team-member">
-                  <div className="team-photo">{m.initials}</div>
+                  <div className="team-photo"><User2 className="h-20 w-20" /></div>
                   <h4 className="text-lg font-bold text-navy">{m.name}</h4>
                   <p className="text-sm font-medium text-pink">{m.role}</p>
                   <p className="mx-auto mt-2 max-w-[15rem] text-xs leading-snug text-gray-400">{m.desc}</p>
@@ -427,8 +428,8 @@ export default function HomePage() {
                 { icon: Trophy, iconColor: "text-pink", iconBg: "bg-pink-light", title: "Reconocimiento Regional", desc: "Pioneros en atención de parto humanizado en la región Lambayeque." },
               ].map((r) => (
                 <div key={r.title} className="recognition-card flex items-start gap-4">
-                  <div className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl ${r.iconBg}`}>
-                    <r.icon className={`h-6 w-6 ${r.iconColor}`} />
+                  <div className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl ${r.iconBg}`}>
+                    <r.icon className={`h-8 w-8 ${r.iconColor}`} />
                   </div>
                   <div>
                     <h4 className="text-sm font-bold text-navy">{r.title}</h4>
@@ -481,7 +482,7 @@ export default function HomePage() {
                 <div className="news-body">
                   <h3 className="mb-2 text-lg font-bold text-navy">{n.title}</h3>
                   <p className="mb-4 text-sm leading-relaxed text-gray-500">{n.desc}</p>
-                  <a href="#" className="inline-flex items-center gap-1 text-sm font-semibold text-pink transition-colors hover:text-pink-dark">
+                  <a href="#" className="news-cta inline-flex items-center gap-1 text-sm font-semibold text-pink transition-colors hover:text-pink-dark">
                     Leer más <ArrowRight className="h-4 w-4" />
                   </a>
                 </div>
