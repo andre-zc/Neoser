@@ -99,10 +99,13 @@ export default function HomePage() {
     },
     {
       bg: "hero-bg-2",
-      script: "NeoSer",
+      script: '"Acompañando cada nacimiento"',
       title: <>Porque nacer y vivir<br /><span className="highlight">con amor cambia el mundo</span></>,
       sub: "Más de 1,000 alumnos formados y 500 partos humanizados acompañados con calidez y profesionalismo.",
-      ctas: [{ href: "#nosotros", cls: "btn-primary", icon: Users, text: "Conócenos" }],
+      ctas: [
+        { href: "#nosotros", cls: "btn-primary", icon: Users, text: "Conócenos" },
+        { href: bookingUrl, cls: "btn-secondary", icon: Calendar, text: "Reserva tu Cita", ext: true },
+      ],
       mediaIcon: Users,
       mediaLabel: "Foto del equipo NeoSer",
       badgeIcon: Heart,
@@ -128,7 +131,10 @@ export default function HomePage() {
       script: '"Tu parto, tu decisión"',
       title: <>Acompañamiento<br /><span className="highlight">Integral y Respetuoso</span></>,
       sub: "Desde el embarazo hasta el postparto, te acompañamos en cada paso de tu viaje como mamá.",
-      ctas: [{ href: bookingUrl, cls: "btn-primary", icon: Calendar, text: "Agenda tu Cita", ext: true }],
+      ctas: [
+        { href: bookingUrl, cls: "btn-primary", icon: Calendar, text: "Agenda tu Cita", ext: true },
+        { href: "#servicios", cls: "btn-secondary", icon: Heart, text: "Ver Servicios" },
+      ],
       mediaIcon: HandHeart,
       mediaLabel: "Foto mamá y bebé",
       badgeIcon: HeartHandshake,
@@ -199,16 +205,13 @@ export default function HomePage() {
                 { val: "+1,000", label: "Alumnos formados" },
                 { val: "+500", label: "Partos acompañados" },
                 { val: "+4 Ed.", label: "Ediciones de cursos" },
+                { val: "+5 Años", label: "De experiencia" },
               ].map((s) => (
                 <div key={s.label} className="text-center">
                   <div className="text-2xl font-bold text-white md:text-3xl" style={{ fontFamily: "var(--font-playfair), serif" }}>{s.val}</div>
                   <div className="mt-1 text-xs text-white/60 md:text-sm">{s.label}</div>
                 </div>
               ))}
-              <div className="text-center">
-                <div className="flex items-center justify-center text-2xl font-bold text-white md:text-3xl"><MapPin className="h-6 w-6" /></div>
-                <div className="mt-1 text-xs text-white/60 md:text-sm">Chiclayo, Perú</div>
-              </div>
             </div>
           </div>
         </div>
