@@ -8,16 +8,28 @@ import { WhatsappModalProvider } from "@/components/whatsapp-modal-provider";
 const montserrat = localFont({
   src: "../../public/fonts/abhayalibre-semibold.ttf",
   variable: "--font-montserrat",
+  display: "swap",
+  preload: true,
+  fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
+  adjustFontFallback: false,
 });
 
 const playfair = localFont({
   src: "../../public/fonts/abhayalibre-extrabold.ttf",
   variable: "--font-playfair",
+  display: "swap",
+  preload: true,
+  fallback: ["Georgia", "Times New Roman", "serif"],
+  adjustFontFallback: false,
 });
 
 const dancing = localFont({
   src: "../../public/fonts/brush-script.ttf",
   variable: "--font-dancing",
+  display: "swap",
+  preload: false,
+  fallback: ["Brush Script MT", "cursive"],
+  adjustFontFallback: false,
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://neoser.pe";
@@ -106,6 +118,12 @@ export default function RootLayout({
       lang="es-PE"
       className={`${montserrat.variable} ${playfair.variable} ${dancing.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="preconnect" href="https://app.cal.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://app.cal.com" />
+        <link rel="preconnect" href="https://www.google.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+      </head>
       <body className="min-h-full flex flex-col">
         <WhatsappModalProvider>
           {children}

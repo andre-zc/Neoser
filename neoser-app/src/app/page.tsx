@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Heart,
   Calendar,
@@ -25,18 +25,34 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { ContactLeadForm } from "@/components/contact-lead-form";
 import { WhatsappInlineButton } from "@/components/whatsapp-button";
-import { GoogleMapEmbed } from "@/components/google-map-embed";
-import Cal, { getCalApi } from "@calcom/embed-react";
 import { services as servicesData } from "@/lib/services";
 import { ServicesCarousel } from "@/components/services-carousel";
 import { SiteHeader } from "@/components/site-header";
 
+const GoogleMapEmbed = dynamic(
+  () => import("@/components/google-map-embed").then((m) => m.GoogleMapEmbed),
+  { ssr: false, loading: () => <div className="map-container" aria-hidden /> }
+);
+
+const CalEmbed = dynamic(() => import("@calcom/embed-react"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-[640px] items-center justify-center rounded-2xl border border-dashed border-gray-200 text-sm text-gray-400">
+      Cargando calendario…
+    </div>
+  ),
+});
+
 export default function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0);
+  const [calMounted, setCalMounted] = useState(false);
+  const calSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (typeof document !== "undefined" && document.visibilityState === "hidden") return;
     const interval = setInterval(() => setActiveSlide((p) => (p + 1) % 4), 6000);
     return () => clearInterval(interval);
   }, []);
@@ -51,8 +67,27 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    (async function () {
+    if (!calSectionRef.current || calMounted) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setCalMounted(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "400px" }
+    );
+    observer.observe(calSectionRef.current);
+    return () => observer.disconnect();
+  }, [calMounted]);
+
+  useEffect(() => {
+    if (!calMounted) return;
+    let cancelled = false;
+    (async () => {
+      const { getCalApi } = await import("@calcom/embed-react");
       const cal = await getCalApi();
+      if (cancelled) return;
       cal("ui", {
         theme: "light",
         styles: { branding: { brandColor: "#1b3a6b" } },
@@ -60,7 +95,8 @@ export default function HomePage() {
         layout: "month_view",
       });
     })();
-  }, []);
+    return () => { cancelled = true; };
+  }, [calMounted]);
 
   const calBookingUrl = process.env.NEXT_PUBLIC_CAL_BOOKING_URL;
   const calLink = calBookingUrl
@@ -150,20 +186,26 @@ export default function HomePage() {
       {/* ===== HERO SLIDER ===== */}
       <section id="inicio" className="hero-slider-section">
         <div className="relative w-full" style={{ height: "100vh" }}>
-          {heroSlides.map((slide, i) => (
-            <div key={i} className={`absolute inset-0 flex items-center overflow-hidden transition-opacity duration-700 ${slide.bg} ${activeSlide === i ? "opacity-100 z-10" : "opacity-0 z-0"}`}>
-              <div className="hero-particles">
-                <span className="particle particle-circle" style={{ width: 320, height: 320, top: -60, right: -80, background: "#e8879b", opacity: 0.07 }} />
-                <span className="particle particle-circle" style={{ width: 200, height: 200, bottom: "10%", left: -50, background: "#4a7fb5", opacity: 0.1 }} />
-                <span className="particle particle-dot" style={{ width: 8, height: 8, top: "20%", left: "15%" }} />
-                <span className="particle particle-dot" style={{ width: 5, height: 5, top: "60%", right: "20%", animationDelay: "-2s" }} />
-                <span className="particle particle-ring" style={{ width: 120, height: 120, bottom: "15%", right: "12%" }} />
-                <span className="particle particle-diamond" style={{ top: "25%", right: "18%" }} />
-              </div>
+          {heroSlides.map((slide, i) => {
+            const isActive = activeSlide === i;
+            const isAdjacent = activeSlide === (i + 3) % 4 || activeSlide === (i + 1) % 4;
+            if (!isActive && !isAdjacent) return null;
+            return (
+            <div key={i} className={`absolute inset-0 flex items-center overflow-hidden transition-opacity duration-700 ${slide.bg} ${isActive ? "opacity-100 z-10" : "opacity-0 z-0"}`}>
+              {isActive && (
+                <div className="hero-particles">
+                  <span className="particle particle-circle" style={{ width: 320, height: 320, top: -60, right: -80, background: "#e8879b", opacity: 0.07 }} />
+                  <span className="particle particle-circle" style={{ width: 200, height: 200, bottom: "10%", left: -50, background: "#4a7fb5", opacity: 0.1 }} />
+                  <span className="particle particle-dot" style={{ width: 8, height: 8, top: "20%", left: "15%" }} />
+                  <span className="particle particle-dot" style={{ width: 5, height: 5, top: "60%", right: "20%", animationDelay: "-2s" }} />
+                  <span className="particle particle-ring" style={{ width: 120, height: 120, bottom: "15%", right: "12%" }} />
+                  <span className="particle particle-diamond" style={{ top: "25%", right: "18%" }} />
+                </div>
+              )}
               <div className="hero-slide-grid container-main">
                 <div className="hero-slide-content">
-                  <p className={`hero-script mb-4 ${slide.scriptWhite ? "!text-white" : ""}`}>{slide.script}</p>
-                  <h1 className="hero-title mb-6">{slide.title}</h1>
+                  <p className={`hero-script mb-1 ${slide.scriptWhite ? "!text-white" : ""}`}>{slide.script}</p>
+                  <h1 className="hero-title mb-3">{slide.title}</h1>
                   <p className="hero-subtitle mb-8 max-w-lg">{slide.sub}</p>
                   <div className="hero-ctas flex flex-wrap gap-4">
                     {slide.ctas.map((cta) => (
@@ -188,7 +230,8 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-          ))}
+          );
+          })}
 
           <div className="absolute bottom-28 left-0 right-0 z-20 flex justify-center gap-2">
             {[0, 1, 2, 3].map((i) => (
@@ -275,11 +318,11 @@ export default function HomePage() {
             <h3 className="mb-8 text-center text-2xl font-bold text-navy">Próximos Eventos</h3>
             <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-3">
               {[
-                { month: "Abril 2026", title: "V Edición - Diplomado Parto Humanizado", desc: "Modalidad híbrida. Inscripciones abiertas." },
-                { month: "Mayo 2026", title: "Seminario: Movimiento en el Parto", desc: "Taller intensivo de un día. Cupos limitados." },
-                { month: "Junio 2026", title: "Certificación Rebozo - Nivel II", desc: "Para egresados del Nivel I. Con aval internacional." },
+                { id: "abril", month: "Abril 2026", title: <>V Edición - Diplomado<br />Parto Humanizado</>, desc: "Modalidad híbrida. Inscripciones abiertas." },
+                { id: "mayo", month: "Mayo 2026", title: <>Seminario: Movimiento<br />en el Parto</>, desc: "Taller intensivo de un día. Cupos limitados." },
+                { id: "junio", month: "Junio 2026", title: <>Certificación Rebozo<br />Nivel II</>, desc: "Para egresados del Nivel I. Con aval internacional." },
               ].map((ev) => (
-                <div key={ev.title} className="timeline-item pb-6">
+                <div key={ev.id} className="timeline-item pb-6">
                   <span className="text-xs font-semibold uppercase tracking-wide text-pink">{ev.month}</span>
                   <h4 className="mt-1 font-bold text-navy">{ev.title}</h4>
                   <p className="mt-1 text-sm text-gray-500">{ev.desc}</p>
@@ -289,7 +332,7 @@ export default function HomePage() {
           </div>
 
           {/* Testimonios */}
-          <div className="mt-20" data-aos="fade-up">
+          <div className="mt-12" data-aos="fade-up">
             <h3 className="mb-8 text-center text-2xl font-bold text-navy">Lo que dicen nuestros alumnos</h3>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {testimonials.map((t) => (
@@ -327,7 +370,7 @@ export default function HomePage() {
               </h3>
               <p className="mb-4 leading-relaxed text-gray-500">
                 NeoSer nace en Chiclayo con la visión de transformar la atención materna en el Perú.
-                Fundado por la Obst. Diana Silva y el Dr. Chacaliaza, nuestro centro combina la
+                Fundado por la Obst. Diana Silva y el Dr. Luis Chacaliaza Donayre, nuestro centro combina la
                 medicina basada en evidencia con el respeto profundo por la fisiología del nacimiento.
               </p>
               <p className="mb-6 leading-relaxed text-gray-500">
@@ -354,12 +397,12 @@ export default function HomePage() {
           </div>
 
           {/* Team */}
-          <div className="mb-20" data-aos="fade-up">
+          <div className="mb-12" data-aos="fade-up">
             <h3 className="mb-10 text-center text-2xl font-bold text-navy">Nuestro Equipo</h3>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {[
                 { initials: "DS", name: "Obst. Diana Silva", role: "Fundadora & Directora", desc: "Obstetra especialista en parto humanizado. Certificada en Spinning Babies y Técnica Rebozo." },
-                { initials: "DC", name: "Dr. Chacaliaza", role: "Co-Fundador & Director Médico", desc: "Médico ginecólogo-obstetra con enfoque en medicina humanizada y nacimiento respetado." },
+                { initials: "LC", name: "Dr. Luis Chacaliaza Donayre", role: "Co-Fundador & Director Médico", desc: "Médico ginecólogo-obstetra con enfoque en medicina humanizada y nacimiento respetado." },
                 { initials: "ED", name: "Equipo Docente", role: "Docentes Especializados", desc: "Profesionales de la salud con formación en maternidad humanizada y pedagogía." },
                 { initials: "EA", name: "Equipo Asistencial", role: "Soporte & Atención", desc: "Personal dedicado a brindarte la mejor experiencia en cada visita y consulta." },
               ].map((m) => (
@@ -367,7 +410,7 @@ export default function HomePage() {
                   <div className="team-photo">{m.initials}</div>
                   <h4 className="text-lg font-bold text-navy">{m.name}</h4>
                   <p className="text-sm font-medium text-pink">{m.role}</p>
-                  <p className="mx-auto mt-2 max-w-xs text-xs text-gray-400">{m.desc}</p>
+                  <p className="mx-auto mt-2 max-w-[15rem] text-xs leading-snug text-gray-400">{m.desc}</p>
                 </div>
               ))}
             </div>
@@ -398,9 +441,9 @@ export default function HomePage() {
           {/* Counters */}
           <div className="grid grid-cols-2 gap-6 rounded-3xl bg-white p-8 shadow-sm md:grid-cols-4" data-aos="fade-up">
             {[
-              { val: "5+", label: "Años de experiencia" },
+              { val: "+5", label: "Años de experiencia" },
               { val: "+1,000", label: "Alumnos formados" },
-              { val: "4 ediciones", label: "Diplomados realizados" },
+              { val: "+4 Ed.", label: "Diplomados realizados" },
               { val: "+500", label: "Partos humanizados" },
             ].map((c) => (
               <div key={c.label} className="counter-box">
@@ -423,7 +466,7 @@ export default function HomePage() {
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {[
               { day: "15", month: "Mar 2026", title: "Beca Spinning Babies para NeoSer", desc: "NeoSer recibió la prestigiosa beca de Spinning Babies para la formación avanzada en técnicas de posicionamiento fetal, consolidando su liderazgo en la región.", icon: Award },
-              { day: "02", month: "Feb 2026", title: "Dr. Chacaliaza: Reconocimiento Nacional", desc: "El Dr. Chacaliaza fue reconocido por su contribución a la medicina humanizada en el Perú, destacando su labor en la promoción del parto respetado.", icon: Stethoscope },
+              { day: "02", month: "Feb 2026", title: "Dr. Luis Chacaliaza: Reconocimiento Nacional", desc: "El Dr. Luis Chacaliaza fue reconocido por su contribución a la medicina humanizada en el Perú, destacando su labor en la promoción del parto respetado.", icon: Stethoscope },
               { day: "20", month: "Ene 2026", title: "La Historia de NeoSer: 5 Años Transformando Vidas", desc: "Desde un sueño compartido hasta convertirnos en referentes de la maternidad humanizada en Lambayeque. Conoce nuestra historia.", icon: Heart },
             ].map((n, i) => (
               <div key={n.title} className="news-card" data-aos="fade-up" data-aos-delay={i * 100}>
@@ -456,7 +499,7 @@ export default function HomePage() {
             <div className="section-divider mx-auto" />
           </div>
 
-          <div className="surface-card mx-auto max-w-4xl p-8 md:p-10" data-aos="fade-up">
+          <div ref={calSectionRef} className="surface-card mx-auto max-w-4xl p-8 md:p-10" data-aos="fade-up">
             <h3 className="mb-3 text-2xl font-bold text-navy">Antes de reservar</h3>
             <p className="mb-6 text-sm text-gray-600">
               Te pedimos unos minutos para revisar la información antes de elegir tu horario:
@@ -470,11 +513,17 @@ export default function HomePage() {
 
             {calLink ? (
               <div className="overflow-hidden rounded-2xl border border-gray-100">
-                <Cal
-                  calLink={calLink}
-                  style={{ width: "100%", height: "640px", overflow: "scroll" }}
-                  config={{ layout: "month_view", theme: "light" }}
-                />
+                {calMounted ? (
+                  <CalEmbed
+                    calLink={calLink}
+                    style={{ width: "100%", height: "640px", overflow: "scroll" }}
+                    config={{ layout: "month_view", theme: "light" }}
+                  />
+                ) : (
+                  <div className="flex h-[640px] items-center justify-center text-sm text-gray-400">
+                    Cargando calendario…
+                  </div>
+                )}
               </div>
             ) : (
               <div className="flex h-[420px] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-gray-200 p-10 text-center text-gray-500">
@@ -503,7 +552,7 @@ export default function HomePage() {
                 <div className="space-y-5">
                   {[
                     { icon: MapPin, iconColor: "text-pink", iconBg: "bg-pink-light", label: "Dirección", value: "Calle Los Sauces 542, Urb. Santa Victoria, Chiclayo, Lambayeque, Perú" },
-                    { icon: Phone, iconColor: "text-blue", iconBg: "bg-blue-light", label: "Teléfono", value: "+51 978 822 368" },
+                    { icon: Phone, iconColor: "text-blue", iconBg: "bg-blue-light", label: "Teléfono", value: "+51 932 713 071" },
                     { icon: Mail, iconColor: "text-pink", iconBg: "bg-pink-light", label: "Email", value: "contacto@neoser.pe" },
                     { icon: Clock, iconColor: "text-blue", iconBg: "bg-blue-light", label: "Horario", value: "Lunes a Sábado: 8:00 AM - 7:00 PM" },
                   ].map((c) => (
@@ -563,7 +612,7 @@ export default function HomePage() {
         <div className="container-main">
           <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
             <div>
-              <Image src="/assets/logo-white.png" alt="NeoSer" width={240} height={96} className="footer-logo mb-4" />
+              <Image src="/assets/logo-white.png" alt="NeoSer" width={320} height={128} className="footer-logo mb-4" />
               <p className="text-sm leading-relaxed opacity-70">
                 Centro de maternidad y medicina humanizada en Chiclayo. Acompañamos cada etapa de tu maternidad con calidez y profesionalismo.
               </p>
@@ -592,7 +641,7 @@ export default function HomePage() {
               <h4 className="mb-4 font-semibold text-white">Contacto</h4>
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2"><MapPin className="h-4 w-4 flex-shrink-0 text-pink" /> Calle Los Sauces 542, Chiclayo</li>
-                <li className="flex items-center gap-2"><Phone className="h-4 w-4 flex-shrink-0 text-pink" /> +51 978 822 368</li>
+                <li className="flex items-center gap-2"><Phone className="h-4 w-4 flex-shrink-0 text-pink" /> +51 932 713 071</li>
                 <li className="flex items-center gap-2"><Mail className="h-4 w-4 flex-shrink-0 text-pink" /> contacto@neoser.pe</li>
               </ul>
               <div className="mt-4 flex gap-3">

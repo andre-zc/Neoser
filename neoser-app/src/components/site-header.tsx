@@ -22,8 +22,16 @@ export function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setNavScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
+    let ticking = false;
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        setNavScrolled(window.scrollY > 50);
+        ticking = false;
+      });
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -42,8 +50,8 @@ export function SiteHeader() {
         <div className="container-main flex items-center justify-between">
           <Link href={isHome ? "#inicio" : "/"} className="navbar-logo flex-shrink-0 flex items-center gap-3">
             <span className="logo-img-wrap">
-              <Image src="/assets/logo-white.png" alt="NeoSer" width={320} height={128} className="logo-white h-24 w-auto md:h-32" priority />
-              <Image src="/assets/logo-color.png" alt="NeoSer" width={260} height={104} className="logo-color h-20 w-auto md:h-24" priority />
+              <Image src="/assets/logo-white.png" alt="NeoSer" width={320} height={128} className="logo-white h-24 w-auto md:h-32" priority={isHome} />
+              <Image src="/assets/logo-color.png" alt="NeoSer" width={260} height={104} className="logo-color h-20 w-auto md:h-24" priority={!isHome} />
             </span>
           </Link>
           <div className="hidden items-center gap-8 lg:flex">

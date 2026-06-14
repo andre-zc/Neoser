@@ -34,7 +34,7 @@ export const services: Service[] = [
     description: [
       "Brindamos atención prenatal orientada al cuidado integral de la madre y el bebé, promoviendo la salud materna y fetal, la salud mental perinatal, la educación perinatal y la preparación consciente para el nacimiento, junto a la participación activa de la pareja y familia.",
     ],
-    image: "/assets/servicios/neoser-330.webp",
+    image: "/assets/servicios/neoser-330-opt.webp",
     category: "medica",
   },
   {
