@@ -116,7 +116,15 @@
   .hero-slide-media { position: relative; height: 460px; max-width: 520px; margin-left: auto; width: 100%; }
   .hero-image-card { position: absolute; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 28px; box-shadow: 0 18px 50px rgba(0,0,0,0.18); will-change: transform; transform: translateZ(0); }
   .hero-image-card-main { inset: 0 0 60px 60px; padding: 0; overflow: hidden; }
-  .hero-image-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 100%); pointer-events: none; }
+  .hero-image-overlay { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: multiply; }
+  /* Tinte azul sobre slides azules (bg-1 y bg-2) */
+  .hero-bg-1 .hero-image-overlay,
+  .hero-bg-2 .hero-image-overlay { background: linear-gradient(160deg, rgba(74,127,181,0.35) 0%, rgba(27,58,107,0.55) 100%); }
+  /* Tinte rosa sobre slides rosa (bg-3 y bg-4) */
+  .hero-bg-3 .hero-image-overlay,
+  .hero-bg-4 .hero-image-overlay { background: linear-gradient(160deg, rgba(232,135,155,0.30) 0%, rgba(212,99,122,0.55) 100%); }
+  /* Vignette sutil oscuro debajo del tinte para legibilidad del badge */
+  .hero-image-card-main::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.30) 100%); }
   .hero-image-card-badge { bottom: 0; left: 0; min-width: 200px; max-width: 260px; padding: 1.1rem 1.4rem; display: flex; align-items: center; gap: 0.85rem; background: rgba(15,37,72,0.55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 2; }
   .hero-image-card-badge p { color: var(--white); font-weight: 600; font-size: 0.9rem; line-height: 1.25; margin: 0; }
   .hero-image-icon-circle { width: 44px; height: 44px; flex-shrink: 0; display: grid; place-items: center; background: var(--pink); color: var(--white); border-radius: 50%; box-shadow: 0 6px 16px rgba(232,135,155,0.4); }
