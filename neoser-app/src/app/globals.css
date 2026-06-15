@@ -188,7 +188,7 @@
   .testimonial-card { background: var(--white); border-radius: 20px; padding: 2rem; position: relative; border: 1px solid rgba(27,58,107,0.06); }
   .testimonial-card .quote-icon { font-size: 3rem; color: var(--pink-light); font-family: var(--font-playfair), serif; line-height: 1; position: absolute; top: 1rem; left: 1.5rem; }
   .testimonial-text { font-style: italic; color: var(--gray-700); line-height: 1.7; }
-  .testimonial-avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg,var(--pink),var(--blue)); display: flex; align-items: center; justify-content: center; font-family: var(--font-playfair), serif; font-weight: 800; color: var(--white); font-size: 1.15rem; flex-shrink: 0; box-shadow: 0 4px 12px rgba(27,58,107,0.15); border: 2px solid var(--white); }
+  .testimonial-avatar { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-playfair), serif; font-weight: 800; color: var(--white); font-size: 1.15rem; flex-shrink: 0; box-shadow: 0 4px 12px rgba(27,58,107,0.15); border: 2px solid var(--white); overflow: hidden; }
 
   /* -- Team -- */
   .team-member { text-align: center; transition: all 0.3s ease; }

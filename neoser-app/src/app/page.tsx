@@ -108,10 +108,10 @@ export default function HomePage() {
   ];
 
   const testimonials = [
-    { initials: "MC", quote: "El diplomado cambió completamente mi manera de ver la atención del parto. Ahora aplico la medicina humanizada en cada consulta.", name: "María Carmen R.", role: "Obstetra - Trujillo" },
-    { initials: "LP", quote: "Gracias a NeoSer tuve el parto que soñaba. Me sentí acompañada, respetada y empoderada en cada momento.", name: "Lucía Pérez T.", role: "Mamá NeoSer - Chiclayo" },
-    { initials: "AV", quote: "La certificación en Rebozo fue una experiencia transformadora. El equipo de NeoSer es increíblemente profesional y cálido.", name: "Andrea Vargas M.", role: "Doula - Lima" },
-    { initials: "RS", quote: "Excelente formación. Los docentes tienen una pasión genuina por la maternidad humanizada. 100% recomendado.", name: "Rosa Sánchez L.", role: "Enfermera - Chiclayo" },
+    { seed: "mc", quote: "El diplomado cambió completamente mi manera de ver la atención del parto. Ahora aplico la medicina humanizada en cada consulta.", name: "María Carmen R.", role: "Obstetra - Trujillo", grad: "from-pink to-pink-dark" },
+    { seed: "lp", quote: "Gracias a NeoSer tuve el parto que soñaba. Me sentí acompañada, respetada y empoderada en cada momento.", name: "Lucía Pérez T.", role: "Mamá NeoSer - Chiclayo", grad: "from-blue to-navy" },
+    { seed: "av", quote: "La certificación en Rebozo fue una experiencia transformadora. El equipo de NeoSer es increíblemente profesional y cálido.", name: "Andrea Vargas M.", role: "Doula - Lima", grad: "from-pink-dark to-navy" },
+    { seed: "rs", quote: "Excelente formación. Los docentes tienen una pasión genuina por la maternidad humanizada. 100% recomendado.", name: "Rosa Sánchez L.", role: "Enfermera - Chiclayo", grad: "from-blue to-pink" },
   ];
 
   const heroSlides = [
@@ -130,16 +130,16 @@ export default function HomePage() {
     },
     {
       bg: "hero-bg-3",
-      title: <>Cesárea<br /><span className="text-white/90">Humanizada</span></>,
-      sub: "Acompañamos cada cesárea con contacto piel con piel inmediato, cero separación entre mamá y bebé, y la presencia del papá desde el primer instante.",
+      title: <>Parto y Cesárea<br /><span className="text-white/90">Humanizados</span></>,
+      sub: "Acompañamos cada nacimiento, sea parto vaginal o cesárea, con contacto piel con piel inmediato, cero separación entre mamá y bebé, y la presencia del papá desde el primer instante.",
       ctas: [
-        { href: "/servicios#cesareas-humanizadas", cls: "btn-secondary !border-white !text-white", icon: HeartHandshake, text: "Conoce más" },
+        { href: "/servicios", cls: "btn-secondary !border-white !text-white", icon: HeartHandshake, text: "Conoce más" },
         { href: bookingUrl, cls: "btn-primary !bg-white !text-pink-dark !border-white", icon: Calendar, text: "Reserva tu Cita", ext: true },
       ],
       image: "/assets/hero/slide-2-cesarea.jpg",
-      imageAlt: "Papá besando a mamá durante cesárea humanizada en NeoSer",
+      imageAlt: "Papá besando a mamá durante nacimiento humanizado en NeoSer",
       badgeIcon: Heart,
-      badgeText: <>Cesárea<br />Túnel</>,
+      badgeText: <>Parto y<br />Cesárea</>,
     },
     {
       bg: "hero-bg-2",
@@ -330,11 +330,16 @@ export default function HomePage() {
             <h3 className="mb-8 text-center text-2xl font-bold text-navy">Lo que dicen nuestros alumnos</h3>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {testimonials.map((t) => (
-                <div key={t.initials} className="testimonial-card">
+                <div key={t.seed} className="testimonial-card">
                   <span className="quote-icon">&ldquo;</span>
                   <p className="testimonial-text mt-8 mb-6 text-sm">&ldquo;{t.quote}&rdquo;</p>
                   <div className="flex items-center gap-3">
-                    <div className="testimonial-avatar"><User2 className="h-7 w-7" /></div>
+                    <div className={`testimonial-avatar bg-gradient-to-br ${t.grad}`}>
+                      <svg viewBox="0 0 56 56" className="h-full w-full" aria-hidden="true">
+                        <circle cx="28" cy="22" r="9" fill="rgba(255,255,255,0.95)" />
+                        <path d="M10 56 Q10 38 28 38 Q46 38 46 56 Z" fill="rgba(255,255,255,0.95)" />
+                      </svg>
+                    </div>
                     <div>
                       <p className="text-sm font-semibold text-navy">{t.name}</p>
                       <p className="text-xs text-gray-400">{t.role}</p>
@@ -364,7 +369,7 @@ export default function HomePage() {
               </h3>
               <p className="mb-4 leading-relaxed text-gray-500">
                 NeoSer nace en Chiclayo con la visión de transformar la atención materna en el Perú.
-                Fundado por la Obst. Diana Silva y el Dr. Luis Chacaliaza Donayre, nuestro centro combina la
+                Fundado por la Obst. Diana Silva y el Dr. Luis Chacaliaza, nuestro centro combina la
                 medicina basada en evidencia con el respeto profundo por la fisiología del nacimiento.
               </p>
               <p className="mb-6 leading-relaxed text-gray-500">
@@ -396,7 +401,7 @@ export default function HomePage() {
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {[
                 { initials: "DS", name: "Obst. Diana Silva", role: "Fundadora & Directora", desc: "Obstetra especialista en parto humanizado. Certificada en Spinning Babies y Técnica Rebozo." },
-                { initials: "LC", name: "Dr. Luis Chacaliaza Donayre", role: "Co-Fundador & Director Médico", desc: "Médico ginecólogo-obstetra con enfoque en medicina humanizada y nacimiento respetado." },
+                { initials: "LC", name: "Dr. Luis Chacaliaza", role: "Co-Fundador & Director Médico", desc: "Médico ginecólogo-obstetra con enfoque en medicina humanizada y nacimiento respetado." },
                 { initials: "ED", name: "Equipo Docente", role: "Docentes Especializados", desc: "Profesionales de la salud con formación en maternidad humanizada y pedagogía." },
                 { initials: "EA", name: "Equipo Asistencial", role: "Soporte & Atención", desc: "Personal dedicado a brindarte la mejor experiencia en cada visita y consulta." },
               ].map((m) => (
