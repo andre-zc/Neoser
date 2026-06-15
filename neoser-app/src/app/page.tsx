@@ -5,11 +5,8 @@ import {
   Heart,
   Calendar,
   Users,
-  GraduationCap,
-  MessageCircle,
   Stethoscope,
   Baby,
-  HandHeart,
   HeartHandshake,
   MapPin,
   Phone,
@@ -20,8 +17,6 @@ import {
   Trophy,
   ArrowRight,
   Camera,
-  HeartPulse,
-  ImageIcon,
   User2,
 } from "lucide-react";
 import Image from "next/image";
@@ -122,32 +117,32 @@ export default function HomePage() {
   const heroSlides = [
     {
       bg: "hero-bg-1",
-      script: '"Cada nacimiento es único"',
+      script: '¡Porque nacer y vivir con amor cambia el mundo!',
       title: <>Maternidad y <br /><span className="highlight">Medicina Humanizada</span></>,
       sub: "Acompañamos y atendemos nacimientos humanizados en Chiclayo. Tu bienestar y el de tu bebé son nuestra prioridad.",
       ctas: [
         { href: "#servicios", cls: "btn-primary", icon: Heart, text: "Nuestros Servicios" },
         { href: bookingUrl, cls: "btn-secondary", icon: Calendar, text: "Reserva tu Cita", ext: true },
       ],
-      mediaIcon: HeartPulse,
-      mediaLabel: "Foto de sesión profesional",
+      image: "/assets/hero/slide-1-maternidad.jpg",
+      imageAlt: "Mamá NeoSer con su bebé recién nacido tras parto humanizado",
       badgeIcon: Baby,
       badgeText: <>Parto<br />Humanizado</>,
     },
     {
       bg: "hero-bg-3",
-      script: "Escuela NeoSer",
+      script: '"Cada cesárea, también un acto de amor"',
       scriptWhite: true,
-      title: <>Cursos y <br /><span className="text-white/90">Certificaciones</span></>,
-      sub: "Diplomados, talleres y certificaciones internacionales en parto humanizado, técnica Rebozo y lactancia materna.",
+      title: <>Cesárea<br /><span className="text-white/90">Humanizada</span></>,
+      sub: "Acompañamos cada cesárea con contacto piel con piel inmediato, cero separación entre mamá y bebé, y la presencia del papá desde el primer instante.",
       ctas: [
-        { href: "#cursos", cls: "btn-secondary !border-white !text-white", icon: GraduationCap, text: "Ver Cursos" },
-        { href: "#contacto", cls: "btn-primary !bg-white !text-pink-dark !border-white", icon: MessageCircle, text: "Solicitar información" },
+        { href: "/servicios#cesareas-humanizadas", cls: "btn-secondary !border-white !text-white", icon: HeartHandshake, text: "Conoce más" },
+        { href: bookingUrl, cls: "btn-primary !bg-white !text-pink-dark !border-white", icon: Calendar, text: "Reserva tu Cita", ext: true },
       ],
-      mediaIcon: GraduationCap,
-      mediaLabel: "Foto del aula / certificación",
-      badgeIcon: Award,
-      badgeText: <>Certificación<br />Internacional</>,
+      image: "/assets/hero/slide-2-cesarea.jpg",
+      imageAlt: "Papá besando a mamá durante cesárea humanizada en NeoSer",
+      badgeIcon: Heart,
+      badgeText: <>Cesárea<br />Túnel</>,
     },
     {
       bg: "hero-bg-2",
@@ -158,8 +153,8 @@ export default function HomePage() {
         { href: "#nosotros", cls: "btn-primary", icon: Users, text: "Conócenos" },
         { href: bookingUrl, cls: "btn-secondary", icon: Calendar, text: "Reserva tu Cita", ext: true },
       ],
-      mediaIcon: Users,
-      mediaLabel: "Foto del equipo NeoSer",
+      image: "/assets/hero/slide-3-equipo.jpg",
+      imageAlt: "Equipo NeoSer",
       badgeIcon: Heart,
       badgeText: <>Equipo<br />Profesional</>,
     },
@@ -173,10 +168,10 @@ export default function HomePage() {
         { href: bookingUrl, cls: "btn-primary !bg-white !text-pink-dark !border-white", icon: Calendar, text: "Agenda tu Cita", ext: true },
         { href: "#servicios", cls: "btn-secondary !border-white !text-white", icon: Heart, text: "Ver Servicios" },
       ],
-      mediaIcon: HandHeart,
-      mediaLabel: "Foto mamá y bebé",
+      image: "/assets/hero/slide-4-acompanamiento.jpg",
+      imageAlt: "Gestante en preparación al parto con rebozo y balón en NeoSer",
       badgeIcon: HeartHandshake,
-      badgeText: <>Acompañamiento<br />Postparto</>,
+      badgeText: <>Preparación<br />al Parto</>,
     },
   ];
 
@@ -219,11 +214,15 @@ export default function HomePage() {
                 </div>
                 <div className="hero-slide-media">
                   <div className="hero-image-card hero-image-card-main">
-                    <div className="hero-image-icon"><slide.mediaIcon /></div>
-                    <div className="hero-image-placeholder">
-                      <ImageIcon className="h-12 w-12" />
-                      <span>{slide.mediaLabel}</span>
-                    </div>
+                    <Image
+                      src={slide.image}
+                      alt={slide.imageAlt}
+                      fill
+                      sizes="(max-width: 1023px) 0px, 520px"
+                      className="object-cover"
+                      priority={i === 0}
+                    />
+                    <div className="hero-image-overlay" />
                   </div>
                   <div className="hero-image-card hero-image-card-badge">
                     <div className="hero-image-icon-circle"><slide.badgeIcon /></div>
