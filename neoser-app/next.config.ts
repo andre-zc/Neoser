@@ -21,6 +21,9 @@ const nextConfig: NextConfig = {
   },
 
   async headers() {
+    // Solo aplicar cache agresivo en produccion. En dev rompe HMR/Turbopack
+    // (chunks "inmutables" hacen que el browser sirva versiones viejas).
+    if (process.env.NODE_ENV !== "production") return [];
     return [
       {
         source: "/assets/:path*",
@@ -30,12 +33,6 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/fonts/:path*",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
-      {
-        source: "/_next/static/:path*",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
