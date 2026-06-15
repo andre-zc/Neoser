@@ -182,7 +182,7 @@ export default function HomePage() {
             const isAdjacent = activeSlide === (i + 3) % 4 || activeSlide === (i + 1) % 4;
             if (!isActive && !isAdjacent) return null;
             return (
-            <div key={i} className={`absolute inset-0 flex items-center overflow-hidden transition-opacity duration-700 ${slide.bg} ${isActive ? "opacity-100 z-10" : "opacity-0 z-0"}`}>
+            <div key={i} className={`absolute inset-0 flex items-end overflow-hidden transition-opacity duration-700 pt-40 pb-36 ${slide.bg} ${isActive ? "opacity-100 z-10" : "opacity-0 z-0"}`}>
               {isActive && (
                 <div className="hero-particles">
                   <span className="particle particle-circle" style={{ width: 320, height: 320, top: -60, right: -80, background: "#e8879b", opacity: 0.07 }} />
