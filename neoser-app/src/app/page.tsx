@@ -117,7 +117,6 @@ export default function HomePage() {
   const heroSlides = [
     {
       bg: "hero-bg-1",
-      script: '¡Porque nacer y vivir con amor cambia el mundo!',
       title: <>Maternidad y <br /><span className="highlight">Medicina Humanizada</span></>,
       sub: "Acompañamos y atendemos nacimientos humanizados en Chiclayo. Tu bienestar y el de tu bebé son nuestra prioridad.",
       ctas: [
@@ -131,8 +130,6 @@ export default function HomePage() {
     },
     {
       bg: "hero-bg-3",
-      script: '"Cada cesárea, también un acto de amor"',
-      scriptWhite: true,
       title: <>Cesárea<br /><span className="text-white/90">Humanizada</span></>,
       sub: "Acompañamos cada cesárea con contacto piel con piel inmediato, cero separación entre mamá y bebé, y la presencia del papá desde el primer instante.",
       ctas: [
@@ -146,7 +143,6 @@ export default function HomePage() {
     },
     {
       bg: "hero-bg-2",
-      script: '"Acompañando cada nacimiento"',
       title: <>Porque nacer y vivir<br /><span className="highlight">con amor cambia el mundo</span></>,
       sub: "Más de 1,000 alumnos formados y 500 partos humanizados acompañados con calidez y profesionalismo.",
       ctas: [
@@ -160,8 +156,6 @@ export default function HomePage() {
     },
     {
       bg: "hero-bg-4",
-      script: '"Tu parto, tu decisión"',
-      scriptWhite: true,
       title: <>Acompañamiento<br /><span className="text-white/90">Integral y Respetuoso</span></>,
       sub: "Desde el embarazo hasta el postparto, te acompañamos en cada paso de tu viaje como mamá.",
       ctas: [
@@ -201,7 +195,6 @@ export default function HomePage() {
               )}
               <div className="hero-slide-grid container-main">
                 <div className="hero-slide-content">
-                  <p className={`hero-script mb-1 ${slide.scriptWhite ? "!text-white" : ""}`}>{slide.script}</p>
                   <h1 className="hero-title mb-3">{slide.title}</h1>
                   <p className="hero-subtitle mb-8 max-w-lg">{slide.sub}</p>
                   <div className="hero-ctas flex flex-wrap gap-4">

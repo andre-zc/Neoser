@@ -76,9 +76,8 @@
 
   .navbar-logo { text-decoration: none; }
   .logo-img-wrap { display: inline-flex; align-items: center; }
-  .navbar-script { font-family: var(--font-dancing), 'Brush Script MT', cursive; font-style: italic; font-size: 1.3rem; color: var(--white); line-height: 1; margin-top: 0.35rem; padding-left: 0.5rem; white-space: nowrap; display: none; transition: color 0.3s ease; }
-  .navbar.scrolled .navbar-script { color: var(--pink); }
-  @media (min-width: 768px) { .navbar-script { display: inline-block; } }
+  .navbar-script { font-family: var(--font-dancing), 'Brush Script MT', cursive; font-style: italic; font-size: 1rem; color: var(--pink); line-height: 1; margin-top: 0.2rem; padding-left: 0.3rem; white-space: nowrap; display: none; transition: color 0.3s ease; }
+  @media (min-width: 768px) { .navbar.scrolled .navbar-script { display: inline-block; } }
 
   /* -- Mobile Menu -- */
   .mobile-menu { position: fixed; top: 0; right: -100%; width: 80%; max-width: 400px; height: 100vh; background: var(--navy-dark); z-index: 1100; transition: right 0.4s cubic-bezier(0.4,0,0.2,1); padding: 5rem 2rem 2rem; display: flex; flex-direction: column; }
@@ -126,8 +125,14 @@
   /* Vignette sutil oscuro debajo del tinte para legibilidad del badge */
   .hero-image-card-main::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.30) 100%); }
   .hero-image-card-badge { bottom: 0; left: 0; min-width: 200px; max-width: 260px; padding: 1.1rem 1.4rem; display: flex; align-items: center; gap: 0.85rem; background: rgba(15,37,72,0.55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 2; }
+  /* En slides rosa el badge se tine rosa para matchear el fondo */
+  .hero-bg-3 .hero-image-card-badge,
+  .hero-bg-4 .hero-image-card-badge { background: rgba(212,99,122,0.65); }
   .hero-image-card-badge p { color: var(--white); font-weight: 600; font-size: 0.9rem; line-height: 1.25; margin: 0; }
   .hero-image-icon-circle { width: 44px; height: 44px; flex-shrink: 0; display: grid; place-items: center; background: var(--pink); color: var(--white); border-radius: 50%; box-shadow: 0 6px 16px rgba(232,135,155,0.4); }
+  /* En slides rosa el circulo del icono va blanco con icono rosa para contraste */
+  .hero-bg-3 .hero-image-icon-circle,
+  .hero-bg-4 .hero-image-icon-circle { background: var(--white); color: var(--pink-dark); box-shadow: 0 6px 16px rgba(255,255,255,0.35); }
   .hero-image-icon-circle svg { width: 22px; height: 22px; }
 
   /* -- Particles -- */
