@@ -14,10 +14,9 @@
   - `EMAIL_API_KEY` (si provider = brevo)
   - `EMAIL_FROM`
 - Deploy de rama `staging`.
-- Preview generado: `https://neoser-aerwd8mrs-alvarogiozu-7356s-projects.vercel.app`
-- Si responde `401`, revisar Vercel Deployment Protection para permitir QA:
-  - Shareable Preview Links, o
-  - desactivar temporalmente autenticacion para preview.
+- URL de deploy: https://neoser.vercel.app
+- Producción (dominio): https://neoser.pe
+- Si un preview puntual responde `401`, revisar Vercel Deployment Protection (Shareable Preview Links o desactivar auth temporal).
 
 ## 2) QA funcional
 - Navegacion por secciones: `#inicio`, `#servicios`, `#cursos`, `#reserva`, `#nosotros`, `#noticias`, `#contacto`.
@@ -29,8 +28,8 @@
 - Probar `POST /api/enrollments` autenticado y no autenticado.
 - Verificar mapa en `/contacto` con y sin API key.
 - Correr smoke test:
-  - Linux/macOS: `./scripts/smoke-test.sh https://neoser-aerwd8mrs-alvarogiozu-7356s-projects.vercel.app`
-  - Windows PowerShell: `.\scripts\smoke-test.ps1 -BaseUrl "https://neoser-aerwd8mrs-alvarogiozu-7356s-projects.vercel.app"`
+  - Linux/macOS: `./scripts/smoke-test.sh https://neoser.vercel.app`
+  - Windows PowerShell: `.\scripts\smoke-test.ps1 -BaseUrl "https://neoser.vercel.app"`
   - Si retorna `2`, hay bloqueo por Deployment Protection (401).
 
 ## 3) QA no funcional

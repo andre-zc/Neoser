@@ -4,14 +4,16 @@
 
 Estado ejecutivo de entrega en staging.
 
-## URL Preview
-- `https://neoser-aerwd8mrs-alvarogiozu-7356s-projects.vercel.app`
-- Inspector: `https://vercel.com/alvarogiozu-7356s-projects/neoser-app/GNz9BHXYrbNsEugfJGkL6EGYKyEz`
+## URLs de deploy
+- **Vercel:** https://neoser.vercel.app
+- **Producción:** https://neoser.pe
+- **Local:** http://localhost:3000
+- Dashboard Vercel: https://vercel.com/alvarogiozu-7356s-projects/neoser-app
 
 ## Estado actual
 - Build: OK
 - Lint: OK
-- Bloqueo activo: preview con `401` por Deployment Protection (pendiente desactivar o generar link compartible).
+- Deploy público en `neoser.vercel.app` (accesible sin login).
 
 ## QA mínimo requerido antes de go-live
 - Home, contacto, login, admin redirect.

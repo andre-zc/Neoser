@@ -3,6 +3,16 @@
 
 > Build local verificado: `next build` OK, 0 errores, 0 warnings. 11 rutas compiladas.
 
+## URLs de deploy (vigente)
+
+| Entorno | URL |
+|---------|-----|
+| Vercel | https://neoser.vercel.app |
+| Producción (dominio) | https://neoser.pe |
+| Local | http://localhost:3000 (`npm run dev` en `neoser-app/`) |
+
+> **Obsoleto:** no usar `neoser-aerwd8mrs-alvarogiozu-7356s-projects.vercel.app` (preview antiguo con protección 401).
+
 ---
 
 ## 1. STAGING CHECKLIST - Vercel
@@ -129,7 +139,7 @@
 
 **Comandos de prueba rapida (curl):**
 ```bash
-BASE="https://TU-URL.vercel.app"
+BASE="https://neoser.vercel.app"
 
 # --- CONTACT LEADS ---
 # Happy path (campos nuevos incluidos)
@@ -281,8 +291,8 @@ Hola,
 
 Les comparto el cierre de la primera entrega de NeoSer.
 
-**Sitio en staging:** https://neoser-aerwd8mrs-alvarogiozu-7356s-projects.vercel.app
-(Nota: si pide autenticacion, es por la proteccion de Vercel — les compartimos acceso)
+**Sitio en Vercel:** https://neoser.vercel.app
+**Producción:** https://neoser.pe
 
 **Que quedo listo hoy:**
 

@@ -20,10 +20,9 @@ Documento vivo del Terminal D (Delivery / QA / Go-live).
 
 ## Estado actual
 - **Build**: verde (0 errores, **15 rutas** compiladas, incluye CRM MVP)
-- **Deploy**: preview en Vercel desplegado, URL con protection 401
-- **URL preview**: `https://neoser-aerwd8mrs-alvarogiozu-7356s-projects.vercel.app`
-- **Inspector**: `https://vercel.com/alvarogiozu-7356s-projects/neoser-app/GNz9BHXYrbNsEugfJGkL6EGYKyEz`
-- **Blocker**: 401 Deployment Protection impide QA externo
+- **Deploy Vercel**: https://neoser.vercel.app (público)
+- **Producción**: https://neoser.pe
+- **Dashboard Vercel**: https://vercel.com/alvarogiozu-7356s-projects/neoser-app
 
 ---
 
@@ -181,10 +180,10 @@ Documento vivo del Terminal D (Delivery / QA / Go-live).
 **Uso**:
 ```bash
 # Linux/Mac/Git Bash
-./scripts/smoke-test.sh https://tu-url.vercel.app
+./scripts/smoke-test.sh https://neoser.vercel.app
 
 # Windows PowerShell
-.\scripts\smoke-test.ps1 -BaseUrl https://tu-url.vercel.app
+.\scripts\smoke-test.ps1 -BaseUrl https://neoser.vercel.app
 ```
 
 **Cobertura actual**: 12 checks automatizados en < 30s

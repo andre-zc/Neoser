@@ -23,6 +23,12 @@ Antes de terminar su bloque, **debe actualizar este archivo** con sus cambios re
 - **WhatsApp API elegida**: 360dialog (oficial)
 - **Enfoque**: MVP hoy (P0), sin re-arquitectura
 
+### URLs de deploy (vigente 2026-06-17)
+- **Vercel:** https://neoser.vercel.app
+- **Producción:** https://neoser.pe
+- **Local:** http://localhost:3000
+- Obsoleto: `neoser-aerwd8mrs-alvarogiozu-7356s-projects.vercel.app` (preview antiguo con 401; no usar)
+
 ### P0 de hoy (obligatorio)
 - Auth básico usable
 - APIs mínimas: `contact-leads`, `courses`, `enrollments`

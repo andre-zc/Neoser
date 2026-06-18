@@ -118,7 +118,7 @@ export default function HomePage() {
     {
       bg: "hero-bg-1",
       title: <>Maternidad y <br /><span className="highlight">Medicina Humanizada</span></>,
-      sub: "Acompañamos y atendemos nacimientos humanizados en Chiclayo. Tu bienestar y el de tu bebé son nuestra prioridad.",
+      sub: "Sentamos bases sólidas para la familia mediante un acompañamiento integral y humanizado durante el proceso del nacimiento.",
       ctas: [
         { href: "#servicios", cls: "btn-primary", icon: Heart, text: "Nuestros Servicios" },
         { href: bookingUrl, cls: "btn-secondary", icon: Calendar, text: "Reserva tu Cita", ext: true },
@@ -131,7 +131,7 @@ export default function HomePage() {
     {
       bg: "hero-bg-3",
       title: <>Parto y Cesárea<br /><span className="text-white/90">Humanizados</span></>,
-      sub: "Acompañamos cada nacimiento, sea parto vaginal o cesárea, con contacto piel con piel inmediato, cero separación entre mamá y bebé, y la presencia del papá desde el primer instante.",
+      sub: "Acompañamos cada nacimiento con contacto piel con piel inmediato, cero separación entre mamá y bebé y la presencia del papá, respetando el proceso de nacimiento y favoreciendo el inicio temprano de la lactancia materna.",
       ctas: [
         { href: "/servicios", cls: "btn-secondary !border-white !text-white", icon: HeartHandshake, text: "Conoce más" },
         { href: bookingUrl, cls: "btn-primary !bg-white !text-pink-dark !border-white", icon: Calendar, text: "Reserva tu Cita", ext: true },
@@ -144,7 +144,7 @@ export default function HomePage() {
     {
       bg: "hero-bg-2",
       title: <>Porque nacer y vivir<br /><span className="highlight">con amor cambia el mundo</span></>,
-      sub: "Más de 1,000 alumnos formados y 500 partos humanizados acompañados con calidez y profesionalismo.",
+      sub: "Más de 2,000 profesionales formados y 500 nacimientos humanizados acompañados.",
       ctas: [
         { href: "#nosotros", cls: "btn-primary", icon: Users, text: "Conócenos" },
         { href: bookingUrl, cls: "btn-secondary", icon: Calendar, text: "Reserva tu Cita", ext: true },
@@ -157,13 +157,13 @@ export default function HomePage() {
     {
       bg: "hero-bg-4",
       title: <>Acompañamiento<br /><span className="text-white/90">Integral y Respetuoso</span></>,
-      sub: "Desde el embarazo hasta el postparto, te acompañamos en cada paso de tu viaje como mamá.",
+      sub: "Transformamos el miedo en confianza mediante una preparación prenatal integral que fortalece a la familia.",
       ctas: [
         { href: bookingUrl, cls: "btn-primary !bg-white !text-pink-dark !border-white", icon: Calendar, text: "Agenda tu Cita", ext: true },
         { href: "#servicios", cls: "btn-secondary !border-white !text-white", icon: Heart, text: "Ver Servicios" },
       ],
-      image: "/assets/hero/slide-4-acompanamiento.jpg",
-      imageAlt: "Gestante en preparación al parto con rebozo y balón en NeoSer",
+      image: "/assets/hero/slide-4-acompanamiento.png",
+      imageAlt: "Gestante acompañada por su pareja y obstetra en preparación al parto en NeoSer",
       badgeIcon: HeartHandshake,
       badgeText: <>Preparación<br />al Parto</>,
     },
