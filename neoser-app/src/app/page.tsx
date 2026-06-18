@@ -136,7 +136,7 @@ export default function HomePage() {
         { href: "/servicios", cls: "btn-secondary !border-white !text-white", icon: HeartHandshake, text: "Conoce más" },
         { href: bookingUrl, cls: "btn-primary !bg-white !text-pink-dark !border-white", icon: Calendar, text: "Reserva tu Cita", ext: true },
       ],
-      image: "/assets/hero/slide-2-cesarea.jpg",
+      image: "/assets/hero/slide-2-cesarea.png",
       imageAlt: "Papá besando a mamá durante nacimiento humanizado en NeoSer",
       badgeIcon: Heart,
       badgeText: <>Parto y<br />Cesárea</>,
