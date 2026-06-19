@@ -17,6 +17,7 @@ import {
   Trophy,
   ArrowRight,
   User2,
+  X,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -44,6 +45,7 @@ const CalEmbed = dynamic(() => import("@calcom/embed-react"), {
 export default function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [calMounted, setCalMounted] = useState(false);
+  const [activeNews, setActiveNews] = useState<number | null>(null);
   const calSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -93,11 +95,69 @@ export default function HomePage() {
     return () => { cancelled = true; };
   }, [calMounted]);
 
+  useEffect(() => {
+    if (activeNews === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setActiveNews(null);
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [activeNews]);
+
   const calBookingUrl = process.env.NEXT_PUBLIC_CAL_BOOKING_URL;
   const calLink = calBookingUrl
     ? new URL(calBookingUrl).pathname.replace(/^\//, "")
     : null;
   const bookingUrl = calBookingUrl || "#contacto";
+
+  const news = [
+    {
+      day: "15",
+      month: "Mar 2026",
+      title: "Beca Spinning Babies para NeoSer",
+      desc: "NeoSer recibió la prestigiosa beca de Spinning Babies para la formación avanzada en técnicas de posicionamiento fetal, consolidando su liderazgo en la región.",
+      icon: Award,
+      img: "/assets/noticia-spinning-babies.png",
+      logo: true,
+      full: [
+        "NeoSer fue reconocido con la prestigiosa beca de Spinning Babies®, la organización internacional referente en técnicas de posicionamiento fetal y movimiento durante el trabajo de parto.",
+        "Este reconocimiento permite a nuestro equipo acceder a formación avanzada de la mano de los principales expertos a nivel mundial, fortaleciendo la calidad de la atención que brindamos a cada gestante.",
+        "Con esta beca, NeoSer consolida su liderazgo en la región Lambayeque y reafirma su compromiso con un nacimiento respetado, basado en la evidencia científica y el cuidado humanizado de la madre y el bebé.",
+      ],
+    },
+    {
+      day: "02",
+      month: "Feb 2026",
+      title: "Dr. Luis Chacaliaza: Reconocimiento Nacional",
+      desc: "El Dr. Luis Chacaliaza fue reconocido por su contribución a la medicina humanizada en el Perú, destacando su labor en la promoción del parto respetado.",
+      icon: Stethoscope,
+      img: "/assets/noticia-chacaliaza-v2.png",
+      logo: false,
+      full: [
+        "El Dr. Luis Chacaliaza Donayre, Director Médico y cofundador de NeoSer, recibió un reconocimiento nacional por su valiosa contribución a la medicina humanizada en el Perú.",
+        "Médico ginecólogo-obstetra de amplia trayectoria, el Dr. Chacaliaza ha dedicado su carrera a promover el parto respetado y la atención centrada en los derechos biológicos de la madre y su bebé.",
+        "Este galardón celebra años de trabajo constante por transformar la cultura del nacimiento en el país, impulsando prácticas como el contacto piel con piel, la cero separación y el inicio temprano de la lactancia materna.",
+      ],
+    },
+    {
+      day: "20",
+      month: "Ene 2026",
+      title: "La Historia de NeoSer: 5 Años Transformando Vidas",
+      desc: "Desde un sueño compartido hasta convertirnos en referentes de la maternidad humanizada en Lambayeque. Conoce nuestra historia.",
+      icon: Heart,
+      img: "/assets/noticia-historia-neoser.png",
+      logo: false,
+      full: [
+        "Lo que comenzó como un sueño compartido entre la Obsta. Diana Silva y el Dr. Luis Chacaliaza, hoy es una realidad que ha acompañado a cientos de familias en su camino hacia la maternidad.",
+        "En cinco años, NeoSer se ha convertido en un referente de la maternidad y medicina humanizada en Lambayeque, formando a más de 1,000 profesionales y acompañando más de 500 nacimientos respetados.",
+        "Nuestra historia es la de cada mujer escuchada, cada pareja acompañada y cada bebé recibido con amor. Porque nacer y vivir con amor cambia el mundo, seguimos creciendo para llegar a más familias.",
+      ],
+    },
+  ];
 
   const courses = [
     { slug: "prep-parto", badge: "Presencial", badgeBg: "bg-pink", title: "Curso de Preparación al Parto", desc: "Técnicas de respiración, posiciones de parto, plan de nacimiento y vínculo temprano.", price: "S/. 350", wa: "Curso%20de%20Preparacion%20al%20Parto" },
@@ -398,13 +458,26 @@ export default function HomePage() {
             <h3 className="mb-10 text-center text-2xl font-bold text-navy">Nuestro Equipo</h3>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                { initials: "DS", name: "Obst. Diana Silva", role: "Fundadora & Directora", desc: "Obstetra especialista en parto humanizado. Certificada en Spinning Babies y Técnica Rebozo." },
-                { initials: "LC", name: "Dr. Luis Chacaliaza", role: "Co-Fundador & Director Médico", desc: "Médico ginecólogo-obstetra con enfoque en medicina humanizada y nacimiento respetado." },
-                { initials: "ED", name: "Equipo Docente", role: "Docentes Especializados", desc: "Profesionales de la salud con formación en maternidad humanizada y pedagogía." },
-                { initials: "EA", name: "Equipo Asistencial", role: "Soporte & Atención", desc: "Personal dedicado a brindarte la mejor experiencia en cada visita y consulta." },
+                { initials: "DS", name: "Obst. Diana Silva", role: "Fundadora & Directora", desc: "Obstetra especialista en parto humanizado. Certificada en Spinning Babies y Técnica Rebozo.", img: "/assets/equipo-diana-v2.png", pos: "center 20%" },
+                { initials: "LC", name: "Dr. Luis Chacaliaza", role: "Co-Fundador & Director Médico", desc: "Médico ginecólogo-obstetra con enfoque en medicina humanizada y nacimiento respetado.", img: "/assets/equipo-luis.png", pos: "center 20%" },
+                { initials: "ED", name: "Equipo Docente", role: "Docentes Especializados", desc: "Profesionales de la salud con formación en maternidad humanizada y pedagogía.", img: "", pos: "center 20%" },
+                { initials: "EA", name: "Equipo Asistencial", role: "Soporte & Atención", desc: "Personal dedicado a brindarte la mejor experiencia en cada visita y consulta.", img: "", pos: "center 20%" },
               ].map((m) => (
                 <div key={m.initials} className="team-member">
-                  <div className="team-photo"><User2 className="h-20 w-20" /></div>
+                  <div className="team-photo">
+                    {m.img ? (
+                      <Image
+                        src={m.img}
+                        alt={m.name}
+                        width={160}
+                        height={160}
+                        className="h-full w-full object-cover"
+                        style={{ objectPosition: m.pos }}
+                      />
+                    ) : (
+                      <User2 className="h-20 w-20" />
+                    )}
+                  </div>
                   <h4 className="text-lg font-bold text-navy">{m.name}</h4>
                   <p className="text-sm font-medium text-pink">{m.role}</p>
                   <p className="mx-auto mt-2 max-w-[15rem] text-xs leading-snug text-gray-400">{m.desc}</p>
@@ -461,11 +534,7 @@ export default function HomePage() {
             <div className="section-divider mx-auto" />
           </div>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {[
-              { day: "15", month: "Mar 2026", title: "Beca Spinning Babies para NeoSer", desc: "NeoSer recibió la prestigiosa beca de Spinning Babies para la formación avanzada en técnicas de posicionamiento fetal, consolidando su liderazgo en la región.", icon: Award, img: "/assets/noticia-spinning-babies.png", logo: true },
-              { day: "02", month: "Feb 2026", title: "Dr. Luis Chacaliaza: Reconocimiento Nacional", desc: "El Dr. Luis Chacaliaza fue reconocido por su contribución a la medicina humanizada en el Perú, destacando su labor en la promoción del parto respetado.", icon: Stethoscope, img: "/assets/noticia-chacaliaza-v2.png", logo: false },
-              { day: "20", month: "Ene 2026", title: "La Historia de NeoSer: 5 Años Transformando Vidas", desc: "Desde un sueño compartido hasta convertirnos en referentes de la maternidad humanizada en Lambayeque. Conoce nuestra historia.", icon: Heart, img: "/assets/noticia-historia-neoser.png", logo: false },
-            ].map((n, i) => (
+            {news.map((n, i) => (
               <div key={n.title} className="news-card" data-aos="fade-up" data-aos-delay={i * 100}>
                 <div className={`news-image ${n.logo ? "!bg-white" : ""}`}>
                   <div className="news-date">
@@ -478,7 +547,7 @@ export default function HomePage() {
                       alt={n.title}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      className={n.logo ? "object-contain p-8" : "object-cover"}
+                      className={`news-img ${n.logo ? "object-contain p-8" : "object-cover"}`}
                       style={n.logo ? undefined : { objectPosition: "center 28%" }}
                     />
                   ) : (
@@ -488,9 +557,13 @@ export default function HomePage() {
                 <div className="news-body">
                   <h3 className="mb-2 text-lg font-bold text-navy">{n.title}</h3>
                   <p className="mb-4 text-sm leading-relaxed text-gray-500">{n.desc}</p>
-                  <a href="#" className="news-cta inline-flex items-center gap-1 text-sm font-semibold text-pink transition-colors hover:text-pink-dark">
+                  <button
+                    type="button"
+                    onClick={() => setActiveNews(i)}
+                    className="news-cta inline-flex items-center gap-1 text-sm font-semibold text-pink transition-colors hover:text-pink-dark"
+                  >
                     Leer más <ArrowRight className="h-4 w-4" />
-                  </a>
+                  </button>
                 </div>
               </div>
             ))}
@@ -614,6 +687,62 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ===== NEWS MODAL ===== */}
+      {activeNews !== null && (
+        <div
+          className="news-modal-overlay"
+          onClick={() => setActiveNews(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={news[activeNews].title}
+        >
+          <div className="news-modal" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              className="news-modal-close"
+              onClick={() => setActiveNews(null)}
+              aria-label="Cerrar"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            <div className={`news-modal-media ${news[activeNews].logo ? "is-logo" : ""}`}>
+              {news[activeNews].img ? (
+                <Image
+                  src={news[activeNews].img}
+                  alt={news[activeNews].title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 640px"
+                  className={news[activeNews].logo ? "object-contain p-10" : "object-cover"}
+                  style={news[activeNews].logo ? undefined : { objectPosition: "center 28%" }}
+                />
+              ) : null}
+            </div>
+
+            <div className="news-modal-body">
+              <span className="mb-3 inline-block rounded-full bg-pink-light px-3 py-1 text-xs font-semibold uppercase tracking-wide text-pink-dark">
+                {news[activeNews].day} · {news[activeNews].month}
+              </span>
+              <h3 className="mb-4 text-2xl font-bold text-navy">{news[activeNews].title}</h3>
+              <div className="space-y-3">
+                {news[activeNews].full.map((p, idx) => (
+                  <p key={idx} className="text-sm leading-relaxed text-gray-600">
+                    {p}
+                  </p>
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={() => setActiveNews(null)}
+                className="btn-pink-outline mt-6 text-sm"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ===== FOOTER ===== */}
       <footer className="footer py-16">
