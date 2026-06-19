@@ -16,7 +16,6 @@ import {
   Globe,
   Trophy,
   ArrowRight,
-  Camera,
   User2,
 } from "lucide-react";
 import Image from "next/image";
@@ -382,15 +381,14 @@ export default function HomePage() {
             </div>
             <div className="flex justify-center">
               <div className="relative w-full max-w-md overflow-hidden rounded-3xl border-4 border-white shadow-lg">
-                <div className="flex h-80 w-full items-center justify-center bg-gradient-to-br from-pink-light to-blue-light">
-                  <Camera className="h-16 w-16 text-navy opacity-20" />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-navy/30 to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4 text-center">
-                  <p className="inline-block rounded-full bg-navy/50 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
-                    <Camera className="mr-1 inline-block h-3 w-3" /> Reemplazar con foto real del equipo
-                  </p>
-                </div>
+                <Image
+                  src="/assets/nosotros-equipo.png"
+                  alt="Equipo NeoSer - Maternidad y Medicina Humanizada"
+                  width={1024}
+                  height={683}
+                  className="h-auto w-full object-cover"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/20 to-transparent" />
               </div>
             </div>
           </div>
@@ -464,17 +462,28 @@ export default function HomePage() {
           </div>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {[
-              { day: "15", month: "Mar 2026", title: "Beca Spinning Babies para NeoSer", desc: "NeoSer recibió la prestigiosa beca de Spinning Babies para la formación avanzada en técnicas de posicionamiento fetal, consolidando su liderazgo en la región.", icon: Award },
-              { day: "02", month: "Feb 2026", title: "Dr. Luis Chacaliaza: Reconocimiento Nacional", desc: "El Dr. Luis Chacaliaza fue reconocido por su contribución a la medicina humanizada en el Perú, destacando su labor en la promoción del parto respetado.", icon: Stethoscope },
-              { day: "20", month: "Ene 2026", title: "La Historia de NeoSer: 5 Años Transformando Vidas", desc: "Desde un sueño compartido hasta convertirnos en referentes de la maternidad humanizada en Lambayeque. Conoce nuestra historia.", icon: Heart },
+              { day: "15", month: "Mar 2026", title: "Beca Spinning Babies para NeoSer", desc: "NeoSer recibió la prestigiosa beca de Spinning Babies para la formación avanzada en técnicas de posicionamiento fetal, consolidando su liderazgo en la región.", icon: Award, img: "/assets/noticia-spinning-babies.png", logo: true },
+              { day: "02", month: "Feb 2026", title: "Dr. Luis Chacaliaza: Reconocimiento Nacional", desc: "El Dr. Luis Chacaliaza fue reconocido por su contribución a la medicina humanizada en el Perú, destacando su labor en la promoción del parto respetado.", icon: Stethoscope, img: "/assets/noticia-chacaliaza-v2.png", logo: false },
+              { day: "20", month: "Ene 2026", title: "La Historia de NeoSer: 5 Años Transformando Vidas", desc: "Desde un sueño compartido hasta convertirnos en referentes de la maternidad humanizada en Lambayeque. Conoce nuestra historia.", icon: Heart, img: "/assets/noticia-historia-neoser.png", logo: false },
             ].map((n, i) => (
               <div key={n.title} className="news-card" data-aos="fade-up" data-aos-delay={i * 100}>
-                <div className="news-image">
+                <div className={`news-image ${n.logo ? "!bg-white" : ""}`}>
                   <div className="news-date">
                     <span className="block text-lg font-bold">{n.day}</span>
                     <span className="text-[10px] uppercase">{n.month}</span>
                   </div>
-                  <n.icon className="h-16 w-16 text-navy opacity-20" />
+                  {n.img ? (
+                    <Image
+                      src={n.img}
+                      alt={n.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className={n.logo ? "object-contain p-8" : "object-cover"}
+                      style={n.logo ? undefined : { objectPosition: "center 28%" }}
+                    />
+                  ) : (
+                    <n.icon className="h-16 w-16 text-navy opacity-20" />
+                  )}
                 </div>
                 <div className="news-body">
                   <h3 className="mb-2 text-lg font-bold text-navy">{n.title}</h3>
