@@ -351,9 +351,14 @@ export function RebozoLanding() {
           <div className="grid items-center gap-12 lg:grid-cols-[0.8fr_1.2fr]">
             <div className="flex justify-center" data-aos="fade-up">
               <div className="relative w-full max-w-sm overflow-hidden rounded-3xl border-4 border-white bg-gradient-to-br from-pink-light to-blue-light shadow-lg">
-                <div className="flex h-80 w-full items-center justify-center">
-                  <HeartHandshake className="h-20 w-20 text-navy/25" />
-                </div>
+                <Image
+                  src="/assets/formadora-diana.png"
+                  alt="Obsta. Diana Silva Mejía"
+                  width={800}
+                  height={1024}
+                  className="h-[28rem] w-full object-cover object-top"
+                  priority
+                />
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
                   <span className="rounded-full bg-pink px-4 py-1.5 text-xs font-semibold text-white shadow">
                     Obsta. Diana Silva Mejía
