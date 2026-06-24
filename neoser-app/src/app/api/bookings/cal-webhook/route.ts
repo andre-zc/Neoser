@@ -25,6 +25,22 @@ function getAttendee(payload: { attendees?: Array<{ name?: string; email?: strin
   return payload.attendees?.[0];
 }
 
+// Cal.com manda los campos del formulario en `responses`. El formato varía:
+// puede ser { value: ... } o el valor directo. Esta función normaliza ambos.
+function getResponseValue(
+  responses: Record<string, unknown> | undefined,
+  key: string,
+): string | undefined {
+  const raw = responses?.[key];
+  if (raw == null) return undefined;
+  if (typeof raw === "object" && raw !== null && "value" in raw) {
+    const v = (raw as { value: unknown }).value;
+    if (v == null) return undefined;
+    return typeof v === "string" ? v : String(v);
+  }
+  return typeof raw === "string" ? raw : String(raw);
+}
+
 export async function POST(request: NextRequest) {
   const rawBody = await request.text();
   const signature =
@@ -44,6 +60,11 @@ export async function POST(request: NextRequest) {
 
   const parsed = calBookingWebhookSchema.safeParse(parsedBody);
   if (!parsed.success) {
+    // Log detallado para diagnosticar qué campo del payload de Cal falló.
+    console.error(
+      "Cal webhook payload no soportado:",
+      JSON.stringify(parsed.error.flatten()),
+    );
     return NextResponse.json({ error: "Payload no soportado" }, { status: 400 });
   }
 
@@ -52,12 +73,49 @@ export async function POST(request: NextRequest) {
   const bookingStatus = mapBookingStatus(payload.status ?? parsed.data.triggerEvent);
   const supabase = createServiceClient();
 
+  // Campos custom del formulario de reserva (Dr. Chacaliaza y otros event types)
+  const responses = payload.responses as Record<string, unknown> | undefined;
+  const motivoConsulta = getResponseValue(responses, "motivoConsulta");
+  const edad = getResponseValue(responses, "edad");
+  const comentarios = getResponseValue(responses, "comentarios");
+  const contactoWhatsappRaw =
+    responses?.["contactoWhatsapp"] ?? responses?.["contactoWhatsApp"];
+  const quiereContactoWhatsapp =
+    contactoWhatsappRaw === true ||
+    contactoWhatsappRaw === "true" ||
+    (typeof contactoWhatsappRaw === "object" &&
+      contactoWhatsappRaw !== null &&
+      "value" in contactoWhatsappRaw &&
+      ((contactoWhatsappRaw as { value: unknown }).value === true ||
+        (contactoWhatsappRaw as { value: unknown }).value === "true"));
+
+  // Teléfono/email: preferimos attendee, con fallback a responses del form.
+  const phone =
+    attendee?.phoneNumber ||
+    getResponseValue(responses, "phone") ||
+    getResponseValue(responses, "attendeePhoneNumber") ||
+    "000000000";
+  const email =
+    attendee?.email || getResponseValue(responses, "email") || null;
+
+  // Componer notas legibles con todo lo que el form capturó.
+  const notesParts: string[] = [];
+  if (motivoConsulta) notesParts.push(`Motivo: ${motivoConsulta}`);
+  if (edad) notesParts.push(`Edad: ${edad}`);
+  if (comentarios) notesParts.push(`Comentarios: ${comentarios}`);
+  notesParts.push(
+    `Solicita contacto WhatsApp: ${quiereContactoWhatsapp ? "Sí" : "No"}`,
+  );
+  const notes = notesParts.join(" | ");
+
   const upsertPayload = {
     cal_booking_uid: payload.uid,
     full_name: attendee?.name || "Reserva Web NeoSer",
-    email: attendee?.email || null,
-    phone: attendee?.phoneNumber || "000000000",
+    email,
+    phone,
     booking_status: bookingStatus,
+    service_interest: motivoConsulta || payload.title || null,
+    notes,
     cal_event_type_id: payload.eventTypeId ?? null,
     cal_starts_at: payload.startTime ?? null,
     cal_ends_at: payload.endTime ?? null,

@@ -69,16 +69,21 @@ export const calBookingWebhookSchema = z.object({
   triggerEvent: z.string().optional(),
   payload: z.object({
     uid: z.string().min(1),
+    title: z.string().optional(),
     status: z.string().optional(),
-    startTime: z.string().datetime().optional(),
-    endTime: z.string().datetime().optional(),
-    eventTypeId: z.number().int().optional(),
+    // Cal manda fechas con offset de zona (ej. "...-05:00") en eventos con
+    // timezone America/Lima; z.string() (no .datetime()) las acepta tal cual.
+    startTime: z.string().optional(),
+    endTime: z.string().optional(),
+    // Cal puede mandar eventTypeId como number o string segun la version.
+    eventTypeId: z.coerce.number().int().optional(),
+    // email no estricto: Cal a veces incluye formatos que .email() rechaza.
     responses: z.record(z.string(), z.unknown()).optional(),
     attendees: z
       .array(
         z.object({
           name: z.string().optional(),
-          email: z.string().email().optional(),
+          email: z.string().optional(),
           phoneNumber: z.string().optional(),
         }),
       )
