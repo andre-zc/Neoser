@@ -107,7 +107,8 @@ const seminars = [
 ];
 
 const includes = [
-  "4 seminarios en vivo a lo largo de 1 mes de capacitación",
+  "4 seminarios a lo largo de 1 mes de capacitación",
+  "12 videos tutoriales de ejercicios con Rebozo para el embarazo, parto y posparto",
   "Marco clínico y seguro para profesionales de salud y doulas",
   "Acceso a la Comunidad de profesionales NeoSer",
   "Certificado de participación NeoSer",
@@ -250,7 +251,7 @@ export function RebozoLanding() {
             <div className="relative" data-aos="fade-up" data-aos-delay="100">
               <div className="relative h-72 w-full overflow-hidden rounded-3xl border-4 border-white shadow-lg md:h-96">
                 <Image
-                  src="/assets/hero/slide-4-acompanamiento.jpg"
+                  src="/assets/hero/slide-4-acompanamiento.png"
                   alt="Acompañamiento con técnica Rebozo en NeoSer"
                   fill
                   sizes="(max-width: 1023px) 100vw, 520px"
@@ -371,13 +372,12 @@ export function RebozoLanding() {
               <p className="section-tag mb-2">Tu formadora</p>
               <h2 className="section-title mb-1">Diana Silva Mejía</h2>
               <p className="mb-5 font-semibold text-pink">
-                Gerente General y Cofundadora de NeoSer
+                Cofundadora y Gerente General de NeoSer Perú
               </p>
               <p className="mb-4 leading-relaxed text-gray-500">
-                Obstetra, doula y profesora certificada en el método francés
-                &quot;Periné y Movimiento&quot;. Trae al país metodologías avanzadas de
-                anatomía funcional para el parto y lidera la formación de
-                profesionales en nacimiento respetado.
+                Obstetra especialista en humanización del embarazo, parto y
+                nacimiento. Ex Directora de la Fundación de Waal de los Países
+                Bajos en Perú.
               </p>
               <p className="mb-6 leading-relaxed text-gray-500">
                 El programa cuenta además con la dirección médica del{" "}

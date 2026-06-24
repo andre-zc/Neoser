@@ -69,6 +69,7 @@ export default async function ServiceDetailPage({
               alt={service.title}
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
+              quality={90}
               className="object-cover"
               priority
             />
@@ -123,6 +124,7 @@ export default async function ServiceDetailPage({
                       alt={r.title}
                       fill
                       sizes="(max-width: 640px) 100vw, 33vw"
+                      quality={90}
                       className="object-cover transition group-hover:scale-105"
                     />
                   </div>

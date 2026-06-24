@@ -152,7 +152,7 @@ export default function HomePage() {
       img: "/assets/noticia-historia-neoser.png",
       logo: false,
       full: [
-        "Lo que comenzó como un sueño compartido entre la Obsta. Diana Silva y el Dr. Luis Chacaliaza, hoy es una realidad que ha acompañado a cientos de familias en su camino hacia la maternidad.",
+        "Lo que comenzó como un sueño compartido entre la Obsta. Diana Silva Mejía y el Dr. Luis Chacaliaza, hoy es una realidad que ha acompañado a cientos de familias en su camino hacia la maternidad.",
         "En cinco años, NeoSer se ha convertido en un referente de la maternidad y medicina humanizada en Lambayeque, formando a más de 1,000 profesionales y acompañando más de 500 nacimientos respetados.",
         "Nuestra historia es la de cada mujer escuchada, cada pareja acompañada y cada bebé recibido con amor. Porque nacer y vivir con amor cambia el mundo, seguimos creciendo para llegar a más familias.",
       ],
@@ -162,6 +162,7 @@ export default function HomePage() {
   const courses = [
     { slug: "prep-parto", badge: "Presencial", badgeBg: "bg-pink", title: "Curso de Preparación al Parto", desc: "Técnicas de respiración, posiciones de parto, plan de nacimiento y vínculo temprano.", price: "S/. 350", wa: "Curso%20de%20Preparacion%20al%20Parto" },
     { slug: "diplomado-parto", badge: "Online", badgeBg: "bg-navy", title: "Diplomado en Parto Humanizado", desc: "Formación integral para profesionales de salud en atención humanizada del nacimiento.", price: "S/. 1,200", wa: "Diplomado%20en%20Parto%20Humanizado" },
+    { slug: "antropologia-parto", badge: "Online", badgeBg: "bg-navy", title: "Antropología del Parto", desc: "Curso Internacional: paradigmas del nacimiento, violencia obstétrica y partería posmoderna.", price: "S/. 200", wa: "Curso%20Internacional%20Antropologia%20del%20Parto" },
     { slug: "rebozo-cert", badge: "Híbrido", badgeBg: "bg-pink", title: "Técnica Rebozo Certificación", desc: "Certificación internacional en técnica Rebozo con reconocimiento de Spinning Babies.", price: "S/. 800", wa: "Certificacion%20Rebozo" },
     { slug: "taller-lactancia", badge: "Presencial", badgeBg: "bg-pink", title: "Taller de Lactancia Materna", desc: "Taller práctico sobre técnicas de lactancia, posiciones y resolución de problemas comunes.", price: "S/. 180", wa: "Taller%20de%20Lactancia" },
   ];
@@ -235,13 +236,13 @@ export default function HomePage() {
 
       {/* ===== HERO SLIDER ===== */}
       <section id="inicio" className="hero-slider-section">
-        <div className="relative w-full" style={{ height: "100vh" }}>
+        <div className="relative w-full" style={{ height: "calc(100vh + 9rem)" }}>
           {heroSlides.map((slide, i) => {
             const isActive = activeSlide === i;
             const isAdjacent = activeSlide === (i + 3) % 4 || activeSlide === (i + 1) % 4;
             if (!isActive && !isAdjacent) return null;
             return (
-            <div key={i} className={`absolute inset-0 flex items-end overflow-hidden transition-opacity duration-700 pt-40 pb-36 ${slide.bg} ${isActive ? "opacity-100 z-10" : "opacity-0 z-0"}`}>
+            <div key={i} className={`absolute inset-0 flex items-end overflow-hidden transition-opacity duration-700 pt-44 pb-52 ${slide.bg} ${isActive ? "opacity-100 z-10" : "opacity-0 z-0"}`}>
               {isActive && (
                 <div className="hero-particles">
                   <span className="particle particle-circle" style={{ width: 320, height: 320, top: -60, right: -80, background: "#e8879b", opacity: 0.07 }} />
@@ -286,7 +287,7 @@ export default function HomePage() {
           );
           })}
 
-          <div className="absolute bottom-28 left-0 right-0 z-20 flex justify-center gap-2">
+          <div className="absolute bottom-64 left-0 right-0 z-20 flex justify-center gap-2">
             {[0, 1, 2, 3].map((i) => (
               <button key={i} onClick={() => setActiveSlide(i)} className="h-3 rounded-full transition-all duration-300" style={{ width: activeSlide === i ? 36 : 12, background: activeSlide === i ? "#e8879b" : "rgba(255,255,255,0.5)" }} />
             ))}
@@ -296,7 +297,7 @@ export default function HomePage() {
         {/* Stats Bar */}
         <div className="hero-stats-bar">
           <div className="container-main">
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+            <div className="hero-stats-card grid grid-cols-2 gap-6 sm:grid-cols-4">
               {[
                 { val: "+1,000", label: "Alumnos formados" },
                 { val: "+500", label: "Partos acompañados" },
@@ -305,7 +306,7 @@ export default function HomePage() {
               ].map((s) => (
                 <div key={s.label} className="text-center">
                   <div className="text-2xl font-bold text-white md:text-3xl" style={{ fontFamily: "var(--font-playfair), serif" }}>{s.val}</div>
-                  <div className="mt-1 text-xs text-white/60 md:text-sm">{s.label}</div>
+                  <div className="mt-1 text-xs text-white/70 md:text-sm">{s.label}</div>
                 </div>
               ))}
             </div>
@@ -314,9 +315,9 @@ export default function HomePage() {
       </section>
 
       {/* ===== SERVICIOS ===== */}
-      <section id="servicios" className="bg-cream py-20 md:py-28">
+      <section id="servicios" className="bg-cream pt-16 pb-12 md:pt-24 md:pb-16">
         <div className="container-main">
-          <div className="mb-16 text-center" data-aos="fade-up">
+          <div className="mb-10 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Lo que hacemos por ti</p>
             <h2 className="section-title mb-4">Nuestros Servicios</h2>
             <div className="section-divider mx-auto" />
@@ -338,9 +339,9 @@ export default function HomePage() {
       </section>
 
       {/* ===== CURSOS ===== */}
-      <section id="cursos" className="bg-white py-20 md:py-28">
+      <section id="cursos" className="bg-white py-12 md:py-16">
         <div className="container-main">
-          <div className="mb-16 text-center" data-aos="fade-up">
+          <div className="mb-10 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Escuela NeoSer</p>
             <h2 className="section-title mb-4">Nuestros Cursos</h2>
             <div className="section-divider mx-auto" />
@@ -348,9 +349,9 @@ export default function HomePage() {
               Formación profesional y vivencial para quienes desean transformar la atención materna con un enfoque humanizado y basado en evidencia.
             </p>
           </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" data-aos="fade-up" data-aos-delay="100">
+          <div className="mx-auto flex max-w-4xl flex-wrap justify-center gap-7" data-aos="fade-up" data-aos-delay="100">
             {courses.map((c) => (
-              <div key={c.title} className="course-card">
+              <div key={c.title} className="course-card w-full sm:w-[calc((100%-1.75rem)/2)] lg:w-[calc((100%-3.5rem)/3)]">
                 <div className="course-image">
                   <span className={`course-badge ${c.badgeBg} text-white`}>{c.badge}</span>
                 </div>
@@ -367,7 +368,7 @@ export default function HomePage() {
           </div>
 
           {/* Próximos Eventos */}
-          <div className="mt-20" data-aos="fade-up">
+          <div className="mt-12" data-aos="fade-up">
             <h3 className="mb-8 text-center text-2xl font-bold text-navy">Próximos Eventos</h3>
             <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-3">
               {[
@@ -385,7 +386,7 @@ export default function HomePage() {
           </div>
 
           {/* Testimonios */}
-          <div className="mt-12" data-aos="fade-up">
+          <div className="mt-8" data-aos="fade-up">
             <h3 className="mb-8 text-center text-2xl font-bold text-navy">Lo que dicen nuestros alumnos</h3>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {testimonials.map((t) => (
@@ -412,23 +413,23 @@ export default function HomePage() {
       </section>
 
       {/* ===== NOSOTROS ===== */}
-      <section id="nosotros" className="bg-cream py-20 md:py-28">
+      <section id="nosotros" className="bg-cream py-12 md:py-16">
         <div className="container-main">
-          <div className="mb-16 text-center" data-aos="fade-up">
+          <div className="mb-10 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Nuestra historia</p>
             <h2 className="section-title mb-4">Quiénes Somos</h2>
             <div className="section-divider mx-auto" />
           </div>
 
           {/* Story */}
-          <div className="mb-20 grid items-center gap-12 lg:grid-cols-2" data-aos="fade-up">
+          <div className="mb-12 grid items-center gap-10 lg:grid-cols-2" data-aos="fade-up">
             <div>
               <h3 className="mb-4 text-2xl font-bold text-navy">
                 Nacimos con un propósito: <span className="text-pink">humanizar la maternidad</span>
               </h3>
               <p className="mb-4 leading-relaxed text-gray-500">
                 NeoSer nace en Chiclayo con la visión de transformar la atención materna en el Perú.
-                Fundado por la Obst. Diana Silva y el Dr. Luis Chacaliaza, nuestro centro combina la
+                Fundado por la Obst. Diana Silva Mejía y el Dr. Luis Chacaliaza, nuestro centro combina la
                 medicina basada en evidencia con el respeto profundo por la fisiología del nacimiento.
               </p>
               <p className="mb-6 leading-relaxed text-gray-500">
@@ -454,11 +455,11 @@ export default function HomePage() {
           </div>
 
           {/* Team */}
-          <div className="mb-12" data-aos="fade-up">
+          <div className="mb-8" data-aos="fade-up">
             <h3 className="mb-10 text-center text-2xl font-bold text-navy">Nuestro Equipo</h3>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                { initials: "DS", name: "Obst. Diana Silva", role: "Fundadora & Directora", desc: "Obstetra especialista en parto humanizado. Certificada en Spinning Babies y Técnica Rebozo.", img: "/assets/equipo-diana-v2.png", pos: "center 20%" },
+                { initials: "DS", name: "Obst. Diana Silva Mejía", role: "Cofundadora y Gerente General", desc: "Obstetra especialista en humanización del embarazo, parto y nacimiento. Ex Directora de la Fundación de Waal de los Países Bajos en Perú.", img: "/assets/equipo-diana-v2.png", pos: "center 20%" },
                 { initials: "LC", name: "Dr. Luis Chacaliaza", role: "Co-Fundador & Director Médico", desc: "Médico ginecólogo-obstetra con enfoque en medicina humanizada y nacimiento respetado.", img: "/assets/equipo-luis.png", pos: "center 20%" },
                 { initials: "ED", name: "Equipo Docente", role: "Docentes Especializados", desc: "Profesionales de la salud con formación en maternidad humanizada y pedagogía.", img: "", pos: "center 20%" },
                 { initials: "EA", name: "Equipo Asistencial", role: "Soporte & Atención", desc: "Personal dedicado a brindarte la mejor experiencia en cada visita y consulta.", img: "", pos: "center 20%" },
@@ -487,7 +488,7 @@ export default function HomePage() {
           </div>
 
           {/* Recognitions */}
-          <div className="mb-16" data-aos="fade-up">
+          <div className="mb-10" data-aos="fade-up">
             <h3 className="mb-8 text-center text-2xl font-bold text-navy">Reconocimientos y Alianzas</h3>
             <div className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {[
@@ -508,27 +509,13 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Counters */}
-          <div className="grid grid-cols-2 gap-6 rounded-3xl bg-white p-8 shadow-sm md:grid-cols-4" data-aos="fade-up">
-            {[
-              { val: "+5", label: "Años de experiencia" },
-              { val: "+1,000", label: "Alumnos formados" },
-              { val: "+4 Ed.", label: "Diplomados realizados" },
-              { val: "+500", label: "Partos humanizados" },
-            ].map((c) => (
-              <div key={c.label} className="counter-box">
-                <div className="counter-number">{c.val}</div>
-                <div className="counter-label">{c.label}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
       {/* ===== NOTICIAS ===== */}
-      <section id="noticias" className="bg-white py-20 md:py-28">
+      <section id="noticias" className="bg-white py-12 md:py-16">
         <div className="container-main">
-          <div className="mb-16 text-center" data-aos="fade-up">
+          <div className="mb-10 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Mantente informado</p>
             <h2 className="section-title mb-4">Noticias y Novedades</h2>
             <div className="section-divider mx-auto" />
@@ -537,10 +524,6 @@ export default function HomePage() {
             {news.map((n, i) => (
               <div key={n.title} className="news-card" data-aos="fade-up" data-aos-delay={i * 100}>
                 <div className={`news-image ${n.logo ? "!bg-white" : ""}`}>
-                  <div className="news-date">
-                    <span className="block text-lg font-bold">{n.day}</span>
-                    <span className="text-[10px] uppercase">{n.month}</span>
-                  </div>
                   {n.img ? (
                     <Image
                       src={n.img}
@@ -556,7 +539,7 @@ export default function HomePage() {
                 </div>
                 <div className="news-body">
                   <h3 className="mb-2 text-lg font-bold text-navy">{n.title}</h3>
-                  <p className="mb-4 text-sm leading-relaxed text-gray-500">{n.desc}</p>
+                  <p className="mb-4 leading-relaxed text-gray-500">{n.desc}</p>
                   <button
                     type="button"
                     onClick={() => setActiveNews(i)}
@@ -572,9 +555,9 @@ export default function HomePage() {
       </section>
 
       {/* ===== RESERVA ===== */}
-      <section id="reserva" className="bg-cream pt-20 pb-12 md:pt-28 md:pb-16">
+      <section id="reserva" className="bg-cream pt-12 pb-8 md:pt-16 md:pb-12">
         <div className="container-main">
-          <div className="mb-12 text-center" data-aos="fade-up">
+          <div className="mb-8 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Agenda tu atención</p>
             <h2 className="section-title mb-4">Reserva de Citas</h2>
             <div className="section-divider mx-auto" />
@@ -619,9 +602,9 @@ export default function HomePage() {
       </section>
 
       {/* ===== CONTACTO ===== */}
-      <section id="contacto" className="bg-cream pt-12 pb-20 md:pt-16 md:pb-28">
+      <section id="contacto" className="bg-cream pt-8 pb-12 md:pt-12 md:pb-16">
         <div className="container-main">
-          <div className="mb-16 text-center" data-aos="fade-up">
+          <div className="mb-10 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Estamos para ti</p>
             <h2 className="section-title mb-4">Contáctanos</h2>
             <div className="section-divider mx-auto" />
@@ -640,8 +623,8 @@ export default function HomePage() {
                     <div key={c.label} className="flex items-start gap-4">
                       <div className={`contact-icon ${c.iconBg}`}><c.icon className={`h-5 w-5 ${c.iconColor}`} /></div>
                       <div>
-                        <p className="text-sm font-semibold text-navy">{c.label}</p>
-                        <p className="text-sm text-gray-500">{c.value}</p>
+                        <p className="font-semibold text-navy">{c.label}</p>
+                        <p className="text-gray-500">{c.value}</p>
                       </div>
                     </div>
                   ))}

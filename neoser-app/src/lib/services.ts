@@ -5,7 +5,8 @@ export type Service = {
   title: string;
   summary: string; // 1-2 líneas para la home
   description: string[]; // párrafos completos para /servicios
-  image: string; // path relativo a /public
+  image: string; // path relativo a /public (portada)
+  gallery?: string[]; // fotos adicionales para carrusel en detalle
   category: ServiceCategory;
   // Orientación nativa de la foto. Default "horizontal" (contenedor 4:3).
   // "vertical" cambia el contenedor a 2:3 para que la foto encaje sin recortes.
@@ -23,6 +24,10 @@ export const services: Service[] = [
       "Brindamos atención ginecológica a la mujer en sus diferentes etapas de vida, desde una atención integral, preventiva y centrada en el bienestar físico, emocional, hormonal y corporal.",
     ],
     image: "/assets/servicios/neoser-340.jpg",
+    gallery: [
+      "/assets/servicios/neoser-340.jpg",
+      "/assets/servicios/MG_0639.jpg",
+    ],
     category: "medica",
     imageOrientation: "vertical",
   },
@@ -32,9 +37,14 @@ export const services: Service[] = [
     summary:
       "Cuidado integral de madre y bebé con enfoque perinatal y participación familiar.",
     description: [
-      "Brindamos atención prenatal orientada al cuidado integral de la madre y el bebé, promoviendo la salud materna y fetal, la salud mental perinatal, la educación perinatal y la preparación consciente para el nacimiento, junto a la participación activa de la pareja y familia.",
+      "Brindamos atención prenatal centrada en el bienestar integral de la madre, su bebé y su familia, promoviendo la salud mental, la educación perinatal y la preparación consciente para el nacimiento, con la participación activa de la pareja durante todo el proceso.",
     ],
-    image: "/assets/servicios/neoser-330-opt.webp",
+    image: "/assets/servicios/MG_9793.jpg",
+    gallery: [
+      "/assets/servicios/MG_9793.jpg",
+      "/assets/servicios/MG_9764.jpg",
+      "/assets/servicios/neoser-310.jpg",
+    ],
     category: "medica",
   },
   {
@@ -85,7 +95,7 @@ export const services: Service[] = [
       "Programa basado en la metodología de Anatomía para el Movimiento® de Blandine Calais-Germain, orientado a favorecer la conciencia y el cuidado del suelo pélvico mediante principios de educación somática, percepción corporal y biomecánica femenina.",
       "A través de ejercicios específicos, respiración consciente y movimiento guiado, este método contribuye a mejorar la postura, la movilidad y la integración del suelo pélvico con el cuerpo en movimiento, favoreciendo la prevención de prolapsos, incontinencia urinaria y otras disfunciones del periné, promoviendo el bienestar integral de la mujer en sus diferentes etapas de vida.",
     ],
-    image: "/assets/servicios/neoser-4.webp",
+    image: "/assets/servicios/perine-movimiento.png",
     category: "somatica",
   },
   {
@@ -136,7 +146,7 @@ export const services: Service[] = [
       "Programa orientado a preparar a la gestante y su familia para el inicio fisiológico de la lactancia materna desde el embarazo, favoreciendo una comprensión consciente de las primeras horas de vida del bebé y la importancia del contacto piel con piel, la cero separación y la recepción temprana del calostro.",
       "A través de sesiones educativas y vivenciales, se abordan aspectos relacionados con el agarre, las posiciones de amamantamiento, la producción de leche y las necesidades biológicas del recién nacido, promoviendo el vínculo temprano, el desarrollo de la microbiota y una lactancia informada y respetada.",
     ],
-    image: "/assets/servicios/lactancia-prenatal.webp",
+    image: "/assets/servicios/MG_4392.jpg",
     category: "comunidad",
   },
   {
@@ -149,7 +159,7 @@ export const services: Service[] = [
       "Cada 15 días compartimos meditaciones inspiradas en la historia de vida de la Sagrada Familia, promoviendo espacios de pausa, escucha, sostén emocional y reflexión en comunidad.",
       "A través de la respiración, el movimiento suave, el arte y el compartir entre madres, favorecemos experiencias de bienestar, contención y conexión consigo mismas y con su maternidad desde una mirada sensible y respetuosa.",
     ],
-    image: "/assets/servicios/IMG_2544.webp",
+    image: "/assets/servicios/IMG_2544-editada.png",
     category: "comunidad",
   },
 ];

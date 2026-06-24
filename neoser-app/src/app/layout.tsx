@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     "lactancia materna",
     "Spinning Babies Perú",
     "centro de maternidad Lambayeque",
-    "Diana Silva obstetra",
+    "Diana Silva Mejía obstetra",
   ],
   authors: [{ name: "NeoSer" }],
   creator: "NeoSer",

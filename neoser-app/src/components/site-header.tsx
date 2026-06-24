@@ -50,8 +50,8 @@ export function SiteHeader() {
         <div className="container-main flex items-center justify-between">
           <Link href={isHome ? "#inicio" : "/"} className="navbar-logo flex-shrink-0 flex flex-col items-start">
             <span className="logo-img-wrap">
-              <Image src="/assets/logo-white.png" alt="NeoSer" width={320} height={128} className="logo-white h-24 w-auto md:h-32" priority={isHome} />
-              <Image src="/assets/logo-color.png" alt="NeoSer" width={200} height={80} className="logo-color h-12 w-auto md:h-14" priority={!isHome} />
+              <Image src="/assets/logo-white.png" alt="NeoSer" width={320} height={128} className="logo-white h-32 w-auto md:h-40" priority={isHome} />
+              <Image src="/assets/logo-color.png" alt="NeoSer" width={200} height={80} className="logo-color h-10 w-auto md:h-12" priority={!isHome} />
             </span>
             <span className="navbar-script">¡Porque nacer y vivir con amor cambia el mundo!</span>
           </Link>
