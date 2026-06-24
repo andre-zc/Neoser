@@ -66,28 +66,31 @@ export const createBookingSchema = z.object({
 });
 
 export const calBookingWebhookSchema = z.object({
-  triggerEvent: z.string().optional(),
+  // .nullish() = acepta null Y undefined. Cal.com manda varios campos como
+  // null explícito (title, status, endTime, etc.), y .optional() solo acepta
+  // undefined → causaba 400 "expected string, received null".
+  triggerEvent: z.string().nullish(),
   payload: z.object({
     uid: z.string().min(1),
-    title: z.string().optional(),
-    status: z.string().optional(),
+    title: z.string().nullish(),
+    status: z.string().nullish(),
     // Cal manda fechas con offset de zona (ej. "...-05:00") en eventos con
     // timezone America/Lima; z.string() (no .datetime()) las acepta tal cual.
-    startTime: z.string().optional(),
-    endTime: z.string().optional(),
+    startTime: z.string().nullish(),
+    endTime: z.string().nullish(),
     // Cal puede mandar eventTypeId como number o string segun la version.
-    eventTypeId: z.coerce.number().int().optional(),
+    eventTypeId: z.coerce.number().int().nullish(),
     // email no estricto: Cal a veces incluye formatos que .email() rechaza.
-    responses: z.record(z.string(), z.unknown()).optional(),
+    responses: z.record(z.string(), z.unknown()).nullish(),
     attendees: z
       .array(
         z.object({
-          name: z.string().optional(),
-          email: z.string().optional(),
-          phoneNumber: z.string().optional(),
+          name: z.string().nullish(),
+          email: z.string().nullish(),
+          phoneNumber: z.string().nullish(),
         }),
       )
-      .optional(),
+      .nullish(),
   }),
 });
 

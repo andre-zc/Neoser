@@ -6,7 +6,7 @@ import { syncBookingToHubspot } from "@/lib/hubspot";
 import { syncBookingToBrevo } from "@/lib/brevo";
 import { sendEmail } from "@/lib/email";
 
-function mapBookingStatus(status?: string): "pending" | "confirmed" | "cancelled" | "rescheduled" {
+function mapBookingStatus(status?: string | null): "pending" | "confirmed" | "cancelled" | "rescheduled" {
   switch ((status || "").toLowerCase()) {
     case "accepted":
     case "confirmed":
@@ -21,7 +21,15 @@ function mapBookingStatus(status?: string): "pending" | "confirmed" | "cancelled
   }
 }
 
-function getAttendee(payload: { attendees?: Array<{ name?: string; email?: string; phoneNumber?: string }> }) {
+function getAttendee(payload: {
+  attendees?:
+    | Array<{
+        name?: string | null;
+        email?: string | null;
+        phoneNumber?: string | null;
+      }>
+    | null;
+}) {
   return payload.attendees?.[0];
 }
 
