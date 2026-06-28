@@ -16,8 +16,9 @@ import {
   Globe,
   Trophy,
   ArrowRight,
-  User2,
   X,
+  Activity,
+  Droplets,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,6 +28,7 @@ import { WhatsappInlineButton } from "@/components/whatsapp-button";
 import { services as servicesData } from "@/lib/services";
 import { ServicesCarousel } from "@/components/services-carousel";
 import { SiteHeader } from "@/components/site-header";
+import { CountUp } from "@/components/count-up";
 
 const GoogleMapEmbed = dynamic(
   () => import("@/components/google-map-embed").then((m) => m.GoogleMapEmbed),
@@ -160,11 +162,11 @@ export default function HomePage() {
   ];
 
   const courses = [
-    { slug: "prep-parto", badge: "Presencial", badgeBg: "bg-pink", title: "Curso de Preparación al Parto", desc: "Técnicas de respiración, posiciones de parto, plan de nacimiento y vínculo temprano.", price: "S/. 350", wa: "Curso%20de%20Preparacion%20al%20Parto" },
-    { slug: "diplomado-parto", badge: "Online", badgeBg: "bg-navy", title: "Diplomado en Parto Humanizado", desc: "Formación integral para profesionales de salud en atención humanizada del nacimiento.", price: "S/. 1,200", wa: "Diplomado%20en%20Parto%20Humanizado" },
-    { slug: "antropologia-parto", badge: "Online", badgeBg: "bg-navy", title: "Antropología del Parto", desc: "Curso Internacional: paradigmas del nacimiento, violencia obstétrica y partería posmoderna.", price: "S/. 200", wa: "Curso%20Internacional%20Antropologia%20del%20Parto" },
-    { slug: "rebozo-cert", badge: "Híbrido", badgeBg: "bg-pink", title: "Técnica Rebozo Certificación", desc: "Certificación internacional en técnica Rebozo con reconocimiento de Spinning Babies.", price: "S/. 800", wa: "Certificacion%20Rebozo" },
-    { slug: "taller-lactancia", badge: "Presencial", badgeBg: "bg-pink", title: "Taller de Lactancia Materna", desc: "Taller práctico sobre técnicas de lactancia, posiciones y resolución de problemas comunes.", price: "S/. 180", wa: "Taller%20de%20Lactancia" },
+    { slug: "prep-parto", badge: "Presencial", badgeBg: "bg-pink", icon: Baby, title: "Curso de Preparación al Parto", desc: "Técnicas de respiración, posiciones de parto, plan de nacimiento y vínculo temprano.", price: "S/. 350", wa: "Curso%20de%20Preparacion%20al%20Parto" },
+    { slug: "diplomado-parto", badge: "Online", badgeBg: "bg-navy", icon: Award, title: "Diplomado en Parto Humanizado", desc: "Formación integral para profesionales de salud en atención humanizada del nacimiento.", price: "S/. 1,200", wa: "Diplomado%20en%20Parto%20Humanizado" },
+    { slug: "antropologia-parto", badge: "Online", badgeBg: "bg-navy", icon: Globe, title: "Antropología del Parto", desc: "Curso Internacional: paradigmas del nacimiento, violencia obstétrica y partería posmoderna.", price: "S/. 200", wa: "Curso%20Internacional%20Antropologia%20del%20Parto" },
+    { slug: "rebozo-cert", badge: "Híbrido", badgeBg: "bg-pink", icon: HeartHandshake, title: "Técnica Rebozo Certificación", desc: "Certificación internacional en técnica Rebozo con reconocimiento de Spinning Babies.", price: "S/. 800", wa: "Certificacion%20Rebozo" },
+    { slug: "taller-lactancia", badge: "Presencial", badgeBg: "bg-pink", icon: Droplets, title: "Taller de Lactancia Materna", desc: "Taller práctico sobre técnicas de lactancia, posiciones y resolución de problemas comunes.", price: "S/. 180", wa: "Taller%20de%20Lactancia" },
   ];
 
   const testimonials = [
@@ -305,7 +307,9 @@ export default function HomePage() {
                 { val: "+5 Años", label: "De experiencia" },
               ].map((s) => (
                 <div key={s.label} className="text-center">
-                  <div className="text-2xl font-bold text-white md:text-3xl" style={{ fontFamily: "var(--font-playfair), serif" }}>{s.val}</div>
+                  <div className="text-2xl font-bold text-white md:text-3xl" style={{ fontFamily: "var(--font-playfair), serif" }}>
+                    <CountUp value={s.val} />
+                  </div>
                   <div className="mt-1 text-xs text-white/70 md:text-sm">{s.label}</div>
                 </div>
               ))}
@@ -315,15 +319,52 @@ export default function HomePage() {
       </section>
 
       {/* ===== SERVICIOS ===== */}
-      <section id="servicios" className="bg-cream pt-16 pb-12 md:pt-24 md:pb-16">
-        <div className="container-main">
+      <section id="servicios" className="relative overflow-hidden bg-cream pt-16 pb-12 md:pt-24 md:pb-16">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <span className="particle particle-circle" style={{ width: 300, height: 300, top: -80, left: -70, background: "var(--pink)", opacity: 0.05 }} />
+          <span className="particle particle-circle" style={{ width: 240, height: 240, bottom: -60, right: -60, background: "var(--blue)", opacity: 0.06 }} />
+          <span className="particle particle-ring" style={{ width: 120, height: 120, top: "15%", right: "8%", borderColor: "rgba(232,135,155,0.22)" }} />
+          <span className="particle particle-dot" style={{ width: 9, height: 9, top: "30%", left: "10%", background: "rgba(74,127,181,0.4)" }} />
+        </div>
+
+        <div className="container-main relative">
           <div className="mb-10 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Lo que hacemos por ti</p>
-            <h2 className="section-title mb-4">Nuestros Servicios</h2>
+            <h2 className="section-title mb-4">
+              Nuestros{" "}
+              <span className="bg-gradient-to-r from-pink to-pink-dark bg-clip-text text-transparent">
+                Servicios
+              </span>
+            </h2>
             <div className="section-divider mx-auto" />
             <p className="mx-auto mt-4 max-w-2xl text-gray-500">
               Brindamos atención integral para cada etapa de tu maternidad, con profesionales comprometidos con el respeto y la calidez humana.
             </p>
+          </div>
+
+          {/* 3 pilares */}
+          <div className="mb-12 grid gap-6 md:grid-cols-3" data-aos="fade-up">
+            {[
+              { icon: Stethoscope, title: "Atención Médica Humanizada", text: "Ginecología, prenatal, partos y cesáreas humanizadas, centradas en los derechos de mamá y bebé.", blue: false },
+              { icon: Activity, title: "Educación Somática", text: "Programas vivenciales: preparación al parto, periné, rebozo, canto prenatal y movimiento con balones.", blue: true },
+              { icon: Users, title: "Comunidad y Soporte", text: "Consejería en lactancia y círculos de meditación que te acompañan en cada etapa de tu maternidad.", blue: false },
+            ].map((p) => (
+              <Link
+                key={p.title}
+                href="/servicios"
+                className="group relative overflow-hidden rounded-2xl bg-white p-7 shadow-sm ring-1 ring-black/5 transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+              >
+                <span className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-pink to-blue transition-transform duration-300 group-hover:scale-x-100" />
+                <div className={`mb-5 flex h-16 w-16 items-center justify-center rounded-2xl ${p.blue ? "bg-blue-light text-blue" : "bg-pink-light text-pink"}`}>
+                  <p.icon className="h-8 w-8" strokeWidth={1.6} />
+                </div>
+                <h3 className="mb-2 text-lg font-bold text-navy">{p.title}</h3>
+                <p className="text-sm leading-relaxed text-gray-500">{p.text}</p>
+                <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-pink transition-all group-hover:gap-2">
+                  Ver más <ArrowRight className="h-4 w-4" />
+                </span>
+              </Link>
+            ))}
           </div>
 
           <div data-aos="fade-up">
@@ -338,12 +379,46 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ===== FRANJA CTA INTERMEDIA ===== */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-navy via-navy to-blue py-14 text-center text-white md:py-16">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <span className="particle particle-circle" style={{ width: 260, height: 260, top: -70, left: "10%", background: "var(--pink)", opacity: 0.16 }} />
+          <span className="particle particle-circle" style={{ width: 170, height: 170, bottom: -50, right: "12%", background: "#ffffff", opacity: 0.06 }} />
+          <span className="particle particle-ring" style={{ width: 110, height: 110, top: "24%", right: "8%", borderColor: "rgba(255,255,255,0.18)" }} />
+          <span className="particle particle-dot" style={{ width: 8, height: 8, bottom: "26%", left: "14%", background: "rgba(255,255,255,0.4)" }} />
+        </div>
+        <div className="container-main relative">
+          <p className="font-script text-2xl text-pink-light md:text-3xl">¿Lista para vivir tu maternidad de otra forma?</p>
+          <h2 className="mx-auto mt-2 mb-6 max-w-2xl text-2xl font-bold md:text-3xl">
+            Te acompañamos con calidez, respeto y evidencia en cada paso.
+          </h2>
+          <div className="flex flex-wrap justify-center gap-4">
+            <a href={bookingUrl} {...(calBookingUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="btn-primary !border-white !bg-white !text-pink-dark">
+              <Calendar className="h-5 w-5" /> Reserva tu cita
+            </a>
+            <a href="#contacto" className="btn-secondary !border-white !text-white">
+              Conversemos
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* ===== CURSOS ===== */}
-      <section id="cursos" className="bg-white py-12 md:py-16">
-        <div className="container-main">
+      <section id="cursos" className="relative overflow-hidden bg-white py-12 md:py-16">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <span className="particle particle-circle" style={{ width: 260, height: 260, top: -60, right: -60, background: "var(--blue)", opacity: 0.05 }} />
+          <span className="particle particle-diamond" style={{ top: "12%", left: "8%", background: "rgba(232,135,155,0.16)" }} />
+          <span className="particle particle-dot" style={{ width: 9, height: 9, bottom: "18%", right: "12%", background: "rgba(232,135,155,0.35)" }} />
+        </div>
+        <div className="container-main relative">
           <div className="mb-10 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Escuela NeoSer</p>
-            <h2 className="section-title mb-4">Nuestros Cursos</h2>
+            <h2 className="section-title mb-4">
+              Nuestros{" "}
+              <span className="bg-gradient-to-r from-pink to-pink-dark bg-clip-text text-transparent">
+                Cursos
+              </span>
+            </h2>
             <div className="section-divider mx-auto" />
             <p className="mx-auto mt-4 max-w-2xl text-gray-500">
               Formación profesional y vivencial para quienes desean transformar la atención materna con un enfoque humanizado y basado en evidencia.
@@ -351,8 +426,11 @@ export default function HomePage() {
           </div>
           <div className="mx-auto flex max-w-4xl flex-wrap justify-center gap-7" data-aos="fade-up" data-aos-delay="100">
             {courses.map((c) => (
-              <div key={c.title} className="course-card w-full sm:w-[calc((100%-1.75rem)/2)] lg:w-[calc((100%-3.5rem)/3)]">
+              <div key={c.title} className="course-card group w-full sm:w-[calc((100%-1.75rem)/2)] lg:w-[calc((100%-3.5rem)/3)]">
                 <div className="course-image">
+                  <span className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/10" aria-hidden />
+                  <span className="pointer-events-none absolute -bottom-8 -left-4 h-20 w-20 rounded-full bg-white/[0.06]" aria-hidden />
+                  <c.icon className="relative h-16 w-16 text-white/90 transition-transform duration-500 group-hover:scale-110" strokeWidth={1.3} />
                   <span className={`course-badge ${c.badgeBg} text-white`}>{c.badge}</span>
                 </div>
                 <div className="course-body">
@@ -376,10 +454,13 @@ export default function HomePage() {
                 { id: "mayo", month: "Mayo 2026", title: <>Seminario: Movimiento<br />en el Parto</>, desc: "Taller intensivo de un día. Cupos limitados." },
                 { id: "junio", month: "Junio 2026", title: <>Certificación Rebozo<br />Nivel II</>, desc: "Para egresados del Nivel I. Con aval internacional." },
               ].map((ev) => (
-                <div key={ev.id} className="timeline-item pb-6">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-pink">{ev.month}</span>
-                  <h4 className="mt-1 font-bold text-navy">{ev.title}</h4>
-                  <p className="mt-1 text-sm text-gray-500">{ev.desc}</p>
+                <div key={ev.id} className="group relative overflow-hidden rounded-2xl border border-navy/5 bg-cream p-6 transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+                  <span className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-pink to-blue transition-transform duration-300 group-hover:scale-x-100" />
+                  <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-pink-light px-3 py-1 text-xs font-semibold uppercase tracking-wide text-pink-dark">
+                    <Calendar className="h-3.5 w-3.5" /> {ev.month}
+                  </div>
+                  <h4 className="font-bold text-navy">{ev.title}</h4>
+                  <p className="mt-2 text-sm text-gray-500">{ev.desc}</p>
                 </div>
               ))}
             </div>
@@ -413,11 +494,21 @@ export default function HomePage() {
       </section>
 
       {/* ===== NOSOTROS ===== */}
-      <section id="nosotros" className="bg-cream py-12 md:py-16">
-        <div className="container-main">
+      <section id="nosotros" className="relative overflow-hidden bg-cream py-12 md:py-16">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <span className="particle particle-circle" style={{ width: 300, height: 300, top: -80, right: -70, background: "var(--pink)", opacity: 0.05 }} />
+          <span className="particle particle-ring" style={{ width: 120, height: 120, bottom: "10%", left: "6%", borderColor: "rgba(74,127,181,0.2)" }} />
+          <span className="particle particle-dot" style={{ width: 9, height: 9, top: "22%", left: "12%", background: "rgba(232,135,155,0.35)" }} />
+        </div>
+        <div className="container-main relative">
           <div className="mb-10 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Nuestra historia</p>
-            <h2 className="section-title mb-4">Quiénes Somos</h2>
+            <h2 className="section-title mb-4">
+              Quiénes{" "}
+              <span className="bg-gradient-to-r from-pink to-pink-dark bg-clip-text text-transparent">
+                Somos
+              </span>
+            </h2>
             <div className="section-divider mx-auto" />
           </div>
 
@@ -476,7 +567,12 @@ export default function HomePage() {
                         style={{ objectPosition: m.pos }}
                       />
                     ) : (
-                      <User2 className="h-20 w-20" />
+                      <span
+                        className="font-bold text-navy/65"
+                        style={{ fontFamily: "var(--font-playfair), serif", fontSize: "2.6rem" }}
+                      >
+                        {m.initials}
+                      </span>
                     )}
                   </div>
                   <h4 className="text-lg font-bold text-navy">{m.name}</h4>
@@ -513,11 +609,20 @@ export default function HomePage() {
       </section>
 
       {/* ===== NOTICIAS ===== */}
-      <section id="noticias" className="bg-white py-12 md:py-16">
-        <div className="container-main">
+      <section id="noticias" className="relative overflow-hidden bg-white py-12 md:py-16">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <span className="particle particle-circle" style={{ width: 240, height: 240, top: -60, left: -50, background: "var(--pink)", opacity: 0.05 }} />
+          <span className="particle particle-dot" style={{ width: 9, height: 9, top: "25%", right: "10%", background: "rgba(74,127,181,0.35)" }} />
+        </div>
+        <div className="container-main relative">
           <div className="mb-10 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Mantente informado</p>
-            <h2 className="section-title mb-4">Noticias y Novedades</h2>
+            <h2 className="section-title mb-4">
+              Noticias y{" "}
+              <span className="bg-gradient-to-r from-pink to-pink-dark bg-clip-text text-transparent">
+                Novedades
+              </span>
+            </h2>
             <div className="section-divider mx-auto" />
           </div>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -555,11 +660,20 @@ export default function HomePage() {
       </section>
 
       {/* ===== RESERVA ===== */}
-      <section id="reserva" className="bg-cream pt-12 pb-8 md:pt-16 md:pb-12">
-        <div className="container-main">
+      <section id="reserva" className="relative overflow-hidden bg-cream pt-12 pb-8 md:pt-16 md:pb-12">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <span className="particle particle-circle" style={{ width: 260, height: 260, bottom: -70, right: -60, background: "var(--blue)", opacity: 0.06 }} />
+          <span className="particle particle-ring" style={{ width: 110, height: 110, top: "14%", left: "7%", borderColor: "rgba(232,135,155,0.2)" }} />
+        </div>
+        <div className="container-main relative">
           <div className="mb-8 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Agenda tu atención</p>
-            <h2 className="section-title mb-4">Reserva de Citas</h2>
+            <h2 className="section-title mb-4">
+              Reserva de{" "}
+              <span className="bg-gradient-to-r from-pink to-pink-dark bg-clip-text text-transparent">
+                Citas
+              </span>
+            </h2>
             <div className="section-divider mx-auto" />
           </div>
 
@@ -602,11 +716,20 @@ export default function HomePage() {
       </section>
 
       {/* ===== CONTACTO ===== */}
-      <section id="contacto" className="bg-cream pt-8 pb-12 md:pt-12 md:pb-16">
-        <div className="container-main">
+      <section id="contacto" className="relative overflow-hidden bg-cream pt-8 pb-12 md:pt-12 md:pb-16">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <span className="particle particle-circle" style={{ width: 300, height: 300, top: -80, left: -70, background: "var(--pink)", opacity: 0.05 }} />
+          <span className="particle particle-dot" style={{ width: 9, height: 9, top: "18%", right: "12%", background: "rgba(232,135,155,0.35)" }} />
+          <span className="particle particle-diamond" style={{ bottom: "20%", left: "8%", background: "rgba(74,127,181,0.16)" }} />
+        </div>
+        <div className="container-main relative">
           <div className="mb-10 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Estamos para ti</p>
-            <h2 className="section-title mb-4">Contáctanos</h2>
+            <h2 className="section-title mb-4">
+              <span className="bg-gradient-to-r from-pink to-pink-dark bg-clip-text text-transparent">
+                Contáctanos
+              </span>
+            </h2>
             <div className="section-divider mx-auto" />
           </div>
           <div className="grid gap-12 lg:grid-cols-2" data-aos="fade-up">
