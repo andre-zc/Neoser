@@ -19,6 +19,7 @@ import {
   X,
   Activity,
   Droplets,
+  Sparkles,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -342,29 +343,78 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* 3 pilares */}
+          {/* 3 pilares (elementos visuales, no botones) */}
           <div className="mb-12 grid gap-6 md:grid-cols-3" data-aos="fade-up">
             {[
-              { icon: Stethoscope, title: "Atención Médica Humanizada", text: "Ginecología, prenatal, partos y cesáreas humanizadas, centradas en los derechos de mamá y bebé.", blue: false },
-              { icon: Activity, title: "Educación Somática", text: "Programas vivenciales: preparación al parto, periné, rebozo, canto prenatal y movimiento con balones.", blue: true },
-              { icon: Users, title: "Comunidad y Soporte", text: "Consejería en lactancia y círculos de meditación que te acompañan en cada etapa de tu maternidad.", blue: false },
-            ].map((p) => (
-              <Link
-                key={p.title}
-                href="/servicios"
-                className="group relative overflow-hidden rounded-2xl bg-white p-7 shadow-sm ring-1 ring-black/5 transition duration-300 hover:-translate-y-1 hover:shadow-xl"
-              >
-                <span className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-pink to-blue transition-transform duration-300 group-hover:scale-x-100" />
-                <div className={`mb-5 flex h-16 w-16 items-center justify-center rounded-2xl ${p.blue ? "bg-blue-light text-blue" : "bg-pink-light text-pink"}`}>
-                  <p.icon className="h-8 w-8" strokeWidth={1.6} />
+              { icon: Stethoscope, cat: "medica", unit: "servicios", title: "Atención Médica Humanizada", text: "Ginecología, prenatal, partos y cesáreas humanizadas, centradas en los derechos de mamá y bebé.", blue: false },
+              { icon: Activity, cat: "somatica", unit: "programas", title: "Educación Somática", text: "Programas vivenciales: preparación al parto, periné, rebozo, canto prenatal y movimiento con balones.", blue: true },
+              { icon: Users, cat: "comunidad", unit: "espacios", title: "Comunidad y Soporte", text: "Consejería en lactancia y círculos de meditación que te acompañan en cada etapa de tu maternidad.", blue: false },
+            ].map((p) => {
+              const count = servicesData.filter((s) => s.category === p.cat).length;
+              return (
+                <div
+                  key={p.title}
+                  className={`group relative overflow-hidden rounded-3xl border p-8 transition duration-500 hover:-translate-y-1.5 hover:shadow-xl ${
+                    p.blue
+                      ? "border-blue/10 bg-gradient-to-br from-blue-light/60 via-white to-white"
+                      : "border-pink/10 bg-gradient-to-br from-pink-light/60 via-white to-white"
+                  }`}
+                >
+                  {/* Marca de agua: ícono gigante de fondo */}
+                  <p.icon
+                    className={`pointer-events-none absolute -right-5 -top-5 h-36 w-36 opacity-[0.06] transition-transform duration-700 ease-out group-hover:rotate-6 group-hover:scale-110 ${
+                      p.blue ? "text-blue" : "text-pink"
+                    }`}
+                    strokeWidth={1}
+                    aria-hidden
+                  />
+                  {/* Punto decorativo flotante */}
+                  <span
+                    className={`pointer-events-none absolute right-7 top-7 h-2.5 w-2.5 rounded-full transition-transform duration-500 group-hover:scale-150 ${
+                      p.blue ? "bg-blue/30" : "bg-pink/40"
+                    }`}
+                    aria-hidden
+                  />
+
+                  {/* Badge de ícono sólido */}
+                  <div
+                    className={`relative mb-5 flex h-16 w-16 items-center justify-center rounded-2xl shadow-md ring-1 transition-transform duration-500 group-hover:-rotate-6 ${
+                      p.blue
+                        ? "bg-gradient-to-br from-blue to-navy text-white ring-blue/20"
+                        : "bg-gradient-to-br from-pink to-pink-dark text-white ring-pink/20"
+                    }`}
+                  >
+                    <p.icon className="h-8 w-8" strokeWidth={1.7} />
+                  </div>
+
+                  {/* Chip con el conteo de la categoría */}
+                  <span
+                    className={`relative mb-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
+                      p.blue ? "bg-blue-light text-blue" : "bg-pink-light text-pink-dark"
+                    }`}
+                  >
+                    <Sparkles className="h-3.5 w-3.5" /> {count} {p.unit}
+                  </span>
+
+                  <h3 className="relative mb-2 text-xl font-bold text-navy">
+                    {p.title}
+                  </h3>
+                  <p className="relative text-sm leading-relaxed text-gray-500">
+                    {p.text}
+                  </p>
+
+                  {/* Línea-acento inferior que crece al hover */}
+                  <span
+                    className={`absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100 ${
+                      p.blue
+                        ? "bg-gradient-to-r from-blue to-navy"
+                        : "bg-gradient-to-r from-pink to-pink-dark"
+                    }`}
+                    aria-hidden
+                  />
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-navy">{p.title}</h3>
-                <p className="text-sm leading-relaxed text-gray-500">{p.text}</p>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-pink transition-all group-hover:gap-2">
-                  Ver más <ArrowRight className="h-4 w-4" />
-                </span>
-              </Link>
-            ))}
+              );
+            })}
           </div>
 
           <div data-aos="fade-up">
