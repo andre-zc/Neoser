@@ -35,22 +35,16 @@ const pains = [
     tag: "Inseguridad",
     icon: Wind,
     title: "Acompañas partos, pero sientes que te falta método.",
-    text:
-      "Conoces el rebozo de oídas o por videos sueltos, pero al estar frente a una gestante dudas de cómo, cuándo y por qué aplicar cada técnica con seguridad clínica.",
   },
   {
     tag: "Confusión",
     icon: Compass,
     title: "Quieres humanizar tu atención, pero no sabes por dónde empezar.",
-    text:
-      "Sientes el llamado a ofrecer un acompañamiento más respetado y fisiológico, pero entre la teoría y la práctica real hay un abismo que no logras cruzar.",
   },
   {
     tag: "Desactualización",
     icon: Flame,
     title: "Aplicas el rebozo como faja, sin entender la biomecánica.",
-    text:
-      "Mueves el rebozo por intuición, pero no comprendes cómo se comportan la pelvis, las fascias y el suelo pélvico bajo el movimiento somático. Quieres bases sólidas.",
   },
 ];
 
@@ -294,15 +288,28 @@ export function RebozoLanding() {
 
           <div className="grid gap-6 md:grid-cols-3">
             {pains.map((p, i) => (
-              <div key={p.tag} className="service-card" data-aos="fade-up" data-aos-delay={i * 100}>
-                <div className="service-icon pink-bg">
-                  <p.icon />
+              <div
+                key={p.tag}
+                className="group relative flex flex-col overflow-hidden rounded-3xl border border-navy/5 bg-white p-8 transition duration-500 hover:-translate-y-1.5 hover:shadow-xl"
+                data-aos="fade-up"
+                data-aos-delay={i * 100}
+              >
+                <p.icon
+                  className="pointer-events-none absolute -right-5 -top-5 h-32 w-32 text-pink opacity-[0.06] transition-transform duration-700 ease-out group-hover:rotate-6 group-hover:scale-110"
+                  strokeWidth={1}
+                  aria-hidden
+                />
+                <div className="relative mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-pink to-pink-dark text-white shadow-md ring-1 ring-pink/20 transition-transform duration-500 group-hover:-rotate-6">
+                  <p.icon className="h-8 w-8" strokeWidth={1.6} />
                 </div>
-                <span className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                <span className="relative mb-3 inline-flex w-fit items-center rounded-full bg-pink-light px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-pink-dark">
                   {p.tag}
                 </span>
-                <h3 className="mb-2 text-lg font-bold text-navy">{p.title}</h3>
-                <p className="text-sm leading-relaxed text-gray-500">{p.text}</p>
+                <h3 className="relative text-xl font-bold leading-snug text-navy">{p.title}</h3>
+                <span
+                  className="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 bg-gradient-to-r from-pink to-pink-dark transition-transform duration-500 group-hover:scale-x-100"
+                  aria-hidden
+                />
               </div>
             ))}
           </div>
