@@ -426,27 +426,35 @@ export function RebozoLanding() {
 
           <div className="mx-auto max-w-4xl space-y-6">
             {seminars.map((s, i) => (
-              <div
+              <details
                 key={s.n}
-                className="surface-card group flex flex-col gap-5 p-6 transition duration-300 hover:-translate-y-0.5 hover:shadow-md md:flex-row md:items-center md:p-8"
+                className="surface-card group p-5 transition duration-300 hover:shadow-md md:p-7"
                 data-aos="fade-up"
                 data-aos-delay={(i % 2) * 100}
+                {...(i === 0 ? { open: true } : {})}
               >
-                <div
-                  className="bg-gradient-to-br from-pink/55 to-blue/45 bg-clip-text text-4xl font-extrabold text-transparent md:text-5xl"
-                  style={{ fontFamily: "var(--font-playfair), serif" }}
-                >
-                  {s.n}
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-bold text-navy md:text-xl">{s.title}</h3>
-                  <p className="mt-1 text-sm font-semibold text-pink">{s.lead}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-gray-500">{s.text}</p>
-                </div>
-                <div className="hidden h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-pink to-pink-dark text-white shadow-md ring-1 ring-pink/20 transition-transform duration-500 group-hover:-rotate-6 md:flex">
-                  <s.icon className="h-8 w-8" strokeWidth={1.7} />
-                </div>
-              </div>
+                <summary className="flex cursor-pointer list-none items-center gap-4 [&::-webkit-details-marker]:hidden">
+                  <div
+                    className="hidden bg-gradient-to-br from-pink/55 to-blue/45 bg-clip-text text-4xl font-extrabold text-transparent sm:block md:text-5xl"
+                    style={{ fontFamily: "var(--font-playfair), serif" }}
+                  >
+                    {s.n}
+                  </div>
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-pink to-pink-dark text-white shadow-md ring-1 ring-pink/20 transition-transform duration-500 group-hover:-rotate-6 md:h-14 md:w-14">
+                    <s.icon className="h-6 w-6 md:h-7 md:w-7" strokeWidth={1.7} />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-base font-bold text-navy md:text-lg">{s.title}</h3>
+                    <p className="mt-0.5 text-sm font-semibold text-pink">{s.lead}</p>
+                  </div>
+                  <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-pink-light text-xl leading-none text-pink transition-transform duration-300 group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <p className="mt-4 border-t border-navy/5 pt-4 text-sm leading-relaxed text-gray-500">
+                  {s.text}
+                </p>
+              </details>
             ))}
           </div>
         </div>

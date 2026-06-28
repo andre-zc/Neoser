@@ -290,19 +290,26 @@ export function AntropologiaLanding() {
             </h2>
           </div>
 
-          <div className="mx-auto max-w-3xl space-y-5 text-gray-500" data-aos="fade-up">
-            <p className="leading-relaxed">
-              Nos enfrentamos a una lucha entre los principios y valores de diversas
-              corrientes en la atención a la madre gestante. ¿Cómo impactan los
-              paradigmas sociales y culturales las prácticas obstétricas y los modelos
-              de atención al parto? ¿Estamos siendo testigos de un aumento de la
-              violencia obstétrica como resultado de estas influencias?
+          <div className="mx-auto max-w-3xl space-y-6" data-aos="fade-up">
+            <p className="text-center leading-relaxed text-gray-500">
+              Hoy conviven distintas corrientes en la atención a la madre gestante.
+              Frente a esa encrucijada, urge reflexionar y actualizar el modelo de
+              atención para proteger la vida y la dignidad del ser humano.
             </p>
-            <p className="leading-relaxed">
-              Ante esta encrucijada, es urgente reflexionar y actualizar el modelo de
-              atención que debemos adoptar para proteger la vida y la dignidad del ser
-              humano.
-            </p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {[
+                "¿Cómo impactan los paradigmas culturales las prácticas obstétricas?",
+                "¿Estamos ante un aumento de la violencia obstétrica?",
+                "¿Qué modelo de atención debemos adoptar hoy?",
+              ].map((q) => (
+                <div
+                  key={q}
+                  className="rounded-2xl border border-navy/5 bg-white p-4 text-sm font-medium leading-snug text-navy shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                >
+                  {q}
+                </div>
+              ))}
+            </div>
             <p className="text-center text-lg font-semibold text-navy">
               Porque nacer y vivir con amor cambia el mundo.
             </p>
@@ -368,38 +375,46 @@ export function AntropologiaLanding() {
 
           <div className="mx-auto max-w-4xl space-y-6">
             {modules.map((m, i) => (
-              <div
+              <details
                 key={m.n}
-                className="surface-card group flex flex-col gap-5 p-6 transition duration-300 hover:-translate-y-0.5 hover:shadow-md md:flex-row md:p-8"
+                className="surface-card group p-5 transition duration-300 hover:shadow-md md:p-7"
                 data-aos="fade-up"
                 data-aos-delay={(i % 2) * 100}
+                {...(i === 0 ? { open: true } : {})}
               >
-                <div
-                  className="bg-gradient-to-br from-pink/55 to-blue/45 bg-clip-text text-4xl font-extrabold text-transparent md:text-5xl"
-                  style={{ fontFamily: "var(--font-playfair), serif" }}
-                >
-                  {m.n}
-                </div>
-                <div className="flex-1">
-                  <div className="mb-2 flex items-center gap-3">
-                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-pink to-pink-dark text-white shadow-md ring-1 ring-pink/20 transition-transform duration-500 group-hover:-rotate-6">
-                      <m.icon className="h-5 w-5" strokeWidth={1.7} />
-                    </span>
-                    <h3 className="text-lg font-bold text-navy md:text-xl">{m.title}</h3>
+                <summary className="flex cursor-pointer list-none items-start gap-4 [&::-webkit-details-marker]:hidden">
+                  <div
+                    className="hidden bg-gradient-to-br from-pink/55 to-blue/45 bg-clip-text text-4xl font-extrabold text-transparent sm:block md:text-5xl"
+                    style={{ fontFamily: "var(--font-playfair), serif" }}
+                  >
+                    {m.n}
                   </div>
-                  <ul className="mb-3 flex flex-wrap gap-2">
-                    {m.sessions.map((s) => (
-                      <li
-                        key={s}
-                        className="rounded-full bg-blue-light/70 px-3 py-1 text-xs font-medium text-blue"
-                      >
-                        {s}
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="text-sm leading-relaxed text-gray-500">{m.text}</p>
-                </div>
-              </div>
+                  <div className="flex-1">
+                    <div className="mb-2 flex items-center gap-3">
+                      <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-pink to-pink-dark text-white shadow-md ring-1 ring-pink/20 transition-transform duration-500 group-hover:-rotate-6">
+                        <m.icon className="h-5 w-5" strokeWidth={1.7} />
+                      </span>
+                      <h3 className="text-base font-bold text-navy md:text-xl">{m.title}</h3>
+                    </div>
+                    <ul className="flex flex-wrap gap-2">
+                      {m.sessions.map((s) => (
+                        <li
+                          key={s}
+                          className="rounded-full bg-blue-light/70 px-3 py-1 text-xs font-medium text-blue"
+                        >
+                          {s}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <span className="mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-pink-light text-xl leading-none text-pink transition-transform duration-300 group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <p className="mt-4 border-t border-navy/5 pt-4 text-sm leading-relaxed text-gray-500">
+                  {m.text}
+                </p>
+              </details>
             ))}
           </div>
         </div>
