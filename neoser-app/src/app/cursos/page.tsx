@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { GraduationCap } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { DecorParticles } from "@/components/decor-particles";
+import { coursesCatalog, type CatalogCourse } from "@/lib/courses-catalog";
 
 export const metadata: Metadata = {
   title: "Catálogo de Cursos",
@@ -37,20 +38,46 @@ function modeBadgeColor(mode: string | null) {
   return mode.toLowerCase() === "online" ? "bg-navy" : "bg-pink";
 }
 
+function catalogToCourse(c: CatalogCourse): Course {
+  return {
+    id: c.id,
+    slug: c.slug,
+    title: c.title,
+    short_description: c.summary,
+    description: c.description.join("\n\n"),
+    price: c.price,
+    currency: c.currency,
+    mode: c.mode,
+    duration_label: c.durationLabel,
+    hero_color: null,
+    is_published: true,
+  };
+}
+
+// Catálogo estático como base confiable; se agregan cursos de BD que no estén.
 async function getCourses(): Promise<Course[]> {
-  const headersList = await headers();
-  const host = headersList.get("host") ?? "localhost:3000";
-  const protocol = host.startsWith("localhost") ? "http" : "https";
-  const baseUrl = `${protocol}://${host}`;
+  const base = coursesCatalog.map(catalogToCourse);
+  const slugs = new Set(base.map((c) => c.slug));
 
   try {
-    const res = await fetch(`${baseUrl}/api/courses`, { cache: "no-store" });
-    if (!res.ok) return [];
-    const json = await res.json();
-    return (json.items as Course[]) ?? [];
+    const headersList = await headers();
+    const host = headersList.get("host") ?? "localhost:3000";
+    const protocol = host.startsWith("localhost") ? "http" : "https";
+    const res = await fetch(`${protocol}://${host}/api/courses`, {
+      cache: "no-store",
+    });
+    if (res.ok) {
+      const json = await res.json();
+      const dbItems = (json.items as Course[]) ?? [];
+      for (const d of dbItems) {
+        if (!slugs.has(d.slug)) base.push(d);
+      }
+    }
   } catch {
-    return [];
+    // Sin BD disponible, el catálogo estático es suficiente.
   }
+
+  return base;
 }
 
 export default async function CursosPage() {
