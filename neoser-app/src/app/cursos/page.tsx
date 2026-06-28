@@ -1,6 +1,9 @@
 import { headers } from "next/headers";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { GraduationCap } from "lucide-react";
+import { SiteHeader } from "@/components/site-header";
+import { DecorParticles } from "@/components/decor-particles";
 
 export const metadata: Metadata = {
   title: "Catálogo de Cursos",
@@ -54,12 +57,20 @@ export default async function CursosPage() {
   const courses = await getCourses();
 
   return (
-    <main className="min-h-screen bg-white py-20 md:py-28">
-      <div className="container-main">
-        <div className="mb-12 text-center">
-          <p className="section-tag mb-2">Escuela NeoSer</p>
-          <h1 className="section-title mb-4">Catálogo de Cursos</h1>
-          <div className="section-divider mx-auto" />
+    <main className="min-h-screen bg-white">
+      <SiteHeader />
+      <section className="relative overflow-hidden bg-white pt-32 pb-20 md:pt-40 md:pb-28">
+        <DecorParticles variant="a" />
+        <div className="container-main relative">
+          <div className="mb-12 text-center">
+            <p className="section-tag mb-2">Escuela NeoSer</p>
+            <h1 className="section-title mb-4">
+              Catálogo de{" "}
+              <span className="bg-gradient-to-r from-pink to-pink-dark bg-clip-text text-transparent">
+                Cursos
+              </span>
+            </h1>
+            <div className="section-divider mx-auto" />
           <p className="mx-auto mt-4 max-w-2xl text-gray-500">
             Formación profesional y vivencial para quienes desean transformar la atención materna con un enfoque humanizado y basado en evidencia.
           </p>
@@ -72,8 +83,11 @@ export default async function CursosPage() {
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {courses.map((c) => (
-              <article key={c.id} className="course-card">
+              <article key={c.id} className="course-card group">
                 <div className="course-image">
+                  <span className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/10" aria-hidden />
+                  <span className="pointer-events-none absolute -bottom-8 -left-4 h-20 w-20 rounded-full bg-white/[0.06]" aria-hidden />
+                  <GraduationCap className="relative h-14 w-14 text-white/90 transition-transform duration-500 group-hover:scale-110" strokeWidth={1.3} />
                   {c.mode && (
                     <span className={`course-badge ${modeBadgeColor(c.mode)} text-white`}>
                       {c.mode}
@@ -106,6 +120,7 @@ export default async function CursosPage() {
           </Link>
         </div>
       </div>
+      </section>
     </main>
   );
 }

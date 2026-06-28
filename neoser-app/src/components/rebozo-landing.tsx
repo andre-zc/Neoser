@@ -24,6 +24,7 @@ import {
   Mail,
 } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
+import { DecorParticles } from "@/components/decor-particles";
 
 const ENROLL_HREF = "/cursos/rebozo-cert/inscribirse";
 const WHATSAPP_HREF =
@@ -194,8 +195,9 @@ export function RebozoLanding() {
       <SiteHeader />
 
       {/* ===== HERO ===== */}
-      <section className="bg-cream pt-32 pb-16 md:pt-40 md:pb-24">
-        <div className="container-main">
+      <section className="relative overflow-hidden bg-cream pt-32 pb-16 md:pt-40 md:pb-24">
+        <DecorParticles variant="a" />
+        <div className="container-main relative">
           <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
             <span className="rounded-full bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-navy shadow-sm">
               Curso online · III Edición
@@ -211,7 +213,10 @@ export function RebozoLanding() {
                 Rebozo
               </p>
               <h1 className="section-title text-navy" style={{ fontSize: "clamp(2.2rem,4.6vw,3.6rem)" }}>
-                El Arte del Rebozo desde la Educación Somática
+                El Arte del Rebozo desde la{" "}
+                <span className="bg-gradient-to-r from-pink to-pink-dark bg-clip-text text-transparent">
+                  Educación Somática
+                </span>
               </h1>
               <p className="mt-5 text-lg font-bold text-navy md:text-xl">
                 Deja de acompañar a ciegas. Aprende el método.
@@ -276,8 +281,9 @@ export function RebozoLanding() {
       </section>
 
       {/* ===== PARA QUIÉN ES (dolores) ===== */}
-      <section className="bg-white py-20 md:py-28">
-        <div className="container-main">
+      <section className="relative overflow-hidden bg-white py-20 md:py-28">
+        <DecorParticles variant="b" />
+        <div className="container-main relative">
           <div className="mb-14 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Este curso es para ti si…</p>
             <h2 className="section-title mx-auto max-w-3xl">
@@ -309,8 +315,9 @@ export function RebozoLanding() {
       </section>
 
       {/* ===== ANTES / DESPUÉS ===== */}
-      <section className="bg-cream py-20 md:py-28">
-        <div className="container-main">
+      <section className="relative overflow-hidden bg-cream py-20 md:py-28">
+        <DecorParticles variant="c" />
+        <div className="container-main relative">
           <div className="mb-14 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Lo que cambia después del curso</p>
             <h2 className="section-title mx-auto max-w-3xl">
@@ -347,8 +354,9 @@ export function RebozoLanding() {
       </section>
 
       {/* ===== TU FORMADORA ===== */}
-      <section className="bg-white py-20 md:py-28">
-        <div className="container-main">
+      <section className="relative overflow-hidden bg-white py-20 md:py-28">
+        <DecorParticles variant="a" />
+        <div className="container-main relative">
           <div className="grid items-center gap-12 lg:grid-cols-[0.8fr_1.2fr]">
             <div className="flex justify-center" data-aos="fade-up">
               <div className="relative w-full max-w-sm overflow-hidden rounded-3xl border-4 border-white bg-gradient-to-br from-pink-light to-blue-light shadow-lg">
@@ -405,8 +413,9 @@ export function RebozoLanding() {
       </section>
 
       {/* ===== TEMARIO / 4 SEMINARIOS ===== */}
-      <section id="temario" className="bg-cream py-20 md:py-28">
-        <div className="container-main">
+      <section id="temario" className="relative overflow-hidden bg-cream py-20 md:py-28">
+        <DecorParticles variant="b" />
+        <div className="container-main relative">
           <div className="mb-14 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Lo que vas a vivir en 1 mes</p>
             <h2 className="section-title mx-auto max-w-3xl">
@@ -419,12 +428,12 @@ export function RebozoLanding() {
             {seminars.map((s, i) => (
               <div
                 key={s.n}
-                className="surface-card flex flex-col gap-5 p-6 md:flex-row md:items-center md:p-8"
+                className="surface-card group flex flex-col gap-5 p-6 transition duration-300 hover:-translate-y-0.5 hover:shadow-md md:flex-row md:items-center md:p-8"
                 data-aos="fade-up"
                 data-aos-delay={(i % 2) * 100}
               >
                 <div
-                  className="text-4xl font-extrabold text-navy/15 md:text-5xl"
+                  className="bg-gradient-to-br from-pink/55 to-blue/45 bg-clip-text text-4xl font-extrabold text-transparent md:text-5xl"
                   style={{ fontFamily: "var(--font-playfair), serif" }}
                 >
                   {s.n}
@@ -434,8 +443,8 @@ export function RebozoLanding() {
                   <p className="mt-1 text-sm font-semibold text-pink">{s.lead}</p>
                   <p className="mt-2 text-sm leading-relaxed text-gray-500">{s.text}</p>
                 </div>
-                <div className="hidden h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-pink-light text-pink md:flex">
-                  <s.icon className="h-8 w-8" />
+                <div className="hidden h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-pink to-pink-dark text-white shadow-md ring-1 ring-pink/20 transition-transform duration-500 group-hover:-rotate-6 md:flex">
+                  <s.icon className="h-8 w-8" strokeWidth={1.7} />
                 </div>
               </div>
             ))}
@@ -444,8 +453,9 @@ export function RebozoLanding() {
       </section>
 
       {/* ===== BONUS COMUNIDAD ===== */}
-      <section className="bg-white py-20 md:py-28">
-        <div className="container-main">
+      <section className="relative overflow-hidden bg-white py-20 md:py-28">
+        <DecorParticles variant="c" />
+        <div className="container-main relative">
           <div className="mx-auto max-w-3xl text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Bonus de regalo</p>
             <h2 className="section-title mb-4">
@@ -464,12 +474,13 @@ export function RebozoLanding() {
               { icon: Award, t: "Recursos compartidos", d: "Materiales y casos prácticos del equipo." },
               { icon: Globe, t: "Acompañamiento real", d: "Soporte continuo más allá del curso." },
             ].map((c) => (
-              <div key={c.t} className="recognition-card text-center">
-                <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-light text-blue">
-                  <c.icon className="h-7 w-7" />
+              <div key={c.t} className="group relative overflow-hidden rounded-2xl border border-navy/5 bg-white p-6 text-center transition duration-500 hover:-translate-y-1.5 hover:shadow-xl">
+                <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue to-navy text-white shadow-md ring-1 ring-blue/20 transition-transform duration-500 group-hover:-rotate-6">
+                  <c.icon className="h-7 w-7" strokeWidth={1.7} />
                 </div>
                 <h4 className="text-sm font-bold text-navy">{c.t}</h4>
-                <p className="mt-1 text-xs text-gray-400">{c.d}</p>
+                <p className="mt-1 text-xs leading-relaxed text-gray-500">{c.d}</p>
+                <span className="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 bg-gradient-to-r from-blue to-navy transition-transform duration-500 group-hover:scale-x-100" aria-hidden />
               </div>
             ))}
           </div>
@@ -477,8 +488,9 @@ export function RebozoLanding() {
       </section>
 
       {/* ===== PRECIO ===== */}
-      <section id="reservar" className="bg-cream py-20 md:py-28">
-        <div className="container-main">
+      <section id="reservar" className="relative overflow-hidden bg-cream py-20 md:py-28">
+        <DecorParticles variant="a" />
+        <div className="container-main relative">
           <div className="surface-card mx-auto max-w-2xl p-8 text-center shadow-sm md:p-12" data-aos="fade-up">
             <p className="section-tag mb-2">Próxima edición · III Edición</p>
             <h2 className="section-title mb-6">
@@ -531,8 +543,9 @@ export function RebozoLanding() {
       </section>
 
       {/* ===== FAQ ===== */}
-      <section className="bg-white py-20 md:py-28">
-        <div className="container-main">
+      <section className="relative overflow-hidden bg-white py-20 md:py-28">
+        <DecorParticles variant="b" />
+        <div className="container-main relative">
           <div className="mb-14 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Preguntas frecuentes</p>
             <h2 className="section-title mx-auto max-w-3xl">

@@ -23,6 +23,7 @@ import {
   Mail,
 } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
+import { DecorParticles } from "@/components/decor-particles";
 
 const ENROLL_HREF = "/cursos/antropologia-parto/inscribirse";
 const WHATSAPP_HREF =
@@ -184,8 +185,9 @@ export function AntropologiaLanding() {
       <SiteHeader />
 
       {/* ===== HERO ===== */}
-      <section className="bg-cream pt-32 pb-16 md:pt-40 md:pb-24">
-        <div className="container-main">
+      <section className="relative overflow-hidden bg-cream pt-32 pb-16 md:pt-40 md:pb-24">
+        <DecorParticles variant="a" />
+        <div className="container-main relative">
           <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
             <span className="rounded-full bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-navy shadow-sm">
               Curso Internacional · NeoSer + Aurora Madre
@@ -209,7 +211,10 @@ export function AntropologiaLanding() {
                 Antropología
               </p>
               <h1 className="section-title text-navy" style={{ fontSize: "clamp(2.2rem,4.6vw,3.6rem)" }}>
-                del Parto, hacia un nacimiento humanizado
+                del Parto, hacia un{" "}
+                <span className="bg-gradient-to-r from-pink to-pink-dark bg-clip-text text-transparent">
+                  nacimiento humanizado
+                </span>
               </h1>
               <p className="mt-5 text-lg font-bold text-navy md:text-xl">
                 Una mirada profunda a los paradigmas del nacimiento.
@@ -274,8 +279,9 @@ export function AntropologiaLanding() {
       </section>
 
       {/* ===== CONTEXTO / MANIFIESTO ===== */}
-      <section className="bg-white py-20 md:py-28">
-        <div className="container-main">
+      <section className="relative overflow-hidden bg-white py-20 md:py-28">
+        <DecorParticles variant="b" />
+        <div className="container-main relative">
           <div className="mb-14 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Por qué este curso</p>
             <h2 className="section-title mx-auto max-w-3xl">
@@ -305,8 +311,9 @@ export function AntropologiaLanding() {
       </section>
 
       {/* ===== OBJETIVOS / OPORTUNIDADES ===== */}
-      <section className="bg-cream py-20 md:py-28">
-        <div className="container-main">
+      <section className="relative overflow-hidden bg-cream py-20 md:py-28">
+        <DecorParticles variant="c" />
+        <div className="container-main relative">
           <div className="mb-14 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Objetivos del curso</p>
             <h2 className="section-title mx-auto max-w-3xl">
@@ -323,8 +330,8 @@ export function AntropologiaLanding() {
                 data-aos="fade-up"
                 data-aos-delay={(i % 2) * 100}
               >
-                <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-pink-light text-pink">
-                  <o.icon className="h-6 w-6" />
+                <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-pink to-pink-dark text-white shadow-md ring-1 ring-pink/20">
+                  <o.icon className="h-6 w-6" strokeWidth={1.7} />
                 </span>
                 <p className="text-sm leading-relaxed text-gray-600">{o.text}</p>
               </div>
@@ -348,8 +355,9 @@ export function AntropologiaLanding() {
       </section>
 
       {/* ===== PROGRAMACIÓN DE CONTENIDOS ===== */}
-      <section id="contenidos" className="bg-white py-20 md:py-28">
-        <div className="container-main">
+      <section id="contenidos" className="relative overflow-hidden bg-white py-20 md:py-28">
+        <DecorParticles variant="a" />
+        <div className="container-main relative">
           <div className="mb-14 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Programación de contenidos</p>
             <h2 className="section-title mx-auto max-w-3xl">
@@ -362,20 +370,20 @@ export function AntropologiaLanding() {
             {modules.map((m, i) => (
               <div
                 key={m.n}
-                className="surface-card flex flex-col gap-5 p-6 md:flex-row md:p-8"
+                className="surface-card group flex flex-col gap-5 p-6 transition duration-300 hover:-translate-y-0.5 hover:shadow-md md:flex-row md:p-8"
                 data-aos="fade-up"
                 data-aos-delay={(i % 2) * 100}
               >
                 <div
-                  className="text-4xl font-extrabold text-navy/15 md:text-5xl"
+                  className="bg-gradient-to-br from-pink/55 to-blue/45 bg-clip-text text-4xl font-extrabold text-transparent md:text-5xl"
                   style={{ fontFamily: "var(--font-playfair), serif" }}
                 >
                   {m.n}
                 </div>
                 <div className="flex-1">
                   <div className="mb-2 flex items-center gap-3">
-                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-pink-light text-pink">
-                      <m.icon className="h-5 w-5" />
+                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-pink to-pink-dark text-white shadow-md ring-1 ring-pink/20 transition-transform duration-500 group-hover:-rotate-6">
+                      <m.icon className="h-5 w-5" strokeWidth={1.7} />
                     </span>
                     <h3 className="text-lg font-bold text-navy md:text-xl">{m.title}</h3>
                   </div>
@@ -398,8 +406,9 @@ export function AntropologiaLanding() {
       </section>
 
       {/* ===== FACILITADORES ===== */}
-      <section className="bg-cream py-20 md:py-28">
-        <div className="container-main">
+      <section className="relative overflow-hidden bg-cream py-20 md:py-28">
+        <DecorParticles variant="b" />
+        <div className="container-main relative">
           <div className="mb-14 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Facilitadores</p>
             <h2 className="section-title mx-auto max-w-3xl">
@@ -458,8 +467,9 @@ export function AntropologiaLanding() {
       </section>
 
       {/* ===== INFORMACIÓN CLAVE ===== */}
-      <section className="bg-white py-20 md:py-28">
-        <div className="container-main">
+      <section className="relative overflow-hidden bg-white py-20 md:py-28">
+        <DecorParticles variant="c" />
+        <div className="container-main relative">
           <div className="mb-14 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Información clave</p>
             <h2 className="section-title mx-auto max-w-3xl">
@@ -469,9 +479,9 @@ export function AntropologiaLanding() {
 
           <div className="mx-auto grid max-w-4xl gap-4 sm:grid-cols-2">
             {keyInfo.map((k) => (
-              <div key={k.label} className="recognition-card flex items-center gap-4" data-aos="fade-up">
-                <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-blue-light text-blue">
-                  <k.icon className="h-6 w-6" />
+              <div key={k.label} className="group relative flex items-center gap-4 overflow-hidden rounded-2xl border border-navy/5 bg-white p-5 transition duration-500 hover:-translate-y-1 hover:shadow-xl" data-aos="fade-up">
+                <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue to-navy text-white shadow-md ring-1 ring-blue/20 transition-transform duration-500 group-hover:-rotate-6">
+                  <k.icon className="h-6 w-6" strokeWidth={1.7} />
                 </span>
                 <div>
                   <p className="text-xs uppercase tracking-wide text-gray-400">{k.label}</p>
@@ -484,8 +494,9 @@ export function AntropologiaLanding() {
       </section>
 
       {/* ===== PRECIO / INVERSIÓN ===== */}
-      <section id="reservar" className="bg-cream py-20 md:py-28">
-        <div className="container-main">
+      <section id="reservar" className="relative overflow-hidden bg-cream py-20 md:py-28">
+        <DecorParticles variant="a" />
+        <div className="container-main relative">
           <div className="surface-card mx-auto max-w-2xl p-8 text-center shadow-sm md:p-12" data-aos="fade-up">
             <p className="section-tag mb-2">Inversión</p>
             <h2 className="section-title mb-6">
@@ -542,8 +553,9 @@ export function AntropologiaLanding() {
       </section>
 
       {/* ===== HISTORIAS QUE NOS UNEN ===== */}
-      <section className="bg-white py-20 md:py-28">
-        <div className="container-main">
+      <section className="relative overflow-hidden bg-white py-20 md:py-28">
+        <DecorParticles variant="b" />
+        <div className="container-main relative">
           <div className="mb-14 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Historias que nos unen</p>
             <h2 className="section-title mx-auto max-w-3xl">
@@ -567,8 +579,9 @@ export function AntropologiaLanding() {
       </section>
 
       {/* ===== FAQ ===== */}
-      <section className="bg-cream py-20 md:py-28">
-        <div className="container-main">
+      <section className="relative overflow-hidden bg-cream py-20 md:py-28">
+        <DecorParticles variant="c" />
+        <div className="container-main relative">
           <div className="mb-14 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Preguntas frecuentes</p>
             <h2 className="section-title mx-auto max-w-3xl">
