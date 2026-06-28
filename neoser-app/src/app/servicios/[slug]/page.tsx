@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { services, categoryLabels } from "@/lib/services";
+import { ServiceGalleryCarousel } from "@/components/service-gallery-carousel";
 
 type Params = Promise<{ slug: string }>;
 
@@ -104,6 +105,19 @@ export default async function ServiceDetailPage({
             </div>
           </div>
         </article>
+
+        {/* Galería del servicio (carrusel de fotos) */}
+        {service.gallery && service.gallery.length > 0 && (
+          <section className="mt-16">
+            <div className="mb-8 text-center">
+              <p className="section-tag mb-2">{categoryLabel.tag}</p>
+              <h2 className="text-2xl font-bold text-navy">
+                Conoce más en imágenes
+              </h2>
+            </div>
+            <ServiceGalleryCarousel slides={service.gallery} />
+          </section>
+        )}
 
         {/* Servicios relacionados */}
         {related.length > 0 && (

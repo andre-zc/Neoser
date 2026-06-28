@@ -1,12 +1,21 @@
 export type ServiceCategory = "medica" | "somatica" | "comunidad";
 
+// Diapositiva del carrusel de detalle ("Ver más"): foto + título + texto.
+// `image` es opcional: si la foto aún no fue enviada por el cliente, el
+// carrusel muestra un marcador "Foto próximamente" en vez de una imagen rota.
+export type GallerySlide = {
+  image?: string; // path relativo a /public; ausente => placeholder
+  title: string;
+  text?: string; // párrafo descriptivo (opcional)
+};
+
 export type Service = {
   slug: string;
   title: string;
   summary: string; // 1-2 líneas para la home
   description: string[]; // párrafos completos para /servicios
   image: string; // path relativo a /public (portada)
-  gallery?: string[]; // fotos adicionales para carrusel en detalle
+  gallery?: GallerySlide[]; // carrusel de fotos con texto en el detalle
   category: ServiceCategory;
   // Orientación nativa de la foto. Default "horizontal" (contenedor 4:3).
   // "vertical" cambia el contenedor a 2:3 para que la foto encaje sin recortes.
@@ -23,10 +32,28 @@ export const services: Service[] = [
     description: [
       "Brindamos atención ginecológica a la mujer en sus diferentes etapas de vida, desde una atención integral, preventiva y centrada en el bienestar físico, emocional, hormonal y corporal.",
     ],
-    image: "/assets/servicios/neoser-340.jpg",
+    image: "/assets/servicios/neoser-334.jpg",
     gallery: [
-      "/assets/servicios/neoser-340.jpg",
-      "/assets/servicios/MG_0639.jpg",
+      {
+        image: "/assets/servicios/neoser-334.jpg",
+        title: "Ginecología Integral para la Mujer",
+        text: "Acompañamos a la mujer en cada etapa de su vida con una atención ginecológica preventiva, integral y personalizada, orientada al bienestar físico, hormonal, emocional y corporal.",
+      },
+      {
+        image: "/assets/servicios/IMG_9777.jpg",
+        title: "Atención Interdisciplinaria y Familiar",
+        text: "El trabajo conjunto de nuestros profesionales y la participación activa de la familia fortalecen la confianza, el bienestar y una vivencia respetuosa de la maternidad.",
+      },
+      {
+        // Pendiente: foto por enviar (suelo pélvico / etapa madura)
+        title: "Tu bienestar no tiene edad",
+        text: "Que los cambios propios de los años no limiten tu bienestar ni tu vida cotidiana. Te acompañamos con prevención, evaluación y cuidado del suelo pélvico en cada etapa de la vida.",
+      },
+      {
+        image: "/assets/servicios/MG_0639.jpg",
+        title: "Cuando la cirugía es necesaria, estás en buenas manos",
+        text: "Contamos con un equipo médico especializado en el tratamiento quirúrgico de enfermedades ginecológicas, priorizando tu seguridad, bienestar y recuperación.",
+      },
     ],
     category: "medica",
     imageOrientation: "vertical",
@@ -41,9 +68,25 @@ export const services: Service[] = [
     ],
     image: "/assets/servicios/MG_9793.jpg",
     gallery: [
-      "/assets/servicios/MG_9793.jpg",
-      "/assets/servicios/MG_9764.jpg",
-      "/assets/servicios/neoser-310.jpg",
+      {
+        image: "/assets/servicios/MG_9793.jpg",
+        title: "Atención prenatal integral, humanizada y centrada en la familia.",
+      },
+      {
+        image: "/assets/servicios/MG_9764.jpg",
+        title: "Tu cuerpo, el primer hogar de tu bebé",
+        text: "El bienestar de tu bebé comienza durante el embarazo. Cuidar la salud materna es construir bases sólidas para su desarrollo y crecimiento.",
+      },
+      {
+        image: "/assets/servicios/neoser-330-opt.webp",
+        title: "La tranquilidad de saber que tu bebé está bien",
+        text: "Cada control prenatal te permite disfrutar el embarazo con más calma, confianza y seguridad.",
+      },
+      {
+        image: "/assets/servicios/neoser-310.jpg",
+        title: "Tu cuerpo se prepara, tu bebé encuentra su lugar",
+        text: "Favorecemos el equilibrio de tu cuerpo para crear mejores condiciones para el nacimiento de tu bebé.",
+      },
     ],
     category: "medica",
   },
@@ -53,10 +96,33 @@ export const services: Service[] = [
     summary:
       "Acompañamiento del nacimiento respetando los derechos biológicos de mamá y bebé.",
     description: [
-      "Atendemos el nacimiento desde una mirada centrada en los derechos biológicos de la madre y su bebé, promoviendo la cero separación durante los primeros mil minutos de vida, el contacto piel con piel inmediato, el corte oportuno del cordón umbilical y el inicio temprano de la lactancia materna.",
-      "Estas prácticas favorecen el vínculo temprano, la adaptación neonatal, el desarrollo de la microbiota y el bienestar físico y emocional de la madre y el bebé.",
+      "Atendemos el nacimiento desde una mirada que reconoce y protege los derechos anatómicos y biológicos de la madre y su bebé, promoviendo la libertad de movimiento, las posiciones verticales y el respeto por la fisiología del parto.",
+      "Favorecemos la cero separación durante los primeros mil minutos de vida, el contacto piel con piel inmediato, el corte oportuno del cordón umbilical y el inicio temprano de la lactancia materna.",
+      "Con estas prácticas protegemos el vínculo temprano entre la madre y su bebé, favorecemos la adaptación neonatal, el desarrollo de una microbiota saludable y el bienestar físico y emocional de la madre y su bebé.",
     ],
     image: "/assets/servicios/DSC_8490.webp",
+    gallery: [
+      {
+        image: "/assets/servicios/DSC_8490.webp",
+        title: "Protegemos el primer encuentro",
+        text: "Los primeros minutos de vida son decisivos. El contacto piel con piel inmediato fortalece el vínculo y favorece la adaptación del bebé desde el nacimiento.",
+      },
+      {
+        image: "/assets/servicios/DSC_8494.webp",
+        title: "Nacer es encontrar a mamá",
+        text: "El instinto guía al bebé hacia el calor, la voz y la protección de su madre desde el primer instante.",
+      },
+      {
+        image: "/assets/servicios/DSC_8510.jpg",
+        title: "Aquí también nace una familia",
+        text: "Con el nacimiento de un bebé, nace y renace una familia. Protegemos ese primer encuentro.",
+      },
+      {
+        image: "/assets/servicios/DSC_8638.jpg",
+        title: "El nacimiento también construye futuro",
+        text: "Las primeras experiencias de vida dejan huellas en la salud, el vínculo y el bienestar de la madre, su bebé y su familia.",
+      },
+    ],
     category: "medica",
   },
   {
@@ -68,7 +134,7 @@ export const services: Service[] = [
       "Desde 2020 implementamos la Cesárea Humanizada Túnel, técnica innovadora que nos ha permitido favorecer el contacto piel con piel inmediato, la cero separación mamá-bebé, la recepción temprana del calostro y el inicio oportuno de la lactancia materna durante el nacimiento por cesárea.",
       "Estas prácticas promueven el desarrollo de la microbiota y un nacimiento centrado en los derechos biológicos de la madre y su bebé.",
     ],
-    image: "/assets/servicios/cesarea-humanizada.webp",
+    image: "/assets/servicios/MG_3845.jpeg",
     category: "medica",
   },
 
@@ -95,7 +161,7 @@ export const services: Service[] = [
       "Programa basado en la metodología de Anatomía para el Movimiento® de Blandine Calais-Germain, orientado a favorecer la conciencia y el cuidado del suelo pélvico mediante principios de educación somática, percepción corporal y biomecánica femenina.",
       "A través de ejercicios específicos, respiración consciente y movimiento guiado, este método contribuye a mejorar la postura, la movilidad y la integración del suelo pélvico con el cuerpo en movimiento, favoreciendo la prevención de prolapsos, incontinencia urinaria y otras disfunciones del periné, promoviendo el bienestar integral de la mujer en sus diferentes etapas de vida.",
     ],
-    image: "/assets/servicios/perine-movimiento.png",
+    image: "/assets/servicios/neoser-4.webp",
     category: "somatica",
   },
   {
