@@ -635,21 +635,66 @@ export default function HomePage() {
 
           {/* Recognitions */}
           <div className="mb-10" data-aos="fade-up">
-            <h3 className="mb-8 text-center text-2xl font-bold text-navy">Reconocimientos y Alianzas</h3>
+            <div className="mb-8 text-center">
+              <p className="section-tag mb-1">Con respaldo internacional</p>
+              <h3 className="text-2xl font-bold text-navy md:text-3xl">
+                Reconocimientos y{" "}
+                <span className="bg-gradient-to-r from-pink to-pink-dark bg-clip-text text-transparent">
+                  Alianzas
+                </span>
+              </h3>
+            </div>
             <div className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {[
-                { icon: Award, iconColor: "text-pink", iconBg: "bg-pink-light", title: "Spinning Babies", desc: "Beca y certificación internacional en técnicas de posicionamiento fetal." },
-                { icon: Globe, iconColor: "text-blue", iconBg: "bg-blue-light", title: "Convenios Internacionales", desc: "Alianzas con instituciones de salud materna en Latinoamérica y Europa." },
-                { icon: Trophy, iconColor: "text-pink", iconBg: "bg-pink-light", title: "Reconocimiento Regional", desc: "Pioneros en atención de parto humanizado en la región Lambayeque." },
+                { icon: Award, blue: false, tag: "Certificación", title: "Spinning Babies", desc: "Beca y certificación internacional en técnicas de posicionamiento fetal." },
+                { icon: Globe, blue: true, tag: "Alianza", title: "Convenios Internacionales", desc: "Alianzas con instituciones de salud materna en Latinoamérica y Europa." },
+                { icon: Trophy, blue: false, tag: "Reconocimiento", title: "Reconocimiento Regional", desc: "Pioneros en atención de parto humanizado en la región Lambayeque." },
               ].map((r) => (
-                <div key={r.title} className="recognition-card flex items-start gap-4">
-                  <div className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl ${r.iconBg}`}>
-                    <r.icon className={`h-8 w-8 ${r.iconColor}`} />
+                <div
+                  key={r.title}
+                  className="group relative overflow-hidden rounded-2xl border border-navy/5 bg-white p-6 transition duration-500 hover:-translate-y-1.5 hover:shadow-xl"
+                >
+                  {/* Marca de agua */}
+                  <r.icon
+                    className={`pointer-events-none absolute -bottom-4 -right-4 h-28 w-28 opacity-[0.05] transition-transform duration-700 ease-out group-hover:rotate-6 group-hover:scale-110 ${
+                      r.blue ? "text-blue" : "text-pink"
+                    }`}
+                    strokeWidth={1}
+                    aria-hidden
+                  />
+                  <div className="relative flex items-center gap-3">
+                    <div
+                      className={`flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl shadow-md ring-1 transition-transform duration-500 group-hover:-rotate-6 ${
+                        r.blue
+                          ? "bg-gradient-to-br from-blue to-navy text-white ring-blue/20"
+                          : "bg-gradient-to-br from-pink to-pink-dark text-white ring-pink/20"
+                      }`}
+                    >
+                      <r.icon className="h-7 w-7" strokeWidth={1.7} />
+                    </div>
+                    <span
+                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${
+                        r.blue ? "bg-blue-light text-blue" : "bg-pink-light text-pink-dark"
+                      }`}
+                    >
+                      {r.tag}
+                    </span>
                   </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-navy">{r.title}</h4>
-                    <p className="mt-1 text-xs text-gray-400">{r.desc}</p>
-                  </div>
+                  <h4 className="relative mt-4 text-base font-bold text-navy">
+                    {r.title}
+                  </h4>
+                  <p className="relative mt-1 text-sm leading-relaxed text-gray-500">
+                    {r.desc}
+                  </p>
+                  {/* Línea-acento inferior */}
+                  <span
+                    className={`absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100 ${
+                      r.blue
+                        ? "bg-gradient-to-r from-blue to-navy"
+                        : "bg-gradient-to-r from-pink to-pink-dark"
+                    }`}
+                    aria-hidden
+                  />
                 </div>
               ))}
             </div>
