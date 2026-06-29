@@ -239,7 +239,7 @@ export default function HomePage() {
 
       {/* ===== HERO SLIDER ===== */}
       <section id="inicio" className="hero-slider-section">
-        <div className="relative w-full" style={{ height: "calc(100vh + 9rem)" }}>
+        <div className="relative w-full" style={{ height: "calc(100vh + 9rem)", minHeight: "600px", maxHeight: "840px" }}>
           {heroSlides.map((slide, i) => {
             const isActive = activeSlide === i;
             const isAdjacent = activeSlide === (i + 3) % 4 || activeSlide === (i + 1) % 4;
