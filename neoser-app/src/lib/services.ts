@@ -20,7 +20,10 @@ export type Service = {
   slug: string;
   title: string;
   summary: string; // 1-2 líneas para la home
-  description: string[]; // párrafos completos para /servicios
+  description: string[]; // párrafos completos para el detalle ("Sobre este servicio")
+  // Resumen corto para la tarjeta del catálogo /servicios (primera impresión).
+  // Si falta, la tarjeta usa `description` completo como fallback.
+  cardDescription?: string[];
   image: string; // path relativo a /public (portada)
   gallery?: GallerySlide[]; // carrusel de fotos con texto en el detalle
   category: ServiceCategory;
@@ -184,6 +187,10 @@ export const services: Service[] = [
       "Favorecemos la cero separación durante los primeros mil minutos de vida, el contacto piel con piel inmediato, el corte oportuno del cordón umbilical y el inicio temprano de la lactancia materna.",
       "Con estas prácticas protegemos el vínculo temprano entre la madre y su bebé, favorecemos la adaptación neonatal, el desarrollo de una microbiota saludable y el bienestar físico y emocional de la madre y su bebé.",
     ],
+    cardDescription: [
+      "Vivimos el nacimiento como el inicio de una nueva historia familiar, respetando los derechos anatómicos y biológicos de la madre y su bebé.",
+      "Protegemos la Hora Dorada, la continuidad del vínculo durante los primeros mil minutos de vida y el inicio temprano de la lactancia materna.",
+    ],
     image: "/assets/servicios/DSC_8490.webp",
     gallery: [
       {
@@ -212,25 +219,26 @@ export const services: Service[] = [
       {
         icon: "Activity",
         title: "Libertad de movimiento",
-        text: "Promovemos las posiciones verticales y el respeto por la fisiología del parto, reconociendo los derechos anatómicos de la madre.",
+        text: "Respetamos la fisiología del parto mediante la libertad de movimiento y las posiciones verticales, favoreciendo el proceso natural del nacimiento.",
       },
       {
         icon: "HeartHandshake",
-        title: "Cero separación",
-        text: "Favorecemos el contacto piel con piel inmediato durante los primeros mil minutos de vida.",
+        title: "Hora Dorada y cero separación",
+        text: "Protegemos el contacto piel con piel inmediato, el corte oportuno del cordón umbilical y la continuidad del vínculo durante los primeros mil minutos de vida.",
       },
       {
         icon: "Droplets",
-        title: "Inicio temprano de la lactancia",
-        text: "Corte oportuno del cordón e inicio temprano de la lactancia para una mejor adaptación neonatal y desarrollo de la microbiota.",
+        title: "Lactancia desde el nacimiento",
+        text: "Promovemos el inicio temprano de la lactancia materna para favorecer un comienzo de vida saludable.",
       },
     ],
     included: [
-      "Acompañamiento que respeta los derechos anatómicos y biológicos",
-      "Libertad de movimiento y posiciones verticales",
-      "Contacto piel con piel inmediato (cero separación)",
+      "Atención que respeta los derechos anatómicos y biológicos de la madre y su bebé",
+      "Libertad de movimiento y atención del parto en posiciones verticales",
+      "Hora Dorada: contacto piel con piel inmediato",
       "Corte oportuno del cordón umbilical",
       "Inicio temprano de la lactancia materna",
+      "Protección de los primeros mil minutos de vida para favorecer el vínculo y la adaptación neonatal",
     ],
     forWho:
       "Familias que buscan un nacimiento respetado, centrado en los derechos de la madre y su bebé.",
@@ -251,8 +259,12 @@ export const services: Service[] = [
     summary:
       "Cesárea Túnel: piel con piel inmediato y cero separación durante el nacimiento.",
     description: [
+      "Existen situaciones en las que la cesárea es la opción más segura para la madre y el bebé. En estos casos, concebimos este nacimiento como una experiencia que también puede ser vivida de manera humanizada y respetuosa.",
+      "Desde 2020 implementamos nuestra técnica de Cesárea Humanizada Túnel, denominada así porque el bebé es trasladado por debajo del campo quirúrgico directamente al pecho de la madre, favoreciendo el contacto inmediato, el pinzamiento oportuno del cordón umbilical y el inicio del vínculo desde el primer instante.",
+      "Este modelo de atención permite la participación activa de la pareja y el acompañamiento de una asesora de lactancia durante el nacimiento y las primeras horas posteriores, promoviendo el contacto piel con piel, la cero separación y el inicio temprano de la lactancia materna.",
+    ],
+    cardDescription: [
       "Desde 2020 implementamos la Cesárea Humanizada Túnel, técnica innovadora que nos ha permitido favorecer el contacto piel con piel inmediato, la cero separación mamá-bebé, la recepción temprana del calostro y el inicio oportuno de la lactancia materna durante el nacimiento por cesárea.",
-      "Estas prácticas promueven el desarrollo de la microbiota y un nacimiento centrado en los derechos biológicos de la madre y su bebé.",
     ],
     image: "/assets/servicios/MG_3845.jpeg",
     category: "medica",
@@ -274,11 +286,11 @@ export const services: Service[] = [
       },
     ],
     included: [
-      "Cesárea Humanizada Túnel",
-      "Contacto piel con piel inmediato",
-      "Cero separación mamá-bebé",
-      "Recepción temprana del calostro",
-      "Inicio oportuno de la lactancia materna",
+      "Cesárea humanizada con técnica túnel",
+      "Participación de la pareja",
+      "Contacto piel con piel inmediato y cero separación",
+      "Recepción temprana del calostro e inicio oportuno de la lactancia materna",
+      "Acompañamiento de una asesora de lactancia",
     ],
     forWho:
       "Mujeres con indicación de cesárea que desean vivir el nacimiento de forma respetada y cercana.",

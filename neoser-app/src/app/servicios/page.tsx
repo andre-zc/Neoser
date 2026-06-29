@@ -84,9 +84,11 @@ export default function ServiciosPage() {
                         {s.title}
                       </h3>
                       <div className="space-y-3 leading-relaxed text-gray-600">
-                        {s.description.map((paragraph, i) => (
-                          <p key={i}>{paragraph}</p>
-                        ))}
+                        {(s.cardDescription ?? s.description).map(
+                          (paragraph, i) => (
+                            <p key={i}>{paragraph}</p>
+                          )
+                        )}
                       </div>
                       <div className="mt-6 flex flex-wrap gap-3">
                         <Link

@@ -333,6 +333,20 @@ export function RebozoLanding() {
             </h2>
           </div>
 
+          {/* Cabecera de columnas: "Antes" y "Después" una sola vez (solo desktop) */}
+          <div
+            className="mx-auto mb-6 hidden max-w-4xl grid-cols-[1fr_auto_1fr] items-center gap-3 md:grid"
+            data-aos="fade-up"
+          >
+            <span className="rounded-2xl bg-pink-light/60 px-5 py-3 text-center text-lg font-bold uppercase tracking-wide text-pink-dark">
+              Antes
+            </span>
+            <span className="w-6" aria-hidden />
+            <span className="rounded-2xl bg-blue-light/70 px-5 py-3 text-center text-lg font-bold uppercase tracking-wide text-blue">
+              Después
+            </span>
+          </div>
+
           <div className="mx-auto max-w-4xl space-y-5">
             {transformations.map((t, i) => (
               <div
@@ -341,18 +355,23 @@ export function RebozoLanding() {
                 data-aos="fade-up"
                 data-aos-delay={i * 100}
               >
-                <div className="rounded-2xl bg-pink-light/60 p-5">
-                  <span className="text-[11px] font-semibold uppercase tracking-wide text-pink-dark">
+                <div className="rounded-2xl bg-pink-light/60 p-6">
+                  {/* Etiqueta solo en mobile: en desktop la cabecera ya la muestra una vez */}
+                  <span className="text-xs font-semibold uppercase tracking-wide text-pink-dark md:hidden">
                     Antes
                   </span>
-                  <p className="mt-1 text-sm text-gray-600">{t.before}</p>
+                  <p className="mt-1 text-base leading-relaxed text-gray-600 md:mt-0 md:text-lg">
+                    {t.before}
+                  </p>
                 </div>
                 <ArrowRight className="mx-auto hidden h-6 w-6 text-gray-300 md:block" />
-                <div className="rounded-2xl bg-blue-light/70 p-5">
-                  <span className="text-[11px] font-semibold uppercase tracking-wide text-blue">
+                <div className="rounded-2xl bg-blue-light/70 p-6">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-blue md:hidden">
                     Después
                   </span>
-                  <p className="mt-1 text-sm text-gray-700">{t.after}</p>
+                  <p className="mt-1 text-base leading-relaxed text-gray-700 md:mt-0 md:text-lg">
+                    {t.after}
+                  </p>
                 </div>
               </div>
             ))}
