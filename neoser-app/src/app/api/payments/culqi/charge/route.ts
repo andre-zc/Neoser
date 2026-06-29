@@ -81,6 +81,14 @@ export async function POST(request: NextRequest) {
 
     // 3a. Cargo rechazado / error de API: registrar para auditoría y devolver 402
     if (!charge.ok) {
+      // Log diagnostico: el response completo de Culqi para diagnosticar fallas
+      // de integracion ("El comercio tiene problemas...", llaves invalidas, etc).
+      console.error("[culqi/charge] charge.ok=false detalle:", {
+        outcomeType: charge.outcomeType,
+        userMessage: charge.userMessage,
+        chargeId: charge.chargeId,
+        rawResponse: charge.raw,
+      });
       await recordFailedCharge({
         chargeId: charge.chargeId,
         amountCents,
