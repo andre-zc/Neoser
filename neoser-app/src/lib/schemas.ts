@@ -120,19 +120,55 @@ export const guestEnrollmentSchema = z.object({
   utmSource: z.string().max(80).optional(),
 });
 
-export const izipayWebhookSchema = z.object({
-  transactionId: z.string().min(1),
-  status: z.enum(["AUTHORIZED", "REFUSED", "CANCELLED", "PENDING", "REFUNDED"]),
-  orderReference: z.string().min(1),
-  amount: z.number().positive(),
-  currency: z.string().min(3),
-  metadata: z.object({
-    courseId: z.string().uuid(),
-    guestName: z.string().min(2),
-    guestEmail: z.string().email(),
-    guestPhone: z.string().min(7),
-    notes: z.string().optional(),
-    utmSource: z.string().optional(),
-  }),
-  raw: z.record(z.string(), z.unknown()).optional(),
+// ============================================
+// Culqi — frontend -> /api/payments/culqi/charge
+// ============================================
+
+// Lo que el componente del checkout manda al backend tras tokenizar.
+// El monto NO se manda: el backend lo lee de la tabla `courses` para evitar
+// manipulacion del precio desde el cliente.
+export const culqiChargeRequestSchema = z.object({
+  courseId: z.string().uuid(),
+  // Token emitido por Custom Checkout. Formato: tkn_test_xxx | tkn_live_xxx.
+  token: z.string().min(8).max(80),
+  guestName: z.string().min(2).max(120),
+  guestEmail: z.string().email(),
+  guestPhone: z.string().min(7).max(20),
+  notes: z.string().max(500).optional(),
+  utmSource: z.string().max(80).optional(),
 });
+
+// ============================================
+// Culqi — webhook payload (estructura minima)
+// ============================================
+
+// Culqi puede mandar campos adicionales segun el evento; usamos passthrough
+// para no rechazar payloads validos por campos extra.
+export const culqiWebhookSchema = z.object({
+  id: z.string().min(1), // evt_xxx
+  type: z.string().min(1), // 'charge.creation.succeeded' | 'charge.creation.failed' | 'refund.creation.succeeded' | ...
+  data: z
+    .object({
+      id: z.string().min(1), // chr_xxx
+      object: z.string().optional(),
+      amount: z.number().int().optional(),
+      currency_code: z.string().optional(),
+      email: z.string().optional(),
+      outcome: z
+        .object({
+          type: z.string().optional(),
+          user_message: z.string().optional(),
+        })
+        .partial()
+        .optional(),
+      source: z
+        .object({
+          type: z.string().optional(),
+        })
+        .partial()
+        .optional(),
+      metadata: z.record(z.string(), z.string()).optional(),
+    })
+    .passthrough(),
+});
+
