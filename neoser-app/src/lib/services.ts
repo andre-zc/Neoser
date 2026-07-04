@@ -47,10 +47,10 @@ export const services: Service[] = [
     description: [
       "Brindamos atención ginecológica a la mujer en sus diferentes etapas de vida, desde una atención integral, preventiva y centrada en el bienestar físico, emocional, hormonal y corporal.",
     ],
-    image: "/assets/servicios/neoser-334.jpg",
+    image: "/assets/servicios/neoser-334-h.jpg",
     gallery: [
       {
-        image: "/assets/servicios/neoser-334.jpg",
+        image: "/assets/servicios/neoser-334-h.jpg",
         title: "Ginecología Integral para la Mujer",
         text: "Acompañamos a la mujer en cada etapa de su vida con una atención ginecológica preventiva, integral y personalizada, orientada al bienestar físico, hormonal, emocional y corporal.",
       },
@@ -71,7 +71,6 @@ export const services: Service[] = [
       },
     ],
     category: "medica",
-    imageOrientation: "vertical",
     benefits: [
       {
         icon: "Stethoscope",
