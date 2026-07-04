@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, type CSSProperties } from "react";
 import {
   Heart,
   Calendar,
@@ -29,6 +29,7 @@ import { WhatsappInlineButton } from "@/components/whatsapp-button";
 import { services as servicesData } from "@/lib/services";
 import { ServicesCarousel } from "@/components/services-carousel";
 import { SiteHeader } from "@/components/site-header";
+import { CoordinationForm } from "@/components/coordination-form";
 import { CountUp } from "@/components/count-up";
 
 const GoogleMapEmbed = dynamic(
@@ -49,6 +50,7 @@ export default function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [calMounted, setCalMounted] = useState(false);
   const [activeNews, setActiveNews] = useState<number | null>(null);
+  const [bookingTab, setBookingTab] = useState<"select" | "medica" | "coordinacion">("select");
   const calSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -755,55 +757,141 @@ export default function HomePage() {
       </section>
 
       {/* ===== RESERVA ===== */}
-      <section id="reserva" className="relative overflow-hidden bg-cream pt-12 pb-8 md:pt-16 md:pb-12">
+      <section id="reserva" className="booking-section relative overflow-hidden pt-20 pb-16 md:pt-24 md:pb-20">
         <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-          <span className="particle particle-circle" style={{ width: 260, height: 260, bottom: -70, right: -60, background: "var(--blue)", opacity: 0.06 }} />
-          <span className="particle particle-ring" style={{ width: 110, height: 110, top: "14%", left: "7%", borderColor: "rgba(232,135,155,0.2)" }} />
+          <span className="particle particle-ring" style={{ width: 150, height: 150, top: "12%", left: "6%", borderColor: "rgba(255,255,255,0.14)" }} />
+          <span className="particle particle-dot" style={{ width: 9, height: 9, top: "22%", right: "14%", background: "rgba(246,184,198,0.5)" }} />
+          <span className="particle particle-diamond" style={{ bottom: "18%", right: "10%", background: "rgba(255,255,255,0.08)" }} />
+          <span className="particle particle-circle" style={{ width: 240, height: 240, bottom: -80, left: -60, background: "var(--pink)", opacity: 0.08 }} />
         </div>
         <div className="container-main relative">
-          <div className="mb-8 text-center" data-aos="fade-up">
+          <div className="mb-10 text-center" data-aos="fade-up">
             <p className="section-tag mb-2">Agenda tu atención</p>
             <h2 className="section-title mb-4">
               Reserva de{" "}
-              <span className="bg-gradient-to-r from-pink to-pink-dark bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#f6b8c6] to-pink bg-clip-text text-transparent">
                 Citas
               </span>
             </h2>
             <div className="section-divider mx-auto" />
+            {bookingTab === "select" && (
+              <p className="booking-lead mx-auto mt-5 max-w-lg text-sm md:text-base">
+                Elige cómo quieres empezar. Dos caminos, una misma calidez humana.
+              </p>
+            )}
           </div>
 
-          <div ref={calSectionRef} className="surface-card mx-auto max-w-4xl p-8 md:p-10" data-aos="fade-up">
-            <h3 className="mb-3 text-2xl font-bold text-navy">Antes de reservar</h3>
-            <p className="mb-6 text-sm text-gray-600">
-              Te pedimos unos minutos para revisar la información antes de elegir tu horario:
-            </p>
+          <div ref={calSectionRef} className="mx-auto max-w-5xl" data-aos="fade-up">
+            {/* Selector: dos tipos de agendamiento */}
+            {bookingTab === "select" && (
+              <div className="grid gap-6 md:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={() => { setBookingTab("medica"); setCalMounted(true); }}
+                  className="booking-card group flex flex-col items-start p-8 text-left"
+                  style={{ "--accent": "var(--pink)", "--glow": "rgba(232,135,155,0.55)" } as CSSProperties}
+                >
+                  <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-pink-light transition-transform duration-300 group-hover:scale-110">
+                    <Stethoscope className="h-7 w-7 text-pink" />
+                  </div>
+                  <h3 className="mb-2 text-xl font-bold text-navy">Consulta Médica</h3>
+                  <p className="mb-5 text-sm leading-relaxed text-gray-500">
+                    Agenda tu cita con el Dr. Luis Chacaliaza. Atención humanizada
+                    para gestantes y mujeres en cada etapa de su salud.
+                  </p>
+                  <div className="mb-6 flex flex-wrap gap-2">
+                    <span className="booking-chip"><Clock className="h-3.5 w-3.5" /> 60 minutos</span>
+                    <span className="booking-chip"><MapPin className="h-3.5 w-3.5" /> Presencial</span>
+                    <span className="booking-chip"><Mail className="h-3.5 w-3.5" /> Confirmación por correo</span>
+                  </div>
+                  <span className="mt-auto inline-flex items-center gap-2 font-semibold text-pink">
+                    <Calendar className="h-5 w-5" /> Agendar cita
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
+                </button>
 
-            <ul className="mb-8 space-y-2 text-sm text-gray-600">
-              <li>Comparte tu nombre completo y teléfono de contacto.</li>
-              <li>Selecciona el tipo de atención y el horario disponible en el calendario.</li>
-              <li>Recibirás una confirmación automática por correo.</li>
-            </ul>
+                <button
+                  type="button"
+                  onClick={() => setBookingTab("coordinacion")}
+                  className="booking-card group flex flex-col items-start p-8 text-left"
+                  style={{ "--accent": "var(--blue)", "--glow": "rgba(74,127,181,0.5)" } as CSSProperties}
+                >
+                  <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-light transition-transform duration-300 group-hover:scale-110">
+                    <Users className="h-7 w-7 text-blue" />
+                  </div>
+                  <h3 className="mb-2 text-xl font-bold text-navy">Reunión de Coordinación</h3>
+                  <p className="mb-5 text-sm leading-relaxed text-gray-500">
+                    ¿Eres institución o especialista? Coordina capacitaciones,
+                    ponencias, alianzas institucionales o proyectos con NeoSer.
+                  </p>
+                  <div className="mb-6 flex flex-wrap gap-2">
+                    <span className="booking-chip" style={{ "--chip-bg": "var(--blue-light)", "--chip-fg": "#2f5d8a" } as CSSProperties}><Users className="h-3.5 w-3.5" /> Institucional</span>
+                    <span className="booking-chip" style={{ "--chip-bg": "var(--blue-light)", "--chip-fg": "#2f5d8a" } as CSSProperties}><Clock className="h-3.5 w-3.5" /> Respuesta en 48 h</span>
+                    <span className="booking-chip" style={{ "--chip-bg": "var(--blue-light)", "--chip-fg": "#2f5d8a" } as CSSProperties}><Globe className="h-3.5 w-3.5" /> Alianzas</span>
+                  </div>
+                  <span className="mt-auto inline-flex items-center gap-2 font-semibold text-blue">
+                    <ArrowRight className="h-5 w-5" /> Enviar solicitud
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
+                </button>
+              </div>
+            )}
 
-            {calLink ? (
-              <div className="overflow-hidden rounded-2xl border border-gray-100">
-                {calMounted ? (
-                  <CalEmbed
-                    calLink={calLink}
-                    style={{ width: "100%", height: "640px", overflow: "scroll" }}
-                    config={{ layout: "month_view", theme: "light" }}
-                  />
+            {/* Consulta médica — Cal.com */}
+            {bookingTab === "medica" && (
+              <div className="surface-card p-6 md:p-8">
+                <button
+                  type="button"
+                  onClick={() => setBookingTab("select")}
+                  className="mb-4 inline-flex items-center gap-1 text-sm font-medium text-pink hover:underline"
+                >
+                  ← Volver a opciones
+                </button>
+                <h3 className="mb-2 text-2xl font-bold text-navy">
+                  Consulta con el Dr. Luis Chacaliaza
+                </h3>
+                <p className="mb-6 text-sm text-gray-600">
+                  Selecciona el día y horario disponible. Recibirás una confirmación
+                  automática por correo.
+                </p>
+
+                {calLink ? (
+                  <div className="overflow-hidden rounded-2xl border border-gray-100">
+                    {calMounted ? (
+                      <CalEmbed
+                        calLink={calLink}
+                        style={{ width: "100%", height: "640px", overflow: "scroll" }}
+                        config={{ layout: "month_view", theme: "light" }}
+                      />
+                    ) : (
+                      <div className="flex h-[640px] items-center justify-center text-sm text-gray-400">
+                        Cargando calendario…
+                      </div>
+                    )}
+                  </div>
                 ) : (
-                  <div className="flex h-[640px] items-center justify-center text-sm text-gray-400">
-                    Cargando calendario…
+                  <div className="flex h-[420px] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-gray-200 p-10 text-center text-gray-500">
+                    <Calendar className="h-12 w-12 text-navy/30" />
+                    <p className="max-w-md text-sm">
+                      El calendario de reservas aún no está configurado. Por favor
+                      utiliza el formulario de contacto mientras activamos Cal.com.
+                    </p>
                   </div>
                 )}
               </div>
-            ) : (
-              <div className="flex h-[420px] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-gray-200 p-10 text-center text-gray-500">
-                <Calendar className="h-12 w-12 text-navy/30" />
-                <p className="max-w-md text-sm">
-                  El calendario de reservas aún no está configurado. Por favor utiliza el formulario de contacto mientras activamos Cal.com.
-                </p>
+            )}
+
+            {/* Reunión de coordinación — formulario */}
+            {bookingTab === "coordinacion" && (
+              <div className="surface-card mx-auto max-w-2xl p-6 md:p-8">
+                <button
+                  type="button"
+                  onClick={() => setBookingTab("select")}
+                  className="mb-4 inline-flex items-center gap-1 text-sm font-medium text-blue hover:underline"
+                >
+                  ← Volver a opciones
+                </button>
+                <CoordinationForm />
               </div>
             )}
           </div>

@@ -166,3 +166,39 @@ export async function syncEnrollmentToHubspot(input: HubspotEnrollmentInput) {
 
   return { skipped: false as const, ok: true as const };
 }
+
+type HubspotCoordinationInput = {
+  fullName: string;
+  email: string;
+  phone: string;
+  institution: string;
+  position: string;
+  reason: string;
+  description: string;
+};
+
+export async function syncCoordinationToHubspot(input: HubspotCoordinationInput) {
+  const token = getHubspotToken();
+  if (!token) return { skipped: true as const };
+
+  const { firstname, lastname } = splitName(input.fullName);
+  await createOrUpsertContact({
+    firstname,
+    lastname,
+    email: input.email,
+    phone: input.phone,
+    company: input.institution,
+    jobtitle: input.position,
+    fuente_origen: "coordinacion_institucional",
+  });
+
+  await createDeal({
+    dealname: `Coordinación - ${input.institution} - ${input.fullName}`,
+    dealstage: "appointmentscheduled",
+    pipeline: "default",
+    neoser_servicio_interes: input.reason,
+    neoser_source: "coordinacion_institucional",
+  });
+
+  return { skipped: false as const, ok: true as const };
+}

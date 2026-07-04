@@ -291,6 +291,54 @@
   0%, 100% { transform: rotate(45deg) translate(0,0); opacity: 0.08; }
   50% { transform: rotate(45deg) translate(10px,-15px); opacity: 0.15; }
 }
+/* -- Reserva: sección destacada sobre navy (rompe el bloque cream) -- */
+.booking-section {
+  background:
+    radial-gradient(120% 85% at 12% 0%, rgba(74,127,181,0.28) 0%, transparent 55%),
+    radial-gradient(100% 90% at 100% 100%, rgba(232,135,155,0.20) 0%, transparent 52%),
+    linear-gradient(135deg, #0f2548 0%, #1b3a6b 55%, #23528f 100%);
+}
+.booking-section .section-title { color: #fff; }
+.booking-section .section-tag { color: #f6b8c6; }
+.booking-lead { color: rgba(255,255,255,0.72); }
+
+.booking-card {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.14);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.booking-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: var(--accent, var(--pink));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+.booking-card:hover::before,
+.booking-card:focus-visible::before { transform: scaleX(1); }
+.booking-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 26px 55px -22px var(--glow, rgba(232,135,155,0.55));
+}
+.booking-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.32rem 0.72rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+  background: var(--chip-bg, var(--pink-light));
+  color: var(--chip-fg, var(--pink-dark));
+}
+
 @media (max-width: 768px) {
   .service-card { padding: 2.25rem 1.75rem; }
 }

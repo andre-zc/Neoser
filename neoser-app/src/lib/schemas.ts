@@ -121,6 +121,30 @@ export const guestEnrollmentSchema = z.object({
 });
 
 // ============================================
+// Reunión de coordinación institucional (formulario sin calendario)
+// ============================================
+
+export const coordinationReasonSchema = z.enum([
+  "Ponencia o conferencia",
+  "Curso o capacitación",
+  "Convenio institucional",
+  "Proyecto académico o de investigación",
+  "Participación en evento",
+  "Entrevista o medio de comunicación",
+  "Otro",
+]);
+
+export const coordinationRequestSchema = z.object({
+  fullName: z.string().min(2).max(120),
+  institution: z.string().min(2).max(160),
+  position: z.string().min(2).max(120),
+  email: z.string().email(),
+  phone: z.string().min(7).max(20),
+  reason: coordinationReasonSchema,
+  description: z.string().min(5).max(2000),
+});
+
+// ============================================
 // Culqi — frontend -> /api/payments/culqi/charge
 // ============================================
 

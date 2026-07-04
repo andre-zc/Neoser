@@ -120,3 +120,54 @@ export function buildEnrollmentConfirmationEmail(input: EnrollmentEmailInput) {
   return { subject, html };
 }
 
+type CoordinationNotificationInput = {
+  fullName: string;
+  institution: string;
+  position: string;
+  email: string;
+  phone: string;
+  reason: string;
+  description: string;
+  createdAt: string;
+};
+
+// Email INTERNO al equipo NeoSer cuando llega una solicitud de coordinación.
+export function buildCoordinationNotificationEmail(
+  input: CoordinationNotificationInput,
+) {
+  const subject = `Nueva solicitud de coordinación — ${input.institution}`;
+  const fecha = new Date(input.createdAt).toLocaleString("es-PE", {
+    timeZone: "America/Lima",
+  });
+  const row = (label: string, value: string) => `
+    <tr>
+      <td style="padding: 8px 0; color: #718096; vertical-align: top; width: 38%;">${label}</td>
+      <td style="padding: 8px 0; color: #1F2A44; font-weight: 600;">${value}</td>
+    </tr>`;
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 560px; margin: 0 auto; background: #FFF8F2; padding: 32px;">
+      <div style="background: #FFFFFF; border-radius: 16px; padding: 32px;">
+        <h1 style="color: #1F2A44; font-size: 20px; margin: 0 0 8px;">Nueva solicitud de coordinación</h1>
+        <p style="color: #4A5568; font-size: 14px; margin: 0 0 20px;">
+          Recibida desde el sitio web. Gestiona el seguimiento en HubSpot.
+        </p>
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+          ${row("Nombres y apellidos", input.fullName)}
+          ${row("Institución", input.institution)}
+          ${row("Cargo", input.position)}
+          ${row("Correo", input.email)}
+          ${row("Teléfono", input.phone)}
+          ${row("Motivo", input.reason)}
+          ${row("Fecha de registro", fecha)}
+        </table>
+        <div style="margin-top: 16px; padding: 16px; background: #FFF8F2; border-radius: 12px;">
+          <p style="color: #718096; font-size: 13px; margin: 0 0 6px;">Descripción de la solicitud</p>
+          <p style="color: #1F2A44; font-size: 14px; line-height: 1.6; margin: 0;">${input.description}</p>
+        </div>
+      </div>
+    </div>
+  `.trim();
+
+  return { subject, html };
+}
+
