@@ -7,6 +7,8 @@ export type GallerySlide = {
   image?: string; // path relativo a /public; ausente => placeholder
   title: string;
   text?: string; // párrafo descriptivo (opcional)
+  // Encuadre del object-cover (ej. "center 30%"). Default: center.
+  objectPosition?: string;
 };
 
 // Pilar / beneficio destacado del servicio (tarjeta con ícono en el detalle).
@@ -20,11 +22,13 @@ export type Service = {
   slug: string;
   title: string;
   summary: string; // 1-2 líneas para la home
-  description: string[]; // párrafos completos para el detalle ("Sobre este servicio")
+  description: string[]; // lead corto para "Sobre este servicio" (se muestra el primero)
   // Resumen corto para la tarjeta del catálogo /servicios (primera impresión).
   // Si falta, la tarjeta usa `description` completo como fallback.
   cardDescription?: string[];
-  image: string; // path relativo a /public (portada)
+  image: string; // path relativo a /public (portada catálogo / carrusel home)
+  // Portada exclusiva del hero en /servicios/[slug]. Si falta, usa `image`.
+  detailImage?: string;
   gallery?: GallerySlide[]; // carrusel de fotos con texto en el detalle
   category: ServiceCategory;
   // Orientación nativa de la foto. Default "horizontal" (contenedor 4:3).
@@ -45,12 +49,12 @@ export const services: Service[] = [
     summary:
       "Atención integral y preventiva para tu salud ginecológica en cada etapa de vida.",
     description: [
-      "Brindamos atención ginecológica a la mujer en sus diferentes etapas de vida, desde una atención integral, preventiva y centrada en el bienestar físico, emocional, hormonal y corporal.",
+      "Atención ginecológica integral y preventiva, centrada en tu bienestar físico, emocional, hormonal y corporal en cada etapa de la vida.",
     ],
-    image: "/assets/servicios/neoser-334-h.jpg",
+    image: "/assets/servicios/gineco-obstetra-01.png",
     gallery: [
       {
-        image: "/assets/servicios/neoser-334-h.jpg",
+        image: "/assets/servicios/gineco-obstetra-01.png",
         title: "Ginecología Integral para la Mujer",
         text: "Acompañamos a la mujer en cada etapa de su vida con una atención ginecológica preventiva, integral y personalizada, orientada al bienestar físico, hormonal, emocional y corporal.",
       },
@@ -58,11 +62,14 @@ export const services: Service[] = [
         image: "/assets/servicios/IMG_9777.jpg",
         title: "Atención Interdisciplinaria y Familiar",
         text: "El trabajo conjunto de nuestros profesionales y la participación activa de la familia fortalecen la confianza, el bienestar y una vivencia respetuosa de la maternidad.",
+        // Baja el encuadre: cabezas enteras + más barriguita visible
+        objectPosition: "center 38%",
       },
       {
-        // Pendiente: foto por enviar (suelo pélvico / etapa madura)
+        image: "/assets/servicios/gineco-bienestar-edad.png",
         title: "Tu bienestar no tiene edad",
         text: "Que los cambios propios de los años no limiten tu bienestar ni tu vida cotidiana. Te acompañamos con prevención, evaluación y cuidado del suelo pélvico en cada etapa de la vida.",
+        objectPosition: "center 40%",
       },
       {
         image: "/assets/servicios/MG_0639.jpg",
@@ -114,7 +121,7 @@ export const services: Service[] = [
     summary:
       "Cuidado integral de madre y bebé con enfoque perinatal y participación familiar.",
     description: [
-      "Brindamos atención prenatal centrada en el bienestar integral de la madre, su bebé y su familia, promoviendo la salud mental, la educación perinatal y la preparación consciente para el nacimiento, con la participación activa de la pareja durante todo el proceso.",
+      "Controles prenatales centrados en madre, bebé y familia, con educación perinatal y participación activa de la pareja.",
     ],
     image: "/assets/servicios/MG_9793.jpg",
     gallery: [
@@ -133,7 +140,7 @@ export const services: Service[] = [
         text: "Cada control prenatal te permite disfrutar el embarazo con más calma, confianza y seguridad.",
       },
       {
-        image: "/assets/servicios/neoser-310.jpg",
+        image: "/assets/servicios/atencion-prenatal-04.png",
         title: "Tu cuerpo se prepara, tu bebé encuentra su lugar",
         text: "Favorecemos el equilibrio de tu cuerpo para crear mejores condiciones para el nacimiento de tu bebé.",
       },
@@ -182,33 +189,31 @@ export const services: Service[] = [
     summary:
       "Acompañamiento del nacimiento respetando los derechos biológicos de mamá y bebé.",
     description: [
-      "Atendemos el nacimiento desde una mirada que reconoce y protege los derechos anatómicos y biológicos de la madre y su bebé, promoviendo la libertad de movimiento, las posiciones verticales y el respeto por la fisiología del parto.",
-      "Favorecemos la cero separación durante los primeros mil minutos de vida, el contacto piel con piel inmediato, el corte oportuno del cordón umbilical y el inicio temprano de la lactancia materna.",
-      "Con estas prácticas protegemos el vínculo temprano entre la madre y su bebé, favorecemos la adaptación neonatal, el desarrollo de una microbiota saludable y el bienestar físico y emocional de la madre y su bebé.",
+      "Acompañamos el nacimiento respetando la fisiología del parto, con libertad de movimiento, piel con piel inmediato y cero separación en los primeros minutos de vida.",
     ],
     cardDescription: [
       "Vivimos el nacimiento como el inicio de una nueva historia familiar, respetando los derechos anatómicos y biológicos de la madre y su bebé.",
       "Protegemos la Hora Dorada, la continuidad del vínculo durante los primeros mil minutos de vida y el inicio temprano de la lactancia materna.",
     ],
-    image: "/assets/servicios/DSC_8490.webp",
+    image: "/assets/servicios/partos-humanizados-01.png",
     gallery: [
       {
-        image: "/assets/servicios/DSC_8490.webp",
+        image: "/assets/servicios/partos-humanizados-01.png",
         title: "Protegemos el primer encuentro",
         text: "Los primeros minutos de vida son decisivos. El contacto piel con piel inmediato fortalece el vínculo y favorece la adaptación del bebé desde el nacimiento.",
       },
       {
-        image: "/assets/servicios/DSC_8494.webp",
+        image: "/assets/servicios/partos-humanizados-02.png",
         title: "Nacer es encontrar a mamá",
         text: "El instinto guía al bebé hacia el calor, la voz y la protección de su madre desde el primer instante.",
       },
       {
-        image: "/assets/servicios/DSC_8510.jpg",
+        image: "/assets/servicios/partos-humanizados-03.png",
         title: "Aquí también nace una familia",
         text: "Con el nacimiento de un bebé, nace y renace una familia. Protegemos ese primer encuentro.",
       },
       {
-        image: "/assets/servicios/DSC_8638.jpg",
+        image: "/assets/servicios/partos-humanizados-04.png",
         title: "El nacimiento también construye futuro",
         text: "Las primeras experiencias de vida dejan huellas en la salud, el vínculo y el bienestar de la madre, su bebé y su familia.",
       },
@@ -258,14 +263,35 @@ export const services: Service[] = [
     summary:
       "Cesárea Túnel: piel con piel inmediato y cero separación durante el nacimiento.",
     description: [
-      "Existen situaciones en las que la cesárea es la opción más segura para la madre y el bebé. En estos casos, concebimos este nacimiento como una experiencia que también puede ser vivida de manera humanizada y respetuosa.",
-      "Desde 2020 implementamos nuestra técnica de Cesárea Humanizada Túnel, denominada así porque el bebé es trasladado por debajo del campo quirúrgico directamente al pecho de la madre, favoreciendo el contacto inmediato, el pinzamiento oportuno del cordón umbilical y el inicio del vínculo desde el primer instante.",
-      "Este modelo de atención permite la participación activa de la pareja y el acompañamiento de una asesora de lactancia durante el nacimiento y las primeras horas posteriores, promoviendo el contacto piel con piel, la cero separación y el inicio temprano de la lactancia materna.",
+      "Cuando la cesárea es la opción más segura, la vivimos de forma humanizada: el bebé llega directo al pecho de mamá, con piel con piel y acompañamiento de la pareja.",
     ],
     cardDescription: [
       "Desde 2020 implementamos la Cesárea Humanizada Túnel, técnica innovadora que nos ha permitido favorecer el contacto piel con piel inmediato, la cero separación mamá-bebé, la recepción temprana del calostro y el inicio oportuno de la lactancia materna durante el nacimiento por cesárea.",
     ],
-    image: "/assets/servicios/MG_3845.jpeg",
+    image: "/assets/servicios/cesareas-humanizadas-01.png",
+    detailImage: "/assets/servicios/cesareas-humanizadas-portada.png",
+    gallery: [
+      {
+        image: "/assets/servicios/cesareas-humanizadas-01.png",
+        title: "Del vientre al pecho de mamá",
+        text: "Cesárea Humanizada Túnel. Protegemos el primer encuentro.",
+      },
+      {
+        image: "/assets/servicios/cesareas-humanizadas-02.png",
+        title: "Piel con piel desde el primer instante",
+        text: "El embarazo prepara biológicamente a la madre para recibir a su bebé sobre su pecho. El contacto inmediato da continuidad a este proceso, favoreciendo la salud integral del bebé.",
+      },
+      {
+        image: "/assets/servicios/cesareas-humanizadas-03.png",
+        title: "Juntos desde el primer instante",
+        text: "El nacimiento de un bebé es la expresión más profunda del amor de una familia.",
+      },
+      {
+        image: "/assets/servicios/cesareas-humanizadas-04.png",
+        title: "Respetamos la Hora Dorada",
+        text: "La primera hora de vida marca el comienzo de los primeros mil minutos, un periodo fundamental para la adaptación del bebé, el vínculo y la lactancia materna.",
+      },
+    ],
     category: "medica",
     benefits: [
       {
@@ -312,11 +338,31 @@ export const services: Service[] = [
     summary:
       "Programa de 8-10 sesiones con tu pareja, basado en Educación Somática Prenatal.",
     description: [
-      "Brindamos un programa basado en la Educación Somática Prenatal, orientado a acompañar a la gestante y su pareja mediante herramientas corporales, emocionales y neurobiológicas que favorecen la conciencia corporal, el movimiento, la respiración y el vínculo prenatal.",
-      "A través de un programa personalizado de 8 a 10 sesiones teóricas y vivenciales, promovemos una preparación consciente para el nacimiento, facilitando un entorno de seguridad que favorezca el flujo hormonal del parto, la confianza corporal y una vivencia fisiológica del trabajo de parto.",
-      "Integramos activamente a la pareja como acompañante clave del proceso, favoreciendo su participación en el sostén emocional, físico y relacional durante el embarazo, el nacimiento y el inicio de la lactancia materna.",
+      "Programa de 8 a 10 sesiones con tu pareja, basado en Educación Somática Prenatal, para prepararte de forma consciente al nacimiento.",
     ],
     image: "/assets/servicios/neoser-172.webp",
+    gallery: [
+      {
+        image: "/assets/servicios/preparacion-parto-01.png",
+        title: "Aprende a acompañar el trabajo de parto",
+        text: "Practicamos posiciones, movimiento y técnicas de alivio con tu pareja, para que lleguen al nacimiento con herramientas concretas.",
+      },
+      {
+        image: "/assets/servicios/preparacion-parto-02.png",
+        title: "Conciencia corporal y vínculo prenatal",
+        text: "Respiración, presencia y conexión con tu bebé: un espacio para integrar cuerpo, emoción y acompañamiento de la pareja.",
+      },
+      {
+        image: "/assets/servicios/preparacion-parto-03.png",
+        title: "Entiende cómo nace tu bebé",
+        text: "Sesiones teóricas y vivenciales para comprender la biomecánica del nacimiento y ganar confianza en tu cuerpo.",
+      },
+      {
+        image: "/assets/servicios/preparacion-parto-04.png",
+        title: "Tu pareja, un sostén activo",
+        text: "Integramos a tu pareja en el acompañamiento físico y emocional, para vivir el nacimiento en equipo.",
+      },
+    ],
     category: "somatica",
     benefits: [
       {
@@ -361,16 +407,42 @@ export const services: Service[] = [
     summary:
       "Método Calais-Germain para conciencia y cuidado del suelo pélvico.",
     description: [
-      "Programa basado en la metodología de Anatomía para el Movimiento® de Blandine Calais-Germain, orientado a favorecer la conciencia y el cuidado del suelo pélvico mediante principios de educación somática, percepción corporal y biomecánica femenina.",
-      "A través de ejercicios específicos, respiración consciente y movimiento guiado, este método contribuye a mejorar la postura, la movilidad y la integración del suelo pélvico con el cuerpo en movimiento, favoreciendo la prevención de prolapsos, incontinencia urinaria y otras disfunciones del periné, promoviendo el bienestar integral de la mujer en sus diferentes etapas de vida.",
+      "Método Anatomía para el Movimiento® de Blandine Calais-Germain: conciencia y cuidado del suelo pélvico con educación somática y biomecánica femenina.",
     ],
     image: "/assets/servicios/neoser-4.webp",
+    gallery: [
+      {
+        image: "/assets/servicios/perine-movimiento-01.png",
+        title: "Movimiento guiado y percepción corporal",
+        text: "Ejercicios específicos que integran el suelo pélvico con el cuerpo en movimiento, en un entorno que favorece la conciencia y el bienestar.",
+      },
+      {
+        image: "/assets/servicios/perine-movimiento-02.png",
+        title: "Educación somática del periné",
+        text: "Trabajamos la percepción y el cuidado del suelo pélvico con herramientas concretas, siguiendo la metodología de Anatomía para el Movimiento®.",
+      },
+      {
+        image: "/assets/servicios/perine-movimiento-03.png",
+        title: "Postura, equilibrio y movilidad",
+        text: "Mejoramos la postura y la movilidad mediante respiración consciente y movimiento guiado, adaptado a cada etapa de la vida.",
+      },
+      {
+        image: "/assets/servicios/perine-movimiento-04.png",
+        title: "Biomecánica femenina en práctica",
+        text: "Exploramos la anatomía en movimiento para integrar el suelo pélvico de forma segura, consciente y respetuosa con tu cuerpo.",
+      },
+      {
+        image: "/assets/servicios/perine-movimiento-05.png",
+        title: "Prevención y bienestar integral",
+        text: "Favorecemos la prevención de prolapsos, incontinencia urinaria y otras disfunciones del periné, cuidando tu bienestar en cada etapa.",
+      },
+    ],
     category: "somatica",
     benefits: [
       {
         icon: "Flower2",
-        title: "Método Calais-Germain",
-        text: "Basado en Anatomía para el Movimiento®, referente internacional en biomecánica femenina.",
+        title: "Anatomía para el Movimiento®",
+        text: "Metodología de Blandine Calais-Germain orientada a la conciencia y el cuidado del suelo pélvico.",
       },
       {
         icon: "ShieldCheck",
@@ -388,6 +460,7 @@ export const services: Service[] = [
       "Biomecánica femenina del suelo pélvico",
       "Ejercicios específicos y respiración consciente",
       "Movimiento guiado para la integración corporal",
+      "Enfoque preventivo y de bienestar en cada etapa de la vida",
     ],
     forWho:
       "Mujeres en cualquier etapa de la vida que quieren conocer y cuidar su suelo pélvico.",
@@ -408,10 +481,31 @@ export const services: Service[] = [
     summary:
       "Uso consciente del rebozo como herramienta de movimiento y sostén.",
     description: [
-      "Programa basado en la educación somática y el uso consciente del rebozo como herramienta de percepción corporal, movimiento y sostén, orientado a favorecer la conciencia corporal, la movilidad, la respiración y la autorregulación física y emocional de la mujer.",
-      "A través del balanceo, la suspensión, el movimiento guiado y las técnicas de sostén con rebozo, este método contribuye al bienestar integral durante el embarazo, parto y posparto, favoreciendo una vivencia más consciente del cuerpo, el nacimiento y la maternidad.",
+      "Uso consciente del rebozo como herramienta de percepción, movimiento y sostén, para acompañar el bienestar en el embarazo, parto y posparto.",
     ],
     image: "/assets/servicios/neoser-108.webp",
+    gallery: [
+      {
+        image: "/assets/servicios/rebozo-somatica-01.png",
+        title: "Suspensión y movimiento guiado",
+        text: "El rebozo acompaña el movimiento y la movilidad, favoreciendo una vivencia más consciente del cuerpo durante el embarazo.",
+      },
+      {
+        image: "/assets/servicios/rebozo-somatica-02.png",
+        title: "Sostén y balanceo con tu pareja",
+        text: "Practicamos técnicas de sostén y balanceo para integrar a la pareja como acompañante clave del proceso.",
+      },
+      {
+        image: "/assets/servicios/rebozo-somatica-03.png",
+        title: "Técnicas de sostén en la práctica",
+        text: "Aprendes a usar el rebozo como herramienta de percepción corporal, movimiento y sostén en embarazo, parto y posparto.",
+      },
+      {
+        image: "/assets/servicios/rebozo-somatica-04.png",
+        title: "Conciencia corporal y autorregulación",
+        text: "Favorecemos la respiración, la calma y la autorregulación física y emocional a través del uso consciente del rebozo.",
+      },
+    ],
     category: "somatica",
     benefits: [
       {
@@ -455,10 +549,16 @@ export const services: Service[] = [
     summary:
       "Psicofonía de Marie-Louise Aucher: voz, vibración y vínculo prenatal.",
     description: [
-      "Programa basado en la Psicofonía de Marie-Louise Aucher, metodología que utiliza la vibración de la voz, el canto y la conciencia corporal para favorecer la percepción vibratoria del cuerpo, la respiración, la relajación y el vínculo prenatal.",
-      "A través de la práctica vocal consciente, este método contribuye al bienestar físico y emocional de la gestante, favorece la movilidad y apertura corporal para el nacimiento, fortalece la comunicación afectiva con el bebé y promueve una vivencia más consciente de la gestación y el parto.",
+      "Psicofonía de Marie-Louise Aucher: voz, canto y conciencia corporal para fortalecer el vínculo prenatal y la preparación al nacimiento.",
     ],
     image: "/assets/servicios/neoser-157.webp",
+    gallery: [
+      {
+        image: "/assets/servicios/canto-prenatal-01.png",
+        title: "Voz, respiración y vínculo prenatal",
+        text: "La práctica vocal consciente favorece la percepción vibratoria del cuerpo, la relajación y la comunicación afectiva con tu bebé.",
+      },
+    ],
     category: "somatica",
     benefits: [
       {
@@ -498,15 +598,35 @@ export const services: Service[] = [
   },
   {
     slug: "somaesfera",
-    title: "SomaEsfera® Movimiento Somático con Balones",
+    title: "SomaEsfera® Movimiento Somático con Balones para el Embarazo, Parto y Postparto",
     summary:
       "Movimiento somático con balones para embarazo, parto y postparto.",
     description: [
-      "Programa corporal basado en principios de educación somática y movimiento consciente con balones, orientado a favorecer la conciencia corporal, el bienestar físico y emocional y la preparación corporal durante el embarazo, parto y postparto.",
-      "A través del movimiento, la respiración y la exploración corporal, favorecemos el descubrimiento de los puntos de apoyo y su integración con las diferentes partes del cuerpo, promoviendo la relajación, la movilidad y el alivio de tensiones físicas durante las diferentes etapas de la maternidad.",
-      "Integramos además la participación activa de la pareja como acompañante y sostén durante el proceso de gestación, nacimiento y postparto.",
+      "Movimiento somático con balones para favorecer conciencia corporal, relajación y preparación en el embarazo, parto y postparto, con participación de la pareja.",
     ],
     image: "/assets/servicios/neoser-132.webp",
+    gallery: [
+      {
+        image: "/assets/servicios/somaesfera-01.png",
+        title: "Movimiento consciente con balones",
+        text: "Exploramos el cuerpo en movimiento para favorecer la conciencia corporal, la relajación y la preparación durante el embarazo, parto y postparto.",
+      },
+      {
+        image: "/assets/servicios/somaesfera-02.png",
+        title: "Puntos de apoyo y alivio de tensiones",
+        text: "A través del movimiento y la respiración, favorecemos el descubrimiento de los puntos de apoyo y el alivio de tensiones físicas.",
+      },
+      {
+        image: "/assets/servicios/somaesfera-03.png",
+        title: "La pareja como acompañante y sostén",
+        text: "Integramos la participación activa de la pareja durante la gestación, el nacimiento y el postparto.",
+      },
+      {
+        image: "/assets/servicios/somaesfera-04.png",
+        title: "Educación somática en la práctica",
+        text: "Comprendes cómo el movimiento con balones se integra con tu cuerpo en cada etapa de la maternidad.",
+      },
+    ],
     category: "somatica",
     benefits: [
       {
@@ -553,10 +673,16 @@ export const services: Service[] = [
     summary:
       "Preparación consciente para una lactancia informada desde el embarazo.",
     description: [
-      "Programa orientado a preparar a la gestante y su familia para el inicio fisiológico de la lactancia materna desde el embarazo, favoreciendo una comprensión consciente de las primeras horas de vida del bebé y la importancia del contacto piel con piel, la cero separación y la recepción temprana del calostro.",
-      "A través de sesiones educativas y vivenciales, se abordan aspectos relacionados con el agarre, las posiciones de amamantamiento, la producción de leche y las necesidades biológicas del recién nacido, promoviendo el vínculo temprano, el desarrollo de la microbiota y una lactancia informada y respetada.",
+      "Preparación desde el embarazo para el inicio fisiológico de la lactancia: piel con piel, cero separación y recepción temprana del calostro.",
     ],
     image: "/assets/servicios/MG_4392.jpg",
+    gallery: [
+      {
+        image: "/assets/servicios/lactancia-prenatal-01.png",
+        title: "Piel con piel y el inicio de la lactancia",
+        text: "Prepararte desde el embarazo para las primeras horas de vida: cero separación, calostro y un vínculo temprano informado y respetado.",
+      },
+    ],
     category: "comunidad",
     benefits: [
       {
@@ -600,11 +726,31 @@ export const services: Service[] = [
     summary:
       "Espacios quincenales de meditación y conexión para madres NeoSer.",
     description: [
-      "Espacios de encuentro y acompañamiento para madres, orientados a favorecer la conexión emocional, espiritual y corporal a través de la meditación, el dibujo consciente y técnicas de contención con fulares.",
-      "Cada 15 días compartimos meditaciones inspiradas en la historia de vida de la Sagrada Familia, promoviendo espacios de pausa, escucha, sostén emocional y reflexión en comunidad.",
-      "A través de la respiración, el movimiento suave, el arte y el compartir entre madres, favorecemos experiencias de bienestar, contención y conexión consigo mismas y con su maternidad desde una mirada sensible y respetuosa.",
+      "Espacios quincenales de meditación, dibujo consciente y contención con fulares, para conectar contigo y con tu maternidad en comunidad.",
     ],
     image: "/assets/servicios/IMG_2544-editada.png",
+    gallery: [
+      {
+        image: "/assets/servicios/circulos-meditacion-01.png",
+        title: "Dibujo consciente y expresión",
+        text: "El arte como vía de conexión emocional y reflexión, en un espacio de pausa y bienestar entre madres.",
+      },
+      {
+        image: "/assets/servicios/circulos-meditacion-02.png",
+        title: "Comunidad Mamá NeoSer",
+        text: "Compartimos entre madres desde una mirada sensible y respetuosa, favoreciendo contención y conexión con la maternidad.",
+      },
+      {
+        image: "/assets/servicios/circulos-meditacion-03.png",
+        title: "Meditación y reflexión en círculo",
+        text: "Cada 15 días, espacios de escucha y reflexión inspirados en la historia de vida de la Sagrada Familia.",
+      },
+      {
+        image: "/assets/servicios/circulos-meditacion-04.png",
+        title: "Contención con fulares",
+        text: "Técnicas de contención que favorecen la conexión emocional, espiritual y corporal a través del sostén y la presencia.",
+      },
+    ],
     category: "comunidad",
     benefits: [
       {

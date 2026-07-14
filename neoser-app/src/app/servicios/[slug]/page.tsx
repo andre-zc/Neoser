@@ -75,7 +75,7 @@ export async function generateMetadata({
     openGraph: {
       title: service.title,
       description: service.summary,
-      images: [service.image],
+      images: [service.detailImage ?? service.image],
     },
   };
 }
@@ -92,6 +92,7 @@ export default async function ServiceDetailPage({
   const categoryLabel = categoryLabels[service.category];
   const CategoryIcon = CATEGORY_ICON[service.category];
   const isVertical = service.imageOrientation === "vertical";
+  const heroImage = service.detailImage ?? service.image;
 
   const bookingUrl = process.env.NEXT_PUBLIC_CAL_BOOKING_URL || "/#reserva";
 
@@ -132,7 +133,7 @@ export default async function ServiceDetailPage({
                 }`}
               >
                 <Image
-                  src={service.image}
+                  src={heroImage}
                   alt={service.title}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -182,14 +183,12 @@ export default async function ServiceDetailPage({
       {/* ===== DESCRIPCIÓN + PILARES ===== */}
       <section className="py-16 md:py-20">
         <div className="container-main">
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="mx-auto max-w-2xl text-center">
             <p className="section-tag mb-2">Sobre este servicio</p>
             <div className="section-divider mx-auto mb-7" />
-            <div className="space-y-4 text-left leading-relaxed text-gray-600 md:text-center">
-              {service.description.map((paragraph, i) => (
-                <p key={i}>{paragraph}</p>
-              ))}
-            </div>
+            <p className="text-lg leading-relaxed text-gray-600 md:text-xl">
+              {service.description[0]}
+            </p>
           </div>
 
           {service.benefits && service.benefits.length > 0 && (
@@ -369,7 +368,15 @@ export default async function ServiceDetailPage({
               </h2>
               <div className="section-divider mx-auto mt-4" />
             </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div
+              className={
+                related.length === 1
+                  ? "mx-auto grid max-w-sm gap-6"
+                  : related.length === 2
+                    ? "mx-auto grid max-w-3xl gap-6 sm:grid-cols-2"
+                    : "grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+              }
+            >
               {related.map((r) => (
                 <Link
                   key={r.slug}

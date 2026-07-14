@@ -46,7 +46,9 @@ export function ServiceGalleryCarousel({ slides }: { slides: GallerySlide[] }) {
       {/* Track del carrusel */}
       <div
         ref={scrollRef}
-        className="scrollbar-hide flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-6 -mx-4 px-4"
+        className={`scrollbar-hide flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-6 -mx-4 px-4 ${
+          slides.length === 1 ? "justify-center" : ""
+        }`}
         style={{ WebkitOverflowScrolling: "touch" }}
       >
         {slides.map((slide, i) => (
@@ -64,6 +66,11 @@ export function ServiceGalleryCarousel({ slides }: { slides: GallerySlide[] }) {
                   sizes="(max-width: 640px) 100vw, 340px"
                   quality={90}
                   className="object-cover"
+                  style={
+                    slide.objectPosition
+                      ? { objectPosition: slide.objectPosition }
+                      : undefined
+                  }
                 />
               ) : (
                 <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-pink-light/40 text-center text-pink-dark">
