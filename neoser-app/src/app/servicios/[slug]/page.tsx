@@ -94,7 +94,10 @@ export default async function ServiceDetailPage({
   const isVertical = service.imageOrientation === "vertical";
   const heroImage = service.detailImage ?? service.image;
 
-  const bookingUrl = process.env.NEXT_PUBLIC_CAL_BOOKING_URL || "/#reserva";
+  // Apunta al selector de la home (#reserva), que presenta AMBOS sistemas de
+  // agendado: Consulta médica (Cal · Dr. Chacaliaza) y Reunión de coordinación
+  // (formulario). No enlazar directo a Cal para no saltarse esa elección.
+  const bookingUrl = "/#reserva";
 
   // Otros servicios de la misma categoría (sin el actual)
   const related = services

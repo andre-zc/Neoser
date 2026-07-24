@@ -6,6 +6,7 @@ export const leadSourceSchema = z.enum([
   "instagram_organico",
   "referida",
   "web",
+  "whatsapp_button",
   "otro",
 ]);
 
