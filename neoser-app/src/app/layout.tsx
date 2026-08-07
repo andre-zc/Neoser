@@ -1,35 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
+import { Montserrat, Noto_Serif_Display } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { WhatsappFab } from "@/components/whatsapp-button";
 import { WhatsappModalProvider } from "@/components/whatsapp-modal-provider";
 
-const montserrat = localFont({
-  src: "../../public/fonts/abhayalibre-semibold.ttf",
+/** Cuerpo / UI / etiquetas — brand book */
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-montserrat",
   display: "swap",
-  preload: true,
-  fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
-  adjustFontFallback: false,
 });
 
-const playfair = localFont({
-  src: "../../public/fonts/abhayalibre-extrabold.ttf",
+/** Títulos / display — brand book (variable CSS legado --font-playfair) */
+const playfair = Noto_Serif_Display({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
   variable: "--font-playfair",
   display: "swap",
-  preload: true,
-  fallback: ["Georgia", "Times New Roman", "serif"],
-  adjustFontFallback: false,
-});
-
-const dancing = localFont({
-  src: "../../public/fonts/brush-script.ttf",
-  variable: "--font-dancing",
-  display: "swap",
-  preload: false,
-  fallback: ["Brush Script MT", "cursive"],
-  adjustFontFallback: false,
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://neoser.pe";
@@ -116,7 +106,7 @@ export default function RootLayout({
   return (
     <html
       lang="es-PE"
-      className={`${montserrat.variable} ${playfair.variable} ${dancing.variable} h-full antialiased`}
+      className={`${montserrat.variable} ${playfair.variable} h-full antialiased`}
     >
       <head>
         <link rel="preconnect" href="https://app.cal.com" crossOrigin="anonymous" />

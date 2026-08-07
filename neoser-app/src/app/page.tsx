@@ -323,7 +323,7 @@ export default function HomePage() {
                 { val: "+5 Años", label: "De experiencia" },
               ].map((s) => (
                 <div key={s.label} className="text-center">
-                  <div className="text-2xl font-bold text-white md:text-3xl" style={{ fontFamily: "var(--font-playfair), serif" }}>
+                  <div className="text-2xl font-bold text-white md:text-3xl" style={{ fontFamily: "var(--font-playfair), 'Noto Serif Display', Georgia, serif" }}>
                     <CountUp value={s.val} />
                   </div>
                   <div className="mt-1 text-xs text-white/70 md:text-sm">{s.label}</div>
@@ -638,7 +638,7 @@ export default function HomePage() {
                     ) : (
                       <span
                         className="font-bold text-navy/65"
-                        style={{ fontFamily: "var(--font-playfair), serif", fontSize: "2.6rem" }}
+                        style={{ fontFamily: "var(--font-playfair), 'Noto Serif Display', Georgia, serif", fontSize: "2.6rem" }}
                       >
                         {m.initials}
                       </span>

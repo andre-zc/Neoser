@@ -180,8 +180,8 @@ export default async function CursoDetallePage({ params }: { params: Params }) {
                       <Calendar className="h-5 w-5" /> Inscribirme
                     </Link>
                     <span
-                      className="text-2xl font-extrabold text-navy"
-                      style={{ fontFamily: "var(--font-playfair), serif" }}
+                      className="text-2xl font-bold text-navy"
+                      style={{ fontFamily: "var(--font-playfair), 'Noto Serif Display', Georgia, serif" }}
                     >
                       {formatCoursePrice(course.price, course.currency)}
                     </span>
@@ -374,8 +374,8 @@ export default async function CursoDetallePage({ params }: { params: Params }) {
                       {t.label}
                     </p>
                     <p
-                      className="mt-1 text-3xl font-extrabold text-navy"
-                      style={{ fontFamily: "var(--font-playfair), serif" }}
+                      className="mt-1 text-3xl font-bold text-navy"
+                      style={{ fontFamily: "var(--font-playfair), 'Noto Serif Display', Georgia, serif" }}
                     >
                       {t.value}
                     </p>

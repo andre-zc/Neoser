@@ -193,8 +193,9 @@ export function NeurobiologiaLanding() {
               <p
                 className="mb-1 text-pink"
                 style={{
-                  fontFamily: "var(--font-dancing), cursive",
+                  fontFamily: 'var(--font-playfair), "Noto Serif Display", Georgia, serif',
                   fontStyle: "italic",
+                  fontWeight: 700,
                   fontSize: "clamp(2.4rem,5.5vw,4.2rem)",
                   lineHeight: 1,
                 }}
@@ -382,8 +383,8 @@ export function NeurobiologiaLanding() {
                 >
                   <summary className="flex cursor-pointer list-none items-center gap-4 [&::-webkit-details-marker]:hidden">
                     <div
-                      className="hidden bg-gradient-to-br from-pink/55 to-blue/45 bg-clip-text text-4xl font-extrabold text-transparent sm:block md:text-5xl"
-                      style={{ fontFamily: "var(--font-playfair), serif" }}
+                      className="hidden bg-gradient-to-br from-pink/55 to-blue/45 bg-clip-text text-4xl font-bold text-transparent sm:block md:text-5xl"
+                      style={{ fontFamily: "var(--font-playfair), 'Noto Serif Display', Georgia, serif" }}
                     >
                       {m.n}
                     </div>
@@ -627,8 +628,8 @@ export function NeurobiologiaLanding() {
                     {t.label}
                   </p>
                   <p
-                    className="mt-1 text-3xl font-extrabold text-navy"
-                    style={{ fontFamily: "var(--font-playfair), serif" }}
+                    className="mt-1 text-3xl font-bold text-navy"
+                    style={{ fontFamily: "var(--font-playfair), 'Noto Serif Display', Georgia, serif" }}
                   >
                     {t.value}
                   </p>

@@ -156,8 +156,8 @@ function Countdown() {
   const Cell = ({ v, label }: { v: string; label: string }) => (
     <div className="flex flex-col items-center">
       <span
-        className="rounded-xl bg-pink-light px-3 py-2 text-3xl font-extrabold text-navy md:text-4xl"
-        style={{ fontFamily: "var(--font-playfair), serif", minWidth: "3.2rem" }}
+        className="rounded-xl bg-pink-light px-3 py-2 text-3xl font-bold text-navy md:text-4xl"
+        style={{ fontFamily: "var(--font-playfair), 'Noto Serif Display', Georgia, serif", minWidth: "3.2rem" }}
       >
         {v}
       </span>
@@ -210,7 +210,7 @@ export function RebozoLanding() {
 
           <div className="grid items-end gap-10 lg:grid-cols-2">
             <div data-aos="fade-up">
-              <p className="hero-script-rebozo mb-1 text-pink" style={{ fontFamily: "var(--font-dancing), cursive", fontStyle: "italic", fontSize: "clamp(2.6rem,6vw,4.6rem)", lineHeight: 1 }}>
+              <p className="hero-script-rebozo mb-1 text-pink" style={{ fontFamily: 'var(--font-playfair), "Noto Serif Display", Georgia, serif', fontStyle: "italic", fontWeight: 700, fontSize: "clamp(2.6rem,6vw,4.6rem)", lineHeight: 1 }}>
                 Rebozo
               </p>
               <h1 className="section-title text-navy" style={{ fontSize: "clamp(2.2rem,4.6vw,3.6rem)" }}>
@@ -467,8 +467,8 @@ export function RebozoLanding() {
               >
                 <summary className="flex cursor-pointer list-none items-center gap-4 [&::-webkit-details-marker]:hidden">
                   <div
-                    className="hidden bg-gradient-to-br from-pink/55 to-blue/45 bg-clip-text text-4xl font-extrabold text-transparent sm:block md:text-5xl"
-                    style={{ fontFamily: "var(--font-playfair), serif" }}
+                    className="hidden bg-gradient-to-br from-pink/55 to-blue/45 bg-clip-text text-4xl font-bold text-transparent sm:block md:text-5xl"
+                    style={{ fontFamily: "var(--font-playfair), 'Noto Serif Display', Georgia, serif" }}
                   >
                     {s.n}
                   </div>
@@ -547,8 +547,8 @@ export function RebozoLanding() {
             </div>
 
             <p
-              className="my-1 text-5xl font-extrabold text-navy"
-              style={{ fontFamily: "var(--font-playfair), serif" }}
+              className="my-1 text-5xl font-bold text-navy"
+              style={{ fontFamily: "var(--font-playfair), 'Noto Serif Display', Georgia, serif" }}
             >
               {formatCoursePrice(course.price, course.currency)}
             </p>

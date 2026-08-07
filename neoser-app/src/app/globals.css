@@ -39,7 +39,7 @@
 @layer base {
   html { font-size: 18px; scroll-behavior: smooth; scroll-padding-top: 80px; }
   body { background: var(--background); color: var(--foreground); font-family: var(--font-montserrat), sans-serif; overflow-x: hidden; line-height: 1.7; }
-  h1, h2, h3, h4, h5, h6 { font-family: var(--font-playfair), 'Abhaya Libre', serif; font-weight: 800; letter-spacing: -0.01em; }
+  h1, h2, h3, h4, h5, h6 { font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif; font-weight: 700; letter-spacing: -0.01em; }
   p { font-size: 1rem; line-height: 1.75; }
 }
 
@@ -62,8 +62,13 @@
     .container-main { padding-left: 2.5rem; padding-right: 2.5rem; }
   }
 
+  /* Acentos display (antes Brush Script) → Noto Serif Display italic */
   .font-script,
-  .font-brush { font-family: var(--font-dancing), 'Brush Script MT', 'Lucida Handwriting', cursive; font-style: italic; font-weight: 400; }
+  .font-brush {
+    font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif;
+    font-style: italic;
+    font-weight: 700;
+  }
 
   /* -- Navbar -- */
   .navbar { position: fixed; top: 1rem; left: 50%; transform: translateX(-50%); width: calc(100% - 2rem); max-width: 1280px; z-index: 1000; transition: all 0.4s ease; padding: 0.35rem 1.75rem; border-radius: 28px; background: rgba(255,255,255,0.08); backdrop-filter: blur(16px) saturate(150%); -webkit-backdrop-filter: blur(16px) saturate(150%); border: 1px solid rgba(255,255,255,0.18); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
@@ -82,7 +87,20 @@
 
   .navbar-logo { text-decoration: none; }
   .logo-img-wrap { display: inline-flex; align-items: center; }
-  .navbar-script { font-family: var(--font-dancing), 'Brush Script MT', cursive; font-style: italic; font-size: 1rem; color: var(--pink); line-height: 1; margin-top: 0.2rem; padding-left: 0.3rem; white-space: nowrap; display: none; transition: color 0.3s ease; }
+  .navbar-script {
+    font-family: var(--font-montserrat), Montserrat, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    color: var(--pink);
+    line-height: 1.25;
+    margin-top: 0.25rem;
+    padding-left: 0.3rem;
+    white-space: nowrap;
+    display: none;
+    transition: color 0.3s ease;
+  }
   @media (min-width: 768px) { .navbar.scrolled .navbar-script { display: inline-block; } }
 
   /* -- Mobile Menu -- */
@@ -105,10 +123,17 @@
   .hero-bg-2 { background: linear-gradient(135deg,#1b3a6b 0%,#1a4a8a 50%,#4a7fb5 100%); }
   .hero-bg-3 { background: linear-gradient(135deg,#e8879b 0%,#d4637a 100%); }
   .hero-bg-4 { background: linear-gradient(135deg,#d4637a 0%,#e8879b 50%,#f2a8b8 100%); }
-  .hero-title { font-family: var(--font-playfair), 'Abhaya Libre', serif; font-size: clamp(38px,5.2vw,64px); font-weight: 800; color: var(--white); line-height: 1.05; letter-spacing: -0.015em; margin-bottom: 1rem; }
+  .hero-title { font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif; font-size: clamp(38px,5.2vw,64px); font-weight: 700; font-style: italic; color: var(--white); line-height: 1.05; letter-spacing: -0.015em; margin-bottom: 1rem; }
   .hero-title .highlight { color: var(--pink); }
   .hero-subtitle { font-size: clamp(17px,2.3vw,24px); color: rgba(255,255,255,0.9); font-weight: 400; line-height: 1.6; margin-top: 0.5rem; }
-  .hero-script { font-family: var(--font-dancing), 'Brush Script MT', cursive; font-style: italic; font-size: clamp(34px,3.6vw,46px); color: var(--pink); font-weight: 400; margin-bottom: 0.5rem; }
+  .hero-script {
+    font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif;
+    font-style: italic;
+    font-size: clamp(28px, 3.2vw, 40px);
+    color: var(--pink);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
 
   /* -- Hero 2-column grid (redesign) -- */
   .hero-slide-grid { position: relative; z-index: 2; width: 100%; display: grid; grid-template-columns: 1.05fr 1fr; gap: 3rem; align-items: end; padding-top: 0; padding-bottom: 0; }
@@ -168,8 +193,17 @@
   .navbar.scrolled .btn-nav-cta:hover { background: var(--pink-dark); border-color: var(--pink-dark); }
 
   /* -- Section Titles -- */
-  .section-tag { font-family: var(--font-dancing), 'Brush Script MT', cursive; font-style: italic; color: var(--pink); font-size: clamp(26px,2.4vw,30px); font-weight: 400; }
-  .section-title { font-family: var(--font-playfair), 'Abhaya Libre', serif; font-size: clamp(32px,3.4vw,52px); color: var(--navy); font-weight: 800; line-height: 1.15; letter-spacing: -0.01em; }
+  /* Eyebrow de sección — Montserrat (párrafos/UI del brand book) */
+  .section-tag {
+    font-family: var(--font-montserrat), Montserrat, sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--pink);
+    font-size: clamp(0.75rem, 1.05vw, 0.875rem);
+  }
+  .section-title { font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif; font-size: clamp(32px,3.4vw,52px); color: var(--navy); font-weight: 700; font-style: italic; line-height: 1.15; letter-spacing: -0.01em; }
   .section-divider { width: 60px; height: 3px; background: linear-gradient(90deg,var(--pink),var(--blue)); border-radius: 3px; margin-left: auto; margin-right: auto; }
 
   /* -- Service Cards -- */
@@ -193,13 +227,13 @@
   .course-body p { flex-grow: 1; }
   .course-body .btn-pink-outline { padding: 7px 14px; font-size: 13px; }
   .news-date { display: none; }
-  .course-price { font-family: var(--font-playfair), 'Abhaya Libre', serif; font-size: 1.2rem; font-weight: 800; color: var(--navy); }
+  .course-price { font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif; font-size: 1.2rem; font-weight: 700; color: var(--navy); }
 
   /* -- Testimonials -- */
   .testimonial-card { background: var(--white); border-radius: 20px; padding: 2.25rem; position: relative; border: 1px solid rgba(27,58,107,0.06); }
-  .testimonial-card .quote-icon { font-size: 3rem; color: var(--pink-light); font-family: var(--font-playfair), serif; line-height: 1; position: absolute; top: 1rem; left: 1.5rem; }
+  .testimonial-card .quote-icon { font-size: 3rem; color: var(--pink-light); font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif; line-height: 1; position: absolute; top: 1rem; left: 1.5rem; }
   .testimonial-text { font-style: italic; color: var(--gray-700); line-height: 1.7; }
-  .testimonial-avatar { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-playfair), serif; font-weight: 800; color: var(--white); font-size: 1.15rem; flex-shrink: 0; box-shadow: 0 4px 12px rgba(27,58,107,0.15); border: 2px solid var(--white); overflow: hidden; }
+  .testimonial-avatar { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif; font-weight: 700; color: var(--white); font-size: 1.15rem; flex-shrink: 0; box-shadow: 0 4px 12px rgba(27,58,107,0.15); border: 2px solid var(--white); overflow: hidden; }
 
   /* -- Team -- */
   .team-member { text-align: center; transition: all 0.3s ease; }
@@ -215,14 +249,14 @@
 
   /* -- Timeline -- */
   .timeline-item { position: relative; padding-left: 2rem; min-height: 90px; }
-  .timeline-item h4 { font-family: var(--font-playfair), serif; font-weight: 800; }
+  .timeline-item h4 { font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif; font-weight: 700; }
   .timeline-item::before { content: ''; position: absolute; left: 0; top: 0.5rem; width: 12px; height: 12px; border-radius: 50%; background: var(--pink); border: 3px solid var(--pink-light); }
   .timeline-item::after { content: ''; position: absolute; left: 5px; top: 1.5rem; width: 2px; height: calc(100% - 1rem); background: var(--pink-light); }
   .timeline-item:last-child::after { display: block; }
 
   /* -- Counter -- */
   .counter-box { text-align: center; padding: 2rem; }
-  .counter-number { font-family: var(--font-playfair), serif; font-size: clamp(1.8rem,3.2vw,2.6rem); font-weight: 800; color: var(--navy); white-space: nowrap; line-height: 1; }
+  .counter-number { font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif; font-size: clamp(1.8rem,3.2vw,2.6rem); font-weight: 700; color: var(--navy); white-space: nowrap; line-height: 1; }
   .counter-label { color: var(--gray-500); font-size: 1rem; margin-top: 0.35rem; }
 
   /* -- News -- */

@@ -153,8 +153,9 @@ export function RebozoPresencialLanding() {
               <p
                 className="mb-1 text-pink"
                 style={{
-                  fontFamily: "var(--font-dancing), cursive",
+                  fontFamily: 'var(--font-playfair), "Noto Serif Display", Georgia, serif',
                   fontStyle: "italic",
+                  fontWeight: 700,
                   fontSize: "clamp(2.6rem,6vw,4.6rem)",
                   lineHeight: 1,
                 }}
