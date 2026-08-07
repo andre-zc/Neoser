@@ -15,7 +15,7 @@ import {
 export const metadata: Metadata = {
   title: "Catálogo de Cursos 2026",
   description:
-    "Formación profesional NeoSer 2026: Neurobiología del Parto, El Arte del Rebozo (virtual y presencial), Antropología y Sociología del Nacimiento y la jornada Herramientas para un Nacimiento Humanizado.",
+    "Formación profesional NeoSer 2026: Neurobiología del Parto, El Arte del Rebozo (virtual y programa semipresencial de 64 h), Antropología y Sociología del Nacimiento y la jornada Herramientas para un Nacimiento Humanizado.",
   alternates: { canonical: "/cursos" },
 };
 
@@ -50,7 +50,9 @@ export default function CursosPage() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {coursesCatalog.map((c) => {
               const href = c.landingHref ?? `/cursos/${c.slug}`;
-              const isOpen = c.enrollment === "checkout" && c.price !== null;
+              // El precio se muestra cuando está confirmado, aunque la
+              // matrícula se coordine por WhatsApp en vez de checkout online.
+              const hasPrice = c.price !== null;
               return (
                 <article key={c.id} className="course-card group">
                   <Link
@@ -91,7 +93,7 @@ export default function CursosPage() {
 
                     <div className="flex items-center justify-between gap-3">
                       <span className="course-price">
-                        {isOpen
+                        {hasPrice
                           ? formatCoursePrice(c.price, c.currency)
                           : "A consultar"}
                       </span>

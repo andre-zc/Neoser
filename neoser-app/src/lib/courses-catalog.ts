@@ -8,6 +8,8 @@
 // Contenido tomado de la carpeta `CURSOS/` entregada por la clienta:
 //   - cursos-neoser.docx (listado 2026 + ajustes de la landing de Rebozo)
 //   - 1-NEUROBIOLOGÍA/Neurobiología-información.docx + brochure PDF
+//   - 3-REBOZO-PRESENCIAL/Programa_Formacion_Rebozo_NeoSer.docx + fotos del
+//     taller con obstetras (Chiclayo, 2025) → public/assets/cursos/rebozo-presencial/
 //   - posters de cada curso (1080x1350) → public/assets/cursos/
 //
 // Los cursos con `landingHref` tienen su propia landing dedicada y NO usan la
@@ -222,51 +224,124 @@ export const coursesCatalog: CatalogCourse[] = [
   },
 
   // ---------------------------------------------------------------------
-  // 3. El Arte del Rebozo — presencial — plantilla genérica
+  // 3. Programa de Formación El Arte del Rebozo — semipresencial —
+  //    landing propia. Contenido: Programa_Formacion_Rebozo_NeoSer.docx
+  //    (carpeta 3-REBOZO-PRESENCIAL entregada por la clienta).
   // ---------------------------------------------------------------------
   {
     slug: "rebozo-presencial",
     id: "7a8b9c0d-7777-4777-8777-777777777777",
-    title: "El Arte del Rebozo para el embarazo, parto y posparto",
-    tagline: "La técnica en el cuerpo, acompañada de cerca.",
+    title:
+      "El Arte del Rebozo desde la Educación Somática para el Embarazo, Parto y Postparto",
+    tagline: "Programa de Formación · La técnica en el cuerpo, con evidencia detrás.",
     summary:
-      "Versión presencial del programa de Rebozo: práctica guiada de balanceo, suspensión y sostén para cada etapa del proceso.",
+      "Programa de formación de 64 horas académicas (4 créditos) en modalidad semipresencial: módulo virtual asincrónico + curso taller presencial con práctica clínica supervisada.",
     description: [
-      "La versión presencial de nuestro programa de Rebozo. Aquí la técnica se aprende con el cuerpo: práctica guiada de balanceo, suspensión y sostén aplicada al embarazo, al trabajo de parto y al posparto.",
-      "El acompañamiento presencial permite corregir la postura, ajustar la tensión de la tela y practicar con retroalimentación directa de la formadora, algo que la modalidad virtual complementa pero no reemplaza.",
-      "Las fechas y la inversión de la edición 2026 se confirman por WhatsApp. Escríbenos y te avisamos apenas se abra la convocatoria.",
+      "Programa desarrollado por Maternidad y Medicina Humanizada NeoSer Perú para fortalecer competencias profesionales mediante evidencia científica, educación somática y práctica clínica.",
+      "Surge de la experiencia clínica de NeoSer e integra el arte del rebozo como herramienta de acompañamiento durante el embarazo, parto y postparto.",
+      "Desarrolla las competencias necesarias para integrar el arte del rebozo como una herramienta de acompañamiento obstétrico, sustentada en evidencia científica, educación somática y práctica clínica supervisada.",
     ],
-    price: null,
+    // Inversión confirmada por la clienta, pero las fechas de la próxima
+    // edición siguen en programación: el CTA deriva a WhatsApp (sin checkout).
+    price: 720,
     currency: "PEN",
-    mode: "Presencial",
-    durationLabel: "Edición 2026 · fechas por confirmar",
+    priceTiers: [
+      {
+        label: "Módulo I · Formación virtual asincrónica (32 h)",
+        value: "S/ 220",
+        note: "Egresadas NeoSer: S/ 180",
+        tone: "blue",
+      },
+      {
+        label: "Módulo II · Curso taller presencial (32 h)",
+        value: "S/ 500",
+        note: "Egresadas NeoSer: S/ 400",
+        tone: "blue",
+      },
+      {
+        label: "Programa completo (64 h · 4 créditos)",
+        value: "S/ 720",
+        note: "Egresadas NeoSer: S/ 580",
+        tone: "pink",
+      },
+    ],
+    mode: "Semipresencial",
+    durationLabel: "64 horas académicas · 4 créditos",
     audience:
-      "Obstetras, médicos, enfermeras, doulas y profesionales que acompañan el embarazo, parto y posparto.",
+      "Obstetras y bachilleres en Obstetricia que acompañan el embarazo, parto y postparto.",
+    certification:
+      "Certificado por 64 horas académicas, equivalentes a 4 créditos académicos.",
     image: "/assets/cursos/rebozo-embarazo-parto-posparto.jpg",
     icon: "Hand",
     includes: [
-      "Práctica presencial guiada con acompañamiento directo",
-      "Técnicas de rebozo para embarazo, parto y posparto",
-      "Certificado de participación NeoSer",
-      "Acceso a la Comunidad de profesionales NeoSer",
+      "Acceso al Campus Virtual NeoSer",
+      "Material académico del programa",
+      "Bibliografía científica de respaldo",
+      "12 videos tutoriales de ejercicios con rebozo",
+      "Curso taller presencial (32 h)",
+      "Práctica clínica supervisada",
+      "Certificado por 64 horas académicas (4 créditos)",
+      "Beneficios de la Comunidad Académica NeoSer",
+    ],
+    modules: [
+      {
+        n: "I",
+        title: "Formación Virtual Asincrónica (32 h)",
+        purpose:
+          "Construir la base teórica del programa: educación somática prenatal, neurobiología del parto, biomecánica de la pelvis y bioética personalista, a tu propio ritmo desde el Campus Virtual.",
+        topics: [
+          "Seminario 1 — Fundamentos de la Educación Somática Prenatal",
+          "Seminario 2 — Neurobiología del Parto y el rol del movimiento",
+          "Seminario 3 — Biomecánica de la pelvis y técnica del rebozo",
+          "Seminario 4 — Bioética Personalista y nacimiento respetado",
+          "12 videos tutoriales de ejercicios con rebozo",
+          "Bibliografía científica y material académico descargable",
+        ],
+      },
+      {
+        n: "II",
+        title: "Curso Taller Presencial (32 h)",
+        purpose:
+          "Llevar la teoría al cuerpo: cuatro unidades prácticas con acompañamiento directo de la facilitadora y práctica clínica supervisada aplicada al embarazo, parto y postparto.",
+        topics: [
+          "Unidad 1 — Fundamentos prácticos y manejo del rebozo",
+          "Unidad 2 — Aplicación en el embarazo",
+          "Unidad 3 — Aplicación en el trabajo de parto y parto",
+          "Unidad 4 — Aplicación en el postparto",
+          "Práctica supervisada con retroalimentación directa",
+        ],
+      },
     ],
     faq: [
       {
-        q: "¿Cuándo es la próxima edición?",
-        a: "La edición 2026 está en programación. Escríbenos por WhatsApp y te avisamos apenas se publiquen las fechas y la sede.",
+        q: "¿A quién está dirigido el programa?",
+        a: "A obstetras y bachilleres en Obstetricia que acompañan procesos de embarazo, parto y postparto y buscan incorporar el arte del rebozo con respaldo científico.",
       },
       {
-        q: "¿En qué se diferencia de la modalidad virtual?",
-        a: "El contenido teórico es el mismo, pero aquí toda la práctica es presencial: la formadora corrige postura, tensión de la tela y ejecución en el momento.",
+        q: "¿Cómo es la modalidad?",
+        a: "Semipresencial. El Módulo I son 32 horas de formación virtual asincrónica en el Campus Virtual NeoSer, que avanzas a tu ritmo; el Módulo II son 32 horas de curso taller presencial con práctica supervisada. En total, 64 horas académicas.",
       },
       {
-        q: "¿Cuál es la inversión?",
-        a: "Se confirma junto con la convocatoria. Consúltanos por WhatsApp al +51 932 713 071 o escríbenos a dsilva@neoserperu.com.",
+        q: "¿Es obligatorio llevar el módulo virtual antes del presencial?",
+        a: "Sí. El Módulo I es requisito previo del Módulo II: llegas al taller presencial con la base teórica resuelta, de modo que las 32 horas presenciales se dedican íntegramente a la práctica.",
+      },
+      {
+        q: "¿Qué certificación recibo?",
+        a: "Al completar el programa recibes un certificado por 64 horas académicas, equivalentes a 4 créditos académicos, emitido por Maternidad y Medicina Humanizada NeoSer Perú.",
+      },
+      {
+        q: "¿Cuándo son las próximas fechas?",
+        a: "La próxima edición está en programación. Escríbenos por WhatsApp al +51 932 713 071 o a dsilva@neoserperu.com y te avisamos apenas se abra la convocatoria y se confirme la sede.",
+      },
+      {
+        q: "¿Necesito experiencia previa con el rebozo?",
+        a: "No. El programa parte desde los fundamentos: el Módulo I construye la base teórica y el Módulo II acompaña la técnica paso a paso con corrección directa de la facilitadora.",
       },
     ],
+    landingHref: "/cursos/rebozo-presencial",
     enrollment: "whatsapp",
     whatsappText:
-      "Hola%20NeoSer%2C%20quiero%20informaci%C3%B3n%20sobre%20el%20curso%20presencial%20El%20Arte%20del%20Rebozo%20para%20el%20embarazo%2C%20parto%20y%20posparto",
+      "Hola%20NeoSer%2C%20quiero%20informaci%C3%B3n%20sobre%20el%20Programa%20de%20Formaci%C3%B3n%20El%20Arte%20del%20Rebozo%20desde%20la%20Educaci%C3%B3n%20Som%C3%A1tica",
   },
 
   // ---------------------------------------------------------------------

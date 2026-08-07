@@ -177,10 +177,11 @@ export default function HomePage() {
     image: c.image,
     title: c.title,
     desc: c.summary,
+    // El precio se muestra cuando está confirmado, aunque la matrícula se
+    // coordine por WhatsApp (caso del programa de Rebozo: inversión definida,
+    // fechas de la próxima edición todavía en programación).
     price:
-      c.enrollment === "checkout" && c.price !== null
-        ? formatCoursePrice(c.price, c.currency)
-        : "A consultar",
+      c.price !== null ? formatCoursePrice(c.price, c.currency) : "A consultar",
   }));
 
   const testimonials = [
@@ -225,8 +226,9 @@ export default function HomePage() {
         { href: "#nosotros", cls: "btn-primary", icon: Users, text: "Conócenos" },
         { href: bookingUrl, cls: "btn-secondary", icon: Calendar, text: "Reserva tu Cita", ext: true },
       ],
-      image: "/assets/hero/slide-3-equipo.jpg",
-      imageAlt: "Equipo NeoSer",
+      image: "/assets/hero/slide-3-equipo-2026.jpg",
+      imageAlt:
+        "Equipo profesional de NeoSer en su sede de Chiclayo, frente al mural «Porque nacer y vivir con amor cambia el mundo»",
       badgeIcon: Heart,
       badgeText: <>Equipo<br />Profesional</>,
     },
@@ -518,7 +520,7 @@ export default function HomePage() {
             <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-3">
               {[
                 { id: "agosto", month: "18 de agosto 2026", title: <>Neurobiología del Parto<br />y Protocolos</>, desc: "Virtual sincrónica, 64 h académicas. Inscripciones abiertas." },
-                { id: "rebozo-presencial", month: "Edición 2026", title: <>El Arte del Rebozo<br />modalidad presencial</>, desc: "En programación. Consulta fechas por WhatsApp." },
+                { id: "rebozo-presencial", month: "Edición 2026", title: <>El Arte del Rebozo<br />Programa de Formación</>, desc: "64 h académicas, semipresencial. Fechas en programación: consulta por WhatsApp." },
                 { id: "jornada", month: "Edición 2026", title: <>Herramientas para un<br />Nacimiento Humanizado</>, desc: "Jornada con profesores especialistas. Fecha por confirmar." },
               ].map((ev) => (
                 <div key={ev.id} className="group relative overflow-hidden rounded-2xl border border-navy/5 bg-cream p-6 transition duration-300 hover:-translate-y-1 hover:shadow-lg">
