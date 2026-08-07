@@ -49,6 +49,9 @@ export const services: Service[] = [
     summary:
       "Atención integral y preventiva para tu salud ginecológica en cada etapa de vida.",
     description: [
+      "Brindamos atención ginecológica a la mujer en sus diferentes etapas de vida, desde una atención integral, preventiva y centrada en el bienestar físico, emocional, hormonal y corporal.",
+    ],
+    cardDescription: [
       "Atención ginecológica integral y preventiva, centrada en tu bienestar físico, emocional, hormonal y corporal en cada etapa de la vida.",
     ],
     image: "/assets/servicios/gineco-obstetra-01.png",
@@ -121,6 +124,9 @@ export const services: Service[] = [
     summary:
       "Cuidado integral de madre y bebé con enfoque perinatal y participación familiar.",
     description: [
+      "Brindamos atención prenatal centrada en el bienestar integral de la madre, su bebé y su familia, promoviendo la salud mental, la educación perinatal y la preparación consciente para el nacimiento, con la participación activa de la pareja durante todo el proceso.",
+    ],
+    cardDescription: [
       "Controles prenatales centrados en madre, bebé y familia, con educación perinatal y participación activa de la pareja.",
     ],
     image: "/assets/servicios/MG_9793.jpg",
@@ -189,7 +195,9 @@ export const services: Service[] = [
     summary:
       "Acompañamiento del nacimiento respetando los derechos biológicos de mamá y bebé.",
     description: [
-      "Acompañamos el nacimiento respetando la fisiología del parto, con libertad de movimiento, piel con piel inmediato y cero separación en los primeros minutos de vida.",
+      "Atendemos el nacimiento desde una mirada que reconoce y protege los derechos anatómicos y biológicos de la madre y su bebé, promoviendo la libertad de movimiento, las posiciones verticales y el respeto por la fisiología del parto.",
+      "Favorecemos la cero separación durante los primeros mil minutos de vida, el contacto piel con piel inmediato, el corte oportuno del cordón umbilical y el inicio temprano de la lactancia materna.",
+      "Con estas prácticas protegemos el vínculo temprano entre la madre y su bebé, favorecemos la adaptación neonatal, el desarrollo de una microbiota saludable y el bienestar físico y emocional de la madre y su bebé.",
     ],
     cardDescription: [
       "Vivimos el nacimiento como el inicio de una nueva historia familiar, respetando los derechos anatómicos y biológicos de la madre y su bebé.",
@@ -263,7 +271,9 @@ export const services: Service[] = [
     summary:
       "Cesárea Túnel: piel con piel inmediato y cero separación durante el nacimiento.",
     description: [
-      "Cuando la cesárea es la opción más segura, la vivimos de forma humanizada: el bebé llega directo al pecho de mamá, con piel con piel y acompañamiento de la pareja.",
+      "Existen situaciones en las que la cesárea es la opción más segura para la madre y el bebé. En estos casos, concebimos este nacimiento como una experiencia que también puede ser vivida de manera humanizada y respetuosa.",
+      "Desde 2020 implementamos nuestra técnica de Cesárea Humanizada Túnel, denominada así porque el bebé es trasladado por debajo del campo quirúrgico directamente al pecho de la madre, favoreciendo el contacto inmediato, el pinzamiento oportuno del cordón umbilical y el inicio del vínculo desde el primer instante.",
+      "Este modelo de atención permite la participación activa de la pareja y el acompañamiento de una asesora de lactancia durante el nacimiento y las primeras horas posteriores, promoviendo el contacto piel con piel, la cero separación y el inicio temprano de la lactancia materna.",
     ],
     cardDescription: [
       "Desde 2020 implementamos la Cesárea Humanizada Túnel, técnica innovadora que nos ha permitido favorecer el contacto piel con piel inmediato, la cero separación mamá-bebé, la recepción temprana del calostro y el inicio oportuno de la lactancia materna durante el nacimiento por cesárea.",
@@ -336,31 +346,37 @@ export const services: Service[] = [
     slug: "preparacion-integral-parto",
     title: "Programa de Preparación Integral para el Parto",
     summary:
-      "Programa de 8-10 sesiones con tu pareja, basado en Educación Somática Prenatal.",
+      "Transformamos el miedo en confianza mediante un programa de 8 a 10 sesiones que prepara a la familia para vivir el nacimiento con seguridad y confianza.",
     description: [
-      "Programa de 8 a 10 sesiones con tu pareja, basado en Educación Somática Prenatal, para prepararte de forma consciente al nacimiento.",
+      "Brindamos un Programa de Preparación Integral para el Parto basado en la Educación Somática Prenatal, un enfoque que integra cuerpo, mente y neurobiología para desarrollar la conciencia corporal, el movimiento, la respiración y el vínculo prenatal.",
+      "A través de un programa personalizado de 8 a 10 sesiones teóricas y vivenciales, acompañamos a la gestante y su pareja para comprender la fisiología del nacimiento, desarrollar la confianza corporal y prepararse para vivir el parto de manera consciente, segura y respetuosa.",
+      "Promovemos un entorno de seguridad y confianza que respeta la fisiología del nacimiento y fortalece la confianza de la mujer en su capacidad innata para dar a luz.",
+      "La pareja participa activamente durante todo el proceso, desarrollando herramientas de acompañamiento físico y emocional que fortalecen el embarazo, el nacimiento y el inicio de la lactancia materna.",
+    ],
+    cardDescription: [
+      "Transformamos el miedo en confianza mediante un programa de 8 a 10 sesiones que prepara a la familia para vivir el nacimiento con seguridad y confianza.",
     ],
     image: "/assets/servicios/neoser-172.webp",
     gallery: [
       {
         image: "/assets/servicios/preparacion-parto-01.png",
-        title: "Aprende a acompañar el trabajo de parto",
-        text: "Practicamos posiciones, movimiento y técnicas de alivio con tu pareja, para que lleguen al nacimiento con herramientas concretas.",
+        title: "Conectar con tu capacidad innata",
+        text: "La Educación Somática Prenatal acompaña a la mujer a reconocer la capacidad innata de su cuerpo y confiar en la fisiología del nacimiento.",
       },
       {
         image: "/assets/servicios/preparacion-parto-02.png",
-        title: "Conciencia corporal y vínculo prenatal",
-        text: "Respiración, presencia y conexión con tu bebé: un espacio para integrar cuerpo, emoción y acompañamiento de la pareja.",
+        title: "La seguridad comienza en tu interior",
+        text: "La respiración favorece un estado de calma y confianza. El padre también se prepara para acompañar, sostener y participar activamente en el nacimiento de su bebé.",
       },
       {
         image: "/assets/servicios/preparacion-parto-03.png",
-        title: "Entiende cómo nace tu bebé",
-        text: "Sesiones teóricas y vivenciales para comprender la biomecánica del nacimiento y ganar confianza en tu cuerpo.",
+        title: "Comprender el nacimiento transforma la experiencia",
+        text: "Conocer la fisiología y la biomecánica del nacimiento fortalece la confianza para vivir el parto de forma consciente.",
       },
       {
         image: "/assets/servicios/preparacion-parto-04.png",
-        title: "Tu pareja, un sostén activo",
-        text: "Integramos a tu pareja en el acompañamiento físico y emocional, para vivir el nacimiento en equipo.",
+        title: "La confianza también se construye en familia",
+        text: "Cada experiencia compartida durante la gestación fortalece la confianza para vivir juntos el nacimiento.",
       },
     ],
     category: "somatica",
@@ -382,11 +398,11 @@ export const services: Service[] = [
       },
     ],
     included: [
+      "Educación Somática Prenatal",
       "Programa personalizado de 8 a 10 sesiones",
-      "Sesiones teóricas y vivenciales",
-      "Trabajo de respiración, movimiento y conciencia corporal",
-      "Preparación del flujo hormonal del parto",
-      "Acompañamiento activo de la pareja",
+      "Participación activa de la pareja",
+      "Fisiología, biomecánica, movimiento y respiración para el nacimiento",
+      "Preparación para la lactancia materna y el posparto",
     ],
     forWho:
       "Gestantes y parejas que quieren prepararse de forma consciente y activa para el nacimiento.",
@@ -407,6 +423,10 @@ export const services: Service[] = [
     summary:
       "Método Calais-Germain para conciencia y cuidado del suelo pélvico.",
     description: [
+      "Programa basado en la metodología de Anatomía para el Movimiento® de Blandine Calais-Germain, orientado a favorecer la conciencia y el cuidado del suelo pélvico mediante principios de educación somática, percepción corporal y biomecánica femenina.",
+      "A través de ejercicios específicos, respiración consciente y movimiento guiado, este método contribuye a mejorar la postura, la movilidad y la integración del suelo pélvico con el cuerpo en movimiento, favoreciendo la prevención de prolapsos, incontinencia urinaria y otras disfunciones del periné, promoviendo el bienestar integral de la mujer en sus diferentes etapas de vida.",
+    ],
+    cardDescription: [
       "Método Anatomía para el Movimiento® de Blandine Calais-Germain: conciencia y cuidado del suelo pélvico con educación somática y biomecánica femenina.",
     ],
     image: "/assets/servicios/neoser-4.webp",
@@ -481,6 +501,10 @@ export const services: Service[] = [
     summary:
       "Uso consciente del rebozo como herramienta de movimiento y sostén.",
     description: [
+      "Programa basado en la educación somática y el uso consciente del rebozo como herramienta de percepción corporal, movimiento y sostén, orientado a favorecer la conciencia corporal, la movilidad, la respiración y la autorregulación física y emocional de la mujer.",
+      "A través del balanceo, la suspensión, el movimiento guiado y las técnicas de sostén con rebozo, este método contribuye al bienestar integral durante el embarazo, parto y posparto, favoreciendo una vivencia más consciente del cuerpo, el nacimiento y la maternidad.",
+    ],
+    cardDescription: [
       "Uso consciente del rebozo como herramienta de percepción, movimiento y sostén, para acompañar el bienestar en el embarazo, parto y posparto.",
     ],
     image: "/assets/servicios/neoser-108.webp",
@@ -547,16 +571,36 @@ export const services: Service[] = [
     slug: "canto-prenatal",
     title: "Canto Prenatal® desde la Psicofonía de Marie-Louise Aucher",
     summary:
-      "Psicofonía de Marie-Louise Aucher: voz, vibración y vínculo prenatal.",
+      "La voz como un recurso para el bienestar, el vínculo prenatal y el nacimiento.",
     description: [
-      "Psicofonía de Marie-Louise Aucher: voz, canto y conciencia corporal para fortalecer el vínculo prenatal y la preparación al nacimiento.",
+      "La voz es una de las primeras formas de comunicación entre la madre y su bebé. En Canto Prenatal® utilizamos la vibración de la voz como un recurso corporal que favorece el bienestar materno, fortalece el vínculo prenatal y acompaña a la mujer durante el embarazo, el nacimiento y el posparto.",
+      "Nuestro programa se inspira en los principios de la Psicofonía desarrollados por Marie-Louise Aucher, integrando la vibración de la voz, la respiración, el movimiento y la conciencia corporal para promover un estado de calma y seguridad que fortalece la confianza de la madre y el reconocimiento temprano de su voz por parte del bebé.",
+      "Como parte del modelo de Maternidad y Medicina Humanizada de NeoSer, este enfoque acompaña a la mujer desde el embarazo hasta el nacimiento y el inicio de la maternidad, favoreciendo una experiencia más consciente, respetuosa y centrada en el vínculo con su bebé.",
+    ],
+    cardDescription: [
+      "Programa basado en la Psicofonía de Marie-Louise Aucher, metodología que utiliza la vibración de la voz, el canto y la conciencia corporal para favorecer la percepción vibratoria del cuerpo, la respiración, la relajación y el vínculo prenatal.",
+      "A través de la práctica vocal consciente, este método contribuye al bienestar físico y emocional de la gestante, favorece la movilidad y apertura corporal para el nacimiento, fortalece la comunicación afectiva con el bebé y promueve una vivencia más consciente de la gestación y el parto.",
     ],
     image: "/assets/servicios/neoser-157.webp",
     gallery: [
       {
         image: "/assets/servicios/canto-prenatal-01.png",
-        title: "Voz, respiración y vínculo prenatal",
-        text: "La práctica vocal consciente favorece la percepción vibratoria del cuerpo, la relajación y la comunicación afectiva con tu bebé.",
+        title: "La voz que acompaña desde el inicio",
+        text: "La voz es una de las primeras formas de comunicación entre la madre y su bebé. En Canto Prenatal® descubrimos la vibración de la voz como un recurso de bienestar, conexión y preparación para el nacimiento.",
+      },
+      // Fotos 2-4 pendientes de envío por el cliente (carpeta Drive de Canto
+      // Prenatal). Mientras tanto el carrusel muestra "Foto próximamente".
+      {
+        title: "La vibración que conecta",
+        text: "La vibración de la voz, integrada con la respiración, el movimiento y la conciencia corporal, favorece un estado de calma y bienestar que acompaña a la mujer durante el embarazo.",
+      },
+      {
+        title: "Respirar, sentir y confiar",
+        text: "La voz favorece la relajación, fortalece la confianza de la madre y acompaña el vínculo con su bebé, creando un entorno de seguridad para vivir el nacimiento de manera más consciente.",
+      },
+      {
+        title: "Un vínculo que trasciende el nacimiento",
+        text: "Cada melodía, palabra y vibración fortalece el vínculo prenatal y acompaña a la familia desde el embarazo hasta el nacimiento y el inicio de la maternidad.",
       },
     ],
     category: "somatica",
@@ -602,6 +646,11 @@ export const services: Service[] = [
     summary:
       "Movimiento somático con balones para embarazo, parto y postparto.",
     description: [
+      "Programa corporal basado en principios de educación somática y movimiento consciente con balones, orientado a favorecer la conciencia corporal, el bienestar físico y emocional y la preparación corporal durante el embarazo, parto y postparto.",
+      "A través del movimiento, la respiración y la exploración corporal, favorecemos el descubrimiento de los puntos de apoyo y su integración con las diferentes partes del cuerpo, promoviendo la relajación, la movilidad y el alivio de tensiones físicas durante las diferentes etapas de la maternidad.",
+      "Integramos además la participación activa de la pareja como acompañante y sostén durante el proceso de gestación, nacimiento y postparto.",
+    ],
+    cardDescription: [
       "Movimiento somático con balones para favorecer conciencia corporal, relajación y preparación en el embarazo, parto y postparto, con participación de la pareja.",
     ],
     image: "/assets/servicios/neoser-132.webp",
@@ -673,6 +722,10 @@ export const services: Service[] = [
     summary:
       "Preparación consciente para una lactancia informada desde el embarazo.",
     description: [
+      "Programa orientado a preparar a la gestante y su familia para el inicio fisiológico de la lactancia materna desde el embarazo, favoreciendo una comprensión consciente de las primeras horas de vida del bebé y la importancia del contacto piel con piel, la cero separación y la recepción temprana del calostro.",
+      "A través de sesiones educativas y vivenciales, se abordan aspectos relacionados con el agarre, las posiciones de amamantamiento, la producción de leche y las necesidades biológicas del recién nacido, promoviendo el vínculo temprano, el desarrollo de la microbiota y una lactancia informada y respetada.",
+    ],
+    cardDescription: [
       "Preparación desde el embarazo para el inicio fisiológico de la lactancia: piel con piel, cero separación y recepción temprana del calostro.",
     ],
     image: "/assets/servicios/MG_4392.jpg",
@@ -726,6 +779,11 @@ export const services: Service[] = [
     summary:
       "Espacios quincenales de meditación y conexión para madres NeoSer.",
     description: [
+      "Espacios de encuentro y acompañamiento para madres, orientados a favorecer la conexión emocional, espiritual y corporal a través de la meditación, el dibujo consciente y técnicas de contención con fulares.",
+      "Cada 15 días compartimos meditaciones inspiradas en la historia de vida de la Sagrada Familia, promoviendo espacios de pausa, escucha, sostén emocional y reflexión en comunidad.",
+      "A través de la respiración, el movimiento suave, el arte y el compartir entre madres, favorecemos experiencias de bienestar, contención y conexión consigo mismas y con su maternidad desde una mirada sensible y respetuosa.",
+    ],
+    cardDescription: [
       "Espacios quincenales de meditación, dibujo consciente y contención con fulares, para conectar contigo y con tu maternidad en comunidad.",
     ],
     image: "/assets/servicios/IMG_2544-editada.png",

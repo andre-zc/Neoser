@@ -186,12 +186,16 @@ export default async function ServiceDetailPage({
       {/* ===== DESCRIPCIÓN + PILARES ===== */}
       <section className="py-16 md:py-20">
         <div className="container-main">
-          <div className="mx-auto max-w-2xl text-center">
+          <div className="mx-auto max-w-3xl text-center">
             <p className="section-tag mb-2">Sobre este servicio</p>
             <div className="section-divider mx-auto mb-7" />
-            <p className="text-lg leading-relaxed text-gray-600 md:text-xl">
-              {service.description[0]}
-            </p>
+            {/* Se muestran todos los párrafos: la tarjeta del catálogo usa el
+                resumen (`cardDescription`) y el detalle la descripción amplia. */}
+            <div className="space-y-4 text-lg leading-relaxed text-gray-600 md:text-xl">
+              {service.description.map((paragraph, i) => (
+                <p key={i}>{paragraph}</p>
+              ))}
+            </div>
           </div>
 
           {service.benefits && service.benefits.length > 0 && (
