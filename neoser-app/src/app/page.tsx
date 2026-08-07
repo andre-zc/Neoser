@@ -18,7 +18,6 @@ import {
   ArrowRight,
   X,
   Activity,
-  Droplets,
   Sparkles,
 } from "lucide-react";
 import Image from "next/image";
@@ -31,6 +30,7 @@ import { ServicesCarousel } from "@/components/services-carousel";
 import { SiteHeader } from "@/components/site-header";
 import { CoordinationForm } from "@/components/coordination-form";
 import { CountUp } from "@/components/count-up";
+import { coursesCatalog, formatCoursePrice } from "@/lib/courses-catalog";
 
 const GoogleMapEmbed = dynamic(
   () => import("@/components/google-map-embed").then((m) => m.GoogleMapEmbed),
@@ -164,13 +164,24 @@ export default function HomePage() {
     },
   ];
 
-  const courses = [
-    { slug: "prep-parto", badge: "Presencial", badgeBg: "bg-pink", icon: Baby, title: "Curso de Preparación al Parto", desc: "Técnicas de respiración, posiciones de parto, plan de nacimiento y vínculo temprano.", price: "S/. 350", wa: "Curso%20de%20Preparacion%20al%20Parto" },
-    { slug: "diplomado-parto", badge: "Online", badgeBg: "bg-navy", icon: Award, title: "Diplomado en Parto Humanizado", desc: "Formación integral para profesionales de salud en atención humanizada del nacimiento.", price: "S/. 1,200", wa: "Diplomado%20en%20Parto%20Humanizado" },
-    { slug: "antropologia-parto", badge: "Online", badgeBg: "bg-navy", icon: Globe, title: "Antropología del Parto", desc: "Curso Internacional: paradigmas del nacimiento, violencia obstétrica y partería posmoderna.", price: "S/. 200", wa: "Curso%20Internacional%20Antropologia%20del%20Parto" },
-    { slug: "rebozo-cert", badge: "Híbrido", badgeBg: "bg-pink", icon: HeartHandshake, title: "Técnica Rebozo Certificación", desc: "Certificación internacional en técnica Rebozo con reconocimiento de Spinning Babies.", price: "S/. 800", wa: "Certificacion%20Rebozo" },
-    { slug: "taller-lactancia", badge: "Presencial", badgeBg: "bg-pink", icon: Droplets, title: "Taller de Lactancia Materna", desc: "Taller práctico sobre técnicas de lactancia, posiciones y resolución de problemas comunes.", price: "S/. 180", wa: "Taller%20de%20Lactancia" },
-  ];
+  // Los cursos vienen del catálogo estático (listado oficial 2026).
+  const courses = coursesCatalog.map((c) => ({
+    slug: c.slug,
+    href: c.landingHref ?? `/cursos/${c.slug}`,
+    badge: c.mode,
+    badgeBg:
+      c.mode.toLowerCase().includes("presencial") ||
+      c.mode.toLowerCase().includes("jornada")
+        ? "bg-pink"
+        : "bg-navy",
+    image: c.image,
+    title: c.title,
+    desc: c.summary,
+    price:
+      c.enrollment === "checkout" && c.price !== null
+        ? formatCoursePrice(c.price, c.currency)
+        : "A consultar",
+  }));
 
   const testimonials = [
     { seed: "mc", quote: "El diplomado cambió completamente mi manera de ver la atención del parto. Ahora aplico la medicina humanizada en cada consulta.", name: "María Carmen R.", role: "Obstetra - Trujillo", grad: "from-pink to-pink-dark" },
@@ -478,19 +489,23 @@ export default function HomePage() {
           </div>
           <div className="mx-auto flex max-w-4xl flex-wrap justify-center gap-7" data-aos="fade-up" data-aos-delay="100">
             {courses.map((c) => (
-              <div key={c.title} className="course-card group w-full sm:w-[calc((100%-1.75rem)/2)] lg:w-[calc((100%-3.5rem)/3)]">
-                <div className="course-image">
-                  <span className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/10" aria-hidden />
-                  <span className="pointer-events-none absolute -bottom-8 -left-4 h-20 w-20 rounded-full bg-white/[0.06]" aria-hidden />
-                  <c.icon className="relative h-16 w-16 text-white/90 transition-transform duration-500 group-hover:scale-110" strokeWidth={1.3} />
+              <div key={c.slug} className="course-card group w-full sm:w-[calc((100%-1.75rem)/2)] lg:w-[calc((100%-3.5rem)/3)]">
+                <Link href={c.href} className="relative block aspect-[4/5] overflow-hidden bg-navy">
+                  <Image
+                    src={c.image}
+                    alt={`${c.title} — NeoSer`}
+                    fill
+                    sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
                   <span className={`course-badge ${c.badgeBg} text-white`}>{c.badge}</span>
-                </div>
+                </Link>
                 <div className="course-body">
-                  <h3 className="mb-2 text-lg font-bold text-navy">{c.title}</h3>
+                  <h3 className="mb-2 text-lg font-bold leading-snug text-navy">{c.title}</h3>
                   <p className="mb-4 text-sm text-gray-500">{c.desc}</p>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-3">
                     <span className="course-price">{c.price}</span>
-                    <Link href={`/cursos/${c.slug}`} className="btn-pink-outline text-xs">Ver más</Link>
+                    <Link href={c.href} className="btn-pink-outline text-xs">Ver más</Link>
                   </div>
                 </div>
               </div>
@@ -502,9 +517,9 @@ export default function HomePage() {
             <h3 className="mb-8 text-center text-2xl font-bold text-navy">Próximos Eventos</h3>
             <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-3">
               {[
-                { id: "abril", month: "Abril 2026", title: <>V Edición - Diplomado<br />Parto Humanizado</>, desc: "Modalidad híbrida. Inscripciones abiertas." },
-                { id: "mayo", month: "Mayo 2026", title: <>Seminario: Movimiento<br />en el Parto</>, desc: "Taller intensivo de un día. Cupos limitados." },
-                { id: "junio", month: "Junio 2026", title: <>Certificación Rebozo<br />Nivel II</>, desc: "Para egresados del Nivel I. Con aval internacional." },
+                { id: "agosto", month: "18 de agosto 2026", title: <>Neurobiología del Parto<br />y Protocolos</>, desc: "Virtual sincrónica, 64 h académicas. Inscripciones abiertas." },
+                { id: "rebozo-presencial", month: "Edición 2026", title: <>El Arte del Rebozo<br />modalidad presencial</>, desc: "En programación. Consulta fechas por WhatsApp." },
+                { id: "jornada", month: "Edición 2026", title: <>Herramientas para un<br />Nacimiento Humanizado</>, desc: "Jornada con profesores especialistas. Fecha por confirmar." },
               ].map((ev) => (
                 <div key={ev.id} className="group relative overflow-hidden rounded-2xl border border-navy/5 bg-cream p-6 transition duration-300 hover:-translate-y-1 hover:shadow-lg">
                   <span className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-pink to-blue transition-transform duration-300 group-hover:scale-x-100" />

@@ -24,10 +24,17 @@ import {
 } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { DecorParticles } from "@/components/decor-particles";
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  getCatalogCourse,
+  whatsappHref,
+} from "@/lib/courses-catalog";
+
+const course = getCatalogCourse("antropologia-parto")!;
 
 const ENROLL_HREF = "/cursos/antropologia-parto/inscribirse";
-const WHATSAPP_HREF =
-  "https://wa.me/51932713071?text=Hola%20NeoSer%2C%20quiero%20informaci%C3%B3n%20sobre%20el%20Curso%20Internacional%20Antropolog%C3%ADa%20del%20Parto";
+const WHATSAPP_HREF = whatsappHref(course.whatsappText);
 
 const opportunities = [
   {
@@ -160,7 +167,7 @@ const faqs = [
   },
   {
     q: "¿Aún tienes preguntas?",
-    a: "Escríbenos por WhatsApp al +51 932 713 071 o al correo peruneoser@gmail.com. Con gusto te orientamos antes de reservar tu lugar.",
+    a: `Escríbenos por WhatsApp al ${CONTACT_PHONE} o al correo ${CONTACT_EMAIL}. Con gusto te orientamos antes de reservar tu lugar.`,
   },
 ];
 
@@ -211,11 +218,14 @@ export function AntropologiaLanding() {
                 Antropología
               </p>
               <h1 className="section-title text-navy" style={{ fontSize: "clamp(2.2rem,4.6vw,3.6rem)" }}>
-                del Parto, hacia un{" "}
+                y Sociología del{" "}
                 <span className="bg-gradient-to-r from-pink to-pink-dark bg-clip-text text-transparent">
-                  nacimiento humanizado
+                  Nacimiento
                 </span>
               </h1>
+              <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-gray-400">
+                Antropología del parto, hacia un nacimiento humanizado
+              </p>
               <p className="mt-5 text-lg font-bold text-navy md:text-xl">
                 Una mirada profunda a los paradigmas del nacimiento.
               </p>
@@ -251,17 +261,16 @@ export function AntropologiaLanding() {
               </div>
             </div>
 
-            <div className="relative" data-aos="fade-up" data-aos-delay="100">
-              <div className="relative h-72 w-full overflow-hidden rounded-3xl border-4 border-white shadow-lg md:h-96">
+            <div className="relative mx-auto w-full max-w-sm" data-aos="fade-up" data-aos-delay="100">
+              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl border-4 border-white shadow-lg">
                 <Image
-                  src="/assets/hero/slide-1-maternidad.jpg"
-                  alt="Curso Internacional Antropología del Parto — NeoSer"
+                  src={course.image}
+                  alt="Curso Internacional Antropología y Sociología del Nacimiento — NeoSer"
                   fill
-                  sizes="(max-width: 1023px) 100vw, 520px"
+                  sizes="(max-width: 1023px) 100vw, 420px"
                   className="object-cover"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy/50 to-transparent" />
               </div>
               <div className="absolute -bottom-5 left-5 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-lg">
                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-pink text-white">
@@ -665,8 +674,8 @@ export function AntropologiaLanding() {
               <h4 className="mb-4 font-semibold text-white">Contacto</h4>
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2"><MapPin className="h-4 w-4 flex-shrink-0 text-pink" /> Calle Los Sauces 542, Chiclayo</li>
-                <li className="flex items-center gap-2"><Phone className="h-4 w-4 flex-shrink-0 text-pink" /> +51 932 713 071</li>
-                <li className="flex items-center gap-2"><Mail className="h-4 w-4 flex-shrink-0 text-pink" /> peruneoser@gmail.com</li>
+                <li className="flex items-center gap-2"><Phone className="h-4 w-4 flex-shrink-0 text-pink" /> {CONTACT_PHONE}</li>
+                <li className="flex items-center gap-2"><Mail className="h-4 w-4 flex-shrink-0 text-pink" /> {CONTACT_EMAIL}</li>
                 <li className="flex items-center gap-2"><Award className="h-4 w-4 flex-shrink-0 text-pink" /> En alianza con Aurora Madre</li>
               </ul>
             </div>

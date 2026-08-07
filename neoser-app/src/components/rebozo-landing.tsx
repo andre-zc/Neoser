@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
-  Calendar,
   CheckCircle2,
   Sparkles,
   Wind,
@@ -25,10 +24,18 @@ import {
 } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { DecorParticles } from "@/components/decor-particles";
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  formatCoursePrice,
+  getCatalogCourse,
+  whatsappHref,
+} from "@/lib/courses-catalog";
+
+const course = getCatalogCourse("rebozo-cert")!;
 
 const ENROLL_HREF = "/cursos/rebozo-cert/inscribirse";
-const WHATSAPP_HREF =
-  "https://wa.me/51932713071?text=Hola%20NeoSer%2C%20quiero%20informaci%C3%B3n%20sobre%20el%20curso%20El%20Arte%20del%20Rebozo";
+const WHATSAPP_HREF = whatsappHref(course.whatsappText);
 
 const pains = [
   {
@@ -125,7 +132,7 @@ const faqs = [
   },
   {
     q: "¿Cómo es la modalidad?",
-    a: "Es un programa híbrido: teoría en vivo online y prácticas presenciales para integrar la técnica con el cuerpo. La Obsta. Diana Silva acompaña cada seminario.",
+    a: "Es un programa virtual: los cuatro seminarios se dictan en vivo online y se complementan con 12 videos tutoriales de ejercicios. La Obsta. Diana Silva acompaña cada seminario. Si prefieres práctica presencial, tenemos la edición «El Arte del Rebozo para el embarazo, parto y posparto».",
   },
   {
     q: "¿Cuáles son las formas de pago?",
@@ -133,7 +140,7 @@ const faqs = [
   },
   {
     q: "¿Aún tienes preguntas?",
-    a: "Escríbenos a peruneoser@gmail.com o por WhatsApp al +51 932 713 071. Con gusto te orientamos antes de reservar tu lugar.",
+    a: `Escríbenos a ${CONTACT_EMAIL} o por WhatsApp al ${CONTACT_PHONE}. Con gusto te orientamos antes de reservar tu lugar.`,
   },
 ];
 
@@ -216,17 +223,17 @@ export function RebozoLanding() {
                 Deja de acompañar a ciegas. Aprende el método.
               </p>
               <p className="mt-2 max-w-xl text-gray-500">
-                Un programa que integra la sabiduría del rebozo con la Educación
-                Somática Prenatal, la Neurobiología del Parto y la Bioética
-                Personalista, para el embarazo, parto y posparto.
+                Formación especializada que integra la Técnica Rebozo, la educación
+                somática y la atención humanizada, con certificación emitida por
+                Maternidad y Medicina Humanizada NeoSer.
               </p>
 
               <div className="mt-6 flex flex-wrap gap-2">
                 {[
                   "1 mes · 4 seminarios",
-                  "🇵🇪 Modalidad híbrida",
+                  "🌎 Modalidad virtual",
                   "Comunidad NeoSer",
-                  "Aval Spinning Babies",
+                  "Certificación NeoSer",
                 ].map((chip) => (
                   <span
                     key={chip}
@@ -247,17 +254,16 @@ export function RebozoLanding() {
               </div>
             </div>
 
-            <div className="relative" data-aos="fade-up" data-aos-delay="100">
-              <div className="relative h-72 w-full overflow-hidden rounded-3xl border-4 border-white shadow-lg md:h-96">
+            <div className="relative mx-auto w-full max-w-sm" data-aos="fade-up" data-aos-delay="100">
+              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl border-4 border-white shadow-lg">
                 <Image
-                  src="/assets/hero/slide-4-acompanamiento.png"
-                  alt="Acompañamiento con técnica Rebozo en NeoSer"
+                  src={course.image}
+                  alt="El Arte del Rebozo desde la Educación Somática — NeoSer"
                   fill
-                  sizes="(max-width: 1023px) 100vw, 520px"
+                  sizes="(max-width: 1023px) 100vw, 420px"
                   className="object-cover"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy/40 to-transparent" />
               </div>
               <div className="absolute -bottom-5 left-5 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-lg">
                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-pink text-white">
@@ -540,15 +546,14 @@ export function RebozoLanding() {
               ))}
             </div>
 
-            <p className="text-sm text-gray-400 line-through">Precio regular: S/. 1,000</p>
             <p
               className="my-1 text-5xl font-extrabold text-navy"
               style={{ fontFamily: "var(--font-playfair), serif" }}
             >
-              S/. 800
+              {formatCoursePrice(course.price, course.currency)}
             </p>
             <p className="mb-6 text-xs uppercase tracking-wide text-gray-400">
-              Oferta válida por tiempo limitado
+              Cupos limitados · Certificación NeoSer incluida
             </p>
 
             <div className="mb-8">
@@ -556,7 +561,7 @@ export function RebozoLanding() {
             </div>
 
             <div className="mb-6 flex flex-wrap justify-center gap-2">
-              {["III Edición", "Modalidad híbrida", "Grabaciones incluidas"].map((c) => (
+              {["III Edición", "Modalidad virtual", "Grabaciones incluidas"].map((c) => (
                 <span
                   key={c}
                   className="rounded-full bg-pink-light px-3 py-1.5 text-xs font-medium text-pink-dark"
@@ -648,8 +653,8 @@ export function RebozoLanding() {
               <h4 className="mb-4 font-semibold text-white">Contacto</h4>
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2"><MapPin className="h-4 w-4 flex-shrink-0 text-pink" /> Calle Los Sauces 542, Chiclayo</li>
-                <li className="flex items-center gap-2"><Phone className="h-4 w-4 flex-shrink-0 text-pink" /> +51 932 713 071</li>
-                <li className="flex items-center gap-2"><Mail className="h-4 w-4 flex-shrink-0 text-pink" /> peruneoser@gmail.com</li>
+                <li className="flex items-center gap-2"><Phone className="h-4 w-4 flex-shrink-0 text-pink" /> {CONTACT_PHONE}</li>
+                <li className="flex items-center gap-2"><Mail className="h-4 w-4 flex-shrink-0 text-pink" /> {CONTACT_EMAIL}</li>
                 <li className="flex items-center gap-2"><Clock className="h-4 w-4 flex-shrink-0 text-pink" /> Lun a Sáb: 8:00 AM - 7:00 PM</li>
               </ul>
             </div>

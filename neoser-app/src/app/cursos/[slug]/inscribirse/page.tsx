@@ -1,9 +1,15 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { headers } from "next/headers";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { CourseEnrollmentForm } from "@/components/course-enrollment-form";
-import { getCatalogCourse } from "@/lib/courses-catalog";
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  getCatalogCourse,
+  whatsappHref,
+  type CatalogCourse,
+} from "@/lib/courses-catalog";
 
 type Course = {
   id: string;
@@ -19,10 +25,13 @@ type Course = {
   is_published: boolean;
 };
 
+// El catálogo estático es la fuente confiable: si dependiéramos solo de la BD,
+// la página daría 404 en cualquier entorno donde la siembra no esté aplicada.
 async function getCourse(slug: string): Promise<Course | null> {
-  // Catálogo estático primero (confiable); BD como respaldo.
   const cat = getCatalogCourse(slug);
   if (cat) {
+    // Curso sin precio confirmado: no hay checkout, se coordina por WhatsApp.
+    if (cat.enrollment !== "checkout" || cat.price === null) return null;
     return {
       id: cat.id,
       slug: cat.slug,
@@ -54,6 +63,11 @@ async function getCourse(slug: string): Promise<Course | null> {
   }
 }
 
+/** Tarifas que no pasan por el checkout online (egresadas, extranjero). */
+function tierNotes(cat: CatalogCourse | undefined) {
+  return (cat?.priceTiers ?? []).filter((t) => t.note);
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -78,17 +92,26 @@ export default async function InscribirsePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+
+  // Cursos sin checkout online: de vuelta al detalle, donde el CTA es WhatsApp.
+  const cat = getCatalogCourse(slug);
+  if (cat && (cat.enrollment !== "checkout" || cat.price === null)) {
+    redirect(cat.landingHref ?? `/cursos/${slug}`);
+  }
+
   const course = await getCourse(slug);
 
   if (!course || !course.is_published) {
     notFound();
   }
 
+  const notes = tierNotes(cat);
+
   return (
     <main className="min-h-screen bg-cream py-12 md:py-20">
       <div className="container-main">
         <Link
-          href={`/cursos/${course.slug}`}
+          href={cat?.landingHref ?? `/cursos/${course.slug}`}
           className="text-sm font-medium text-pink hover:underline"
         >
           ← Volver al curso
@@ -105,13 +128,48 @@ export default async function InscribirsePage({
           </p>
         </header>
 
-        <div className="mx-auto max-w-2xl">
+        <div className="mx-auto max-w-2xl space-y-4">
           <CourseEnrollmentForm
             courseId={course.id}
             courseTitle={course.title}
             coursePrice={Number(course.price)}
             courseCurrency={course.currency}
           />
+
+          {notes.length > 0 && (
+            <div className="surface-card p-6 text-sm leading-relaxed text-gray-500">
+              <p className="mb-2 font-semibold text-navy">
+                ¿Eres egresada NeoSer o participas desde el extranjero?
+              </p>
+              <ul className="mb-3 space-y-1">
+                {notes.map((t) => (
+                  <li key={t.label}>
+                    <span className="font-medium text-navy">{t.label}:</span> {t.note}
+                  </li>
+                ))}
+              </ul>
+              <p>
+                Estas tarifas y los pagos internacionales se coordinan de forma
+                directa. Escríbenos por{" "}
+                <a
+                  href={whatsappHref(cat!.whatsappText)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-pink hover:underline"
+                >
+                  WhatsApp al {CONTACT_PHONE}
+                </a>{" "}
+                o a{" "}
+                <a
+                  href={`mailto:${CONTACT_EMAIL}`}
+                  className="font-medium text-pink hover:underline"
+                >
+                  {CONTACT_EMAIL}
+                </a>
+                .
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </main>
