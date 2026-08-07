@@ -4,7 +4,11 @@
       "PowerShell($py = try { \\(python --version\\) } catch { \"NO\" }; $py3 = try { \\(python3 --version\\) } catch { \"NO\" }; $pip = try { \\(pip --version\\) } catch { \"NO\" }; $ff = try { \\(ffmpeg -version | Select-Object -First 1\\) } catch { \"NO\" }; \"python: $py\"; \"python3: $py3\"; \"pip: $pip\"; \"ffmpeg: $ff\")",
       "PowerShell($wg = try { \\(winget --version\\) } catch { \"NO\" }; $ch = try { \\(choco --version\\) } catch { \"NO\" }; \"winget: $wg\"; \"choco: $ch\")",
       "PowerShell(winget install *)",
-      "PowerShell(pip install *)"
+      "PowerShell(pip install *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(pdflatex --version)"
     ]
   },
   "enabledPlugins": {
