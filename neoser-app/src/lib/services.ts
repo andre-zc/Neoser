@@ -735,6 +735,30 @@ export const services: Service[] = [
         title: "Piel con piel y el inicio de la lactancia",
         text: "Prepararte desde el embarazo para las primeras horas de vida: cero separación, calostro y un vínculo temprano informado y respetado.",
       },
+      {
+        image: "/assets/servicios/lactancia-prenatal-02.png",
+        title: "Anatomía y producción de leche",
+        text: "Sesiones educativas con modelos anatómicos para comprender el pecho, la areola y cómo se produce la leche materna.",
+        objectPosition: "center 35%",
+      },
+      {
+        image: "/assets/servicios/lactancia-prenatal-03.png",
+        title: "Consejería prenatal personalizada",
+        text: "Acompañamiento uno a uno para gestantes y familias que quieren llegar informadas al inicio de la lactancia.",
+        objectPosition: "center 25%",
+      },
+      {
+        image: "/assets/servicios/lactancia-prenatal-04.png",
+        title: "Agarre y posiciones de amamantamiento",
+        text: "Práctica guiada del agarre y las posturas, para reconocer las señales del bebé y facilitar una lactancia respetada.",
+        objectPosition: "center 30%",
+      },
+      {
+        image: "/assets/servicios/lactancia-prenatal-05.png",
+        title: "Práctica vivencial con modelos",
+        text: "Demostraciones prácticas que preparan el cuerpo y la confianza para las primeras horas de vida del bebé.",
+        objectPosition: "center 40%",
+      },
     ],
     category: "comunidad",
     benefits: [
