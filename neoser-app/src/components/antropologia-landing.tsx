@@ -33,7 +33,8 @@ import {
 
 const course = getCatalogCourse("antropologia-parto")!;
 
-const ENROLL_HREF = "/cursos/antropologia-parto/inscribirse";
+// Sin precio confirmado no hay checkout online: toda la conversión de esta
+// landing va por WhatsApp hasta que la clienta defina la inversión.
 const WHATSAPP_HREF = whatsappHref(course.whatsappText);
 
 const opportunities = [
@@ -163,7 +164,7 @@ const faqs = [
   },
   {
     q: "¿Cuál es la inversión y cómo puedo pagar?",
-    a: "La inversión es de S/ 200 para Perú y USD 60 a nivel internacional. Al iniciar tu inscripción te indicamos los medios de pago disponibles (transferencia, Yape y PayPal internacional).",
+    a: `La inversión de la próxima edición se confirma junto con la convocatoria. Escríbenos por WhatsApp al ${CONTACT_PHONE} y te enviamos el detalle y los medios de pago disponibles (transferencia, Yape y PayPal internacional).`,
   },
   {
     q: "¿Aún tienes preguntas?",
@@ -253,9 +254,14 @@ export function AntropologiaLanding() {
               </div>
 
               <div className="mt-8 flex flex-wrap gap-4">
-                <Link href={ENROLL_HREF} className="btn-primary">
+                <a
+                  href={WHATSAPP_HREF}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary"
+                >
                   Reservar mi lugar <ArrowRight className="h-4 w-4" />
-                </Link>
+                </a>
                 <a href="#contenidos" className="btn-pink-outline">
                   Ver los módulos
                 </a>
@@ -464,7 +470,7 @@ export function AntropologiaLanding() {
             <div className="surface-card grid items-center gap-6 p-6 md:grid-cols-[auto_1fr] md:p-8">
               <div className="mx-auto h-28 w-28 overflow-hidden rounded-full border-4 border-white shadow md:mx-0">
                 <Image
-                  src="/assets/formadora-diana.png"
+                  src="/assets/formadora-diana-v2.jpg"
                   alt="Obsta. Diana E. Silva Mejía"
                   width={224}
                   height={224}
@@ -528,29 +534,22 @@ export function AntropologiaLanding() {
               Reserva tu lugar en el <span className="text-pink">Curso Internacional.</span>
             </h2>
 
-            <div className="mx-auto mb-8 grid max-w-md gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl bg-pink-light/60 p-5">
-                <p className="text-xs font-semibold uppercase tracking-wide text-pink-dark">
-                  Perú
-                </p>
-                <p
-                  className="mt-1 text-3xl font-bold text-navy"
-                  style={{ fontFamily: "var(--font-playfair), 'Noto Serif Display', Georgia, serif" }}
-                >
-                  S/ 200
-                </p>
-              </div>
-              <div className="rounded-2xl bg-blue-light/70 p-5">
-                <p className="text-xs font-semibold uppercase tracking-wide text-blue">
-                  Internacional
-                </p>
-                <p
-                  className="mt-1 text-3xl font-bold text-navy"
-                  style={{ fontFamily: "var(--font-playfair), 'Noto Serif Display', Georgia, serif" }}
-                >
-                  USD 60
-                </p>
-              </div>
+            {/* La inversión de la próxima edición aún no está definida por la
+                clienta (obs. 10/08/2026): no publicamos cifras hasta tenerla. */}
+            <div className="mx-auto mb-8 max-w-md rounded-2xl bg-pink-light/60 p-6">
+              <p className="text-xs font-semibold uppercase tracking-wide text-pink-dark">
+                Próxima edición
+              </p>
+              <p
+                className="mt-1 text-3xl font-bold text-navy"
+                style={{ fontFamily: "var(--font-playfair), 'Noto Serif Display', Georgia, serif" }}
+              >
+                A consultar
+              </p>
+              <p className="mt-2 text-sm text-gray-500">
+                Tarifas para Perú y para el extranjero se confirman junto con la
+                convocatoria de la próxima edición.
+              </p>
             </div>
 
             <div className="mx-auto mb-8 max-w-md space-y-3 text-left">
@@ -567,9 +566,14 @@ export function AntropologiaLanding() {
               ))}
             </div>
 
-            <Link href={ENROLL_HREF} className="btn-primary mx-auto justify-center">
+            <a
+              href={WHATSAPP_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary mx-auto justify-center"
+            >
               Quiero inscribirme <ArrowRight className="h-4 w-4" />
-            </Link>
+            </a>
             <p className="mt-3 text-xs text-gray-400">
               Cupos limitados · Medios de pago: transferencia, Yape y PayPal internacional
             </p>

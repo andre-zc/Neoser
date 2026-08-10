@@ -533,7 +533,7 @@ export function NeurobiologiaLanding() {
             <div className="surface-card grid items-center gap-6 p-6 md:grid-cols-[auto_1fr] md:p-8">
               <div className="mx-auto h-28 w-28 overflow-hidden rounded-full border-4 border-white shadow md:mx-0">
                 <Image
-                  src="/assets/formadora-diana.png"
+                  src="/assets/formadora-diana-v2.jpg"
                   alt="Obst. Diana Silva Mejía"
                   width={224}
                   height={224}

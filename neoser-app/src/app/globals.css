@@ -103,8 +103,55 @@
   }
   @media (min-width: 768px) { .navbar.scrolled .navbar-script { display: inline-block; } }
 
+  /* -- Dropdowns de Servicios y Cursos (desktop) --
+     Se abren por :hover y por :focus-within, así funcionan también con teclado
+     sin necesidad de estado en JS. El padding inferior del contenedor hace de
+     puente para que el panel no se cierre al bajar el cursor. */
+  /* El padding inferior llega hasta el borde de la píldora del navbar: hace de
+     puente para el hover y deja el panel colgando justo debajo de ella. */
+  .nav-dropdown { position: relative; padding-bottom: 2.5rem; margin-bottom: -2.5rem; }
+  .nav-dropdown-trigger { display: inline-flex; align-items: center; gap: 0.25rem; }
+  .nav-dropdown-chevron { width: 1rem; height: 1rem; transition: transform 0.25s ease; }
+  .nav-dropdown:hover .nav-dropdown-chevron,
+  .nav-dropdown:focus-within .nav-dropdown-chevron { transform: rotate(180deg); }
+  .nav-dropdown-panel {
+    position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(6px);
+    min-width: 19rem; max-width: calc(100vw - 4rem); padding: 1rem; border-radius: 20px;
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(18px) saturate(180%); -webkit-backdrop-filter: blur(18px) saturate(180%);
+    border: 1px solid rgba(15,37,72,0.08); box-shadow: 0 18px 44px rgba(15,37,72,0.16);
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
+  }
+  .nav-dropdown:hover .nav-dropdown-panel,
+  .nav-dropdown:focus-within .nav-dropdown-panel {
+    opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(-50%) translateY(0);
+  }
+  /* El panel de Servicios es ancho (3 columnas): se ancla al borde izquierdo
+     del disparador en vez de centrarse, para no salirse de pantalla en 1024px. */
+  .nav-dropdown-panel-wide { min-width: 44rem; left: 0; transform: translateX(0) translateY(6px); }
+  .nav-dropdown:hover .nav-dropdown-panel-wide,
+  .nav-dropdown:focus-within .nav-dropdown-panel-wide { transform: translateX(0) translateY(0); }
+  .nav-dropdown-columns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem 1.25rem; }
+  .nav-dropdown-group + .nav-dropdown-group { margin-top: 0.5rem; }
+  .nav-dropdown-columns .nav-dropdown-group + .nav-dropdown-group { margin-top: 0; }
+  .nav-dropdown-group-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink-dark); padding: 0 0.75rem; margin-bottom: 0.35rem; }
+  .nav-dropdown-item { display: block; padding: 0.5rem 0.75rem; border-radius: 12px; font-size: 14px; line-height: 1.35; font-weight: 500; color: var(--navy); text-decoration: none; transition: background 0.2s ease, color 0.2s ease; }
+  .nav-dropdown-item:hover, .nav-dropdown-item:focus-visible { background: var(--pink-light); color: var(--pink-dark); }
+  .nav-dropdown-footer { display: block; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(15,37,72,0.08); font-size: 13px; font-weight: 600; color: var(--pink-dark); text-align: center; text-decoration: none; }
+  .nav-dropdown-footer:hover { color: var(--navy); }
+
   /* -- Mobile Menu -- */
-  .mobile-menu { position: fixed; top: 0; right: -100%; width: 80%; max-width: 400px; height: 100vh; background: var(--navy-dark); z-index: 1100; transition: right 0.4s cubic-bezier(0.4,0,0.2,1); padding: 5rem 2rem 2rem; display: flex; flex-direction: column; }
+  .mobile-menu { position: fixed; top: 0; right: -100%; width: 80%; max-width: 400px; height: 100vh; overflow-y: auto; overscroll-behavior: contain; background: var(--navy-dark); z-index: 1100; transition: right 0.4s cubic-bezier(0.4,0,0.2,1); padding: 5rem 2rem 2rem; display: flex; flex-direction: column; }
+  .mobile-accordion { border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .mobile-accordion-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+  .mobile-accordion-head .nav-link { flex: 1; border-bottom: none; }
+  .mobile-accordion-toggle { flex-shrink: 0; padding: 0.5rem; color: rgba(255,255,255,0.75); background: none; border: none; cursor: pointer; transition: transform 0.25s ease, color 0.2s ease; }
+  .mobile-accordion-toggle.is-open { transform: rotate(180deg); color: var(--pink); }
+  .mobile-accordion-body { padding: 0 0 1rem 0.25rem; }
+  .mobile-accordion-group-title { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink); margin: 0.75rem 0 0.25rem; }
+  .mobile-accordion-item { display: block; padding: 0.5rem 0; font-size: 15px; line-height: 1.35; color: rgba(255,255,255,0.82); text-decoration: none; }
+  .mobile-accordion-item:hover { color: var(--pink); }
   .mobile-menu.active { right: 0; }
   .mobile-overlay { position: fixed; inset: 0; background: rgba(15,37,72,0.6); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
   .mobile-overlay.active { opacity: 1; visibility: visible; }
@@ -126,6 +173,16 @@
   .hero-title { font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif; font-size: clamp(38px,5.2vw,64px); font-weight: 700; font-style: italic; color: var(--white); line-height: 1.05; letter-spacing: -0.015em; margin-bottom: 1rem; }
   .hero-title .highlight { color: var(--pink); }
   .hero-subtitle { font-size: clamp(17px,2.3vw,24px); color: rgba(255,255,255,0.9); font-weight: 400; line-height: 1.6; margin-top: 0.5rem; }
+  /* Escritorio: el bloque de texto crecía tanto que se metía debajo del navbar
+     (obs. de la clienta, 10/08/2026). En móvil la proporción funciona bien, así
+     que el ajuste vive solo a partir de 1024px. */
+  @media (min-width: 1024px) {
+    .hero-title { font-size: clamp(40px,3.4vw,46px); }
+    .hero-subtitle { font-size: clamp(16px,1.25vw,19px); }
+    /* La foto marcaba la altura de la fila y empujaba el texto sobre el navbar
+       en pantallas de 1080px de alto. */
+    .hero-slide-media { height: clamp(360px,52vh,460px); }
+  }
   .hero-script {
     font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif;
     font-style: italic;

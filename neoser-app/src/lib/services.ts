@@ -21,6 +21,8 @@ export type ServiceFaq = { q: string; a: string };
 export type Service = {
   slug: string;
   title: string;
+  /** Etiqueta corta para el menú del navbar. Si falta, se usa `title`. */
+  navTitle?: string;
   summary: string; // 1-2 líneas para la home
   description: string[]; // lead corto para "Sobre este servicio" (se muestra el primero)
   // Resumen corto para la tarjeta del catálogo /servicios (primera impresión).
@@ -46,6 +48,7 @@ export const services: Service[] = [
   {
     slug: "gineco-obstetricia",
     title: "Servicio de Gineco-Obstetricia",
+    navTitle: "Gineco-Obstetricia",
     summary:
       "Atención integral y preventiva para tu salud ginecológica en cada etapa de vida.",
     description: [
@@ -69,10 +72,12 @@ export const services: Service[] = [
         objectPosition: "center 38%",
       },
       {
-        image: "/assets/servicios/gineco-bienestar-edad.png",
+        // Foto real de consulta (MSN_8014). Reemplaza a la imagen generada por
+        // IA que ocupaba este slot — pedido de la clienta (obs. 10/08/2026).
+        image: "/assets/servicios/gineco-consulta-chacaliaza.jpg",
         title: "Tu bienestar no tiene edad",
         text: "Que los cambios propios de los años no limiten tu bienestar ni tu vida cotidiana. Te acompañamos con prevención, evaluación y cuidado del suelo pélvico en cada etapa de la vida.",
-        objectPosition: "center 40%",
+        objectPosition: "center 45%",
       },
       {
         image: "/assets/servicios/MG_0639.jpg",
@@ -345,6 +350,7 @@ export const services: Service[] = [
   {
     slug: "preparacion-integral-parto",
     title: "Programa de Preparación Integral para el Parto",
+    navTitle: "Preparación Integral para el Parto",
     summary:
       "Transformamos el miedo en confianza mediante un programa de 8 a 10 sesiones que prepara a la familia para vivir el nacimiento con seguridad y confianza.",
     description: [
@@ -570,6 +576,7 @@ export const services: Service[] = [
   {
     slug: "canto-prenatal",
     title: "Canto Prenatal® desde la Psicofonía de Marie-Louise Aucher",
+    navTitle: "Canto Prenatal®",
     summary:
       "La voz como un recurso para el bienestar, el vínculo prenatal y el nacimiento.",
     description: [
@@ -643,6 +650,7 @@ export const services: Service[] = [
   {
     slug: "somaesfera",
     title: "SomaEsfera® Movimiento Somático con Balones para el Embarazo, Parto y Postparto",
+    navTitle: "SomaEsfera®",
     summary:
       "Movimiento somático con balones para embarazo, parto y postparto.",
     description: [
@@ -719,6 +727,7 @@ export const services: Service[] = [
   {
     slug: "lactancia-prenatal",
     title: "Consejería y Asesoría en Lactancia Prenatal",
+    navTitle: "Lactancia Prenatal",
     summary:
       "Preparación consciente para una lactancia informada desde el embarazo.",
     description: [
@@ -800,6 +809,7 @@ export const services: Service[] = [
   {
     slug: "circulos-meditacion",
     title: "Círculos de Meditación – Mamá NeoSer",
+    navTitle: "Círculos de Meditación",
     summary:
       "Espacios quincenales de meditación y conexión para madres NeoSer.",
     description: [

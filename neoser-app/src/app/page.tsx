@@ -617,12 +617,13 @@ export default function HomePage() {
           {/* Team */}
           <div className="mb-8" data-aos="fade-up">
             <h3 className="mb-10 text-center text-2xl font-bold text-navy">Nuestro Equipo</h3>
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {/* Datos y fotos confirmados por la clienta (obs. 10/08/2026): el
+                equipo visible en la web son estas 3 personas. */}
+            <div className="mx-auto grid max-w-5xl gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {[
-                { initials: "DS", name: "Obst. Diana Silva Mejía", role: "Cofundadora y Gerente General", desc: "Obstetra especialista en humanización del embarazo, parto y nacimiento. Ex Directora de la Fundación de Waal de los Países Bajos en Perú.", img: "/assets/equipo-diana-v2.png", pos: "center 20%" },
-                { initials: "LC", name: "Dr. Luis Chacaliaza", role: "Co-Fundador & Director Médico", desc: "Médico ginecólogo-obstetra con enfoque en medicina humanizada y nacimiento respetado.", img: "/assets/equipo-luis.png", pos: "center 20%" },
-                { initials: "ED", name: "Equipo Docente", role: "Docentes Especializados", desc: "Profesionales de la salud con formación en maternidad humanizada y pedagogía.", img: "", pos: "center 20%" },
-                { initials: "EA", name: "Equipo Asistencial", role: "Soporte & Atención", desc: "Personal dedicado a brindarte la mejor experiencia en cada visita y consulta.", img: "", pos: "center 20%" },
+                { initials: "DS", name: "Obsta. Diana Silva Mejía", role: "Cofundadora y Gerente General", desc: "Obstetra con más de 20 años de trayectoria en salud materna y humanización del nacimiento. Past Directora de la Fundación de Waal de los Países Bajos en Perú.", img: "/assets/equipo-diana-v3.jpg", pos: "center 20%" },
+                { initials: "LC", name: "Dr. Luis Chacaliaza Donayre", role: "Cofundador y Director Médico", desc: "Médico ginecólogo-obstetra y anestesiólogo, con más de 40 años de trayectoria profesional y enfoque en la humanización del nacimiento.", img: "/assets/equipo-luis.png", pos: "center 20%" },
+                { initials: "JL", name: "Obsta. Jackeline Lluén Serquén", role: "Asistente Técnica-Académica", desc: "Obstetra especialista en Psicoprofilaxis Obstétrica y Estimulación Prenatal, y Asesora de Lactancia Materna.", img: "/assets/equipo-jackeline.jpg", pos: "center 20%" },
               ].map((m) => (
                 <div key={m.initials} className="team-member">
                   <div className="team-photo">
@@ -646,7 +647,7 @@ export default function HomePage() {
                   </div>
                   <h4 className="text-lg font-bold text-navy">{m.name}</h4>
                   <p className="text-sm font-medium text-pink">{m.role}</p>
-                  <p className="mx-auto mt-2 max-w-[15rem] text-xs leading-snug text-gray-400">{m.desc}</p>
+                  <p className="mx-auto mt-2 max-w-[17rem] text-xs leading-snug text-gray-400">{m.desc}</p>
                 </div>
               ))}
             </div>

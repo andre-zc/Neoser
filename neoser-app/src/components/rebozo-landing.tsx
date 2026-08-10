@@ -393,7 +393,7 @@ export function RebozoLanding() {
             <div className="flex justify-center" data-aos="fade-up">
               <div className="relative w-full max-w-sm overflow-hidden rounded-3xl border-4 border-white bg-gradient-to-br from-pink-light to-blue-light shadow-lg">
                 <Image
-                  src="/assets/formadora-diana.png"
+                  src="/assets/formadora-diana-v2.jpg"
                   alt="Obsta. Diana Silva Mejía"
                   width={800}
                   height={1024}
@@ -415,9 +415,9 @@ export function RebozoLanding() {
                 Cofundadora y Gerente General de NeoSer Perú
               </p>
               <p className="mb-4 leading-relaxed text-gray-500">
-                Obstetra especialista en humanización del embarazo, parto y
-                nacimiento. Ex Directora de la Fundación de Waal de los Países
-                Bajos en Perú.
+                Obstetra con más de 20 años de trayectoria en salud materna y
+                humanización del nacimiento. Past Directora de la Fundación de
+                Waal de los Países Bajos en Perú.
               </p>
               <p className="mb-6 leading-relaxed text-gray-500">
                 El programa cuenta además con la dirección médica del{" "}

@@ -34,6 +34,8 @@ export type CatalogCourse = {
   slug: string;
   id: string;
   title: string;
+  /** Etiqueta corta para el menú del navbar. Si falta, se usa `title`. */
+  navTitle?: string;
   /** Bajada corta bajo el título (claim del afiche). */
   tagline?: string;
   summary: string; // short_description
@@ -79,6 +81,7 @@ export const coursesCatalog: CatalogCourse[] = [
     slug: "neurobiologia-parto",
     id: "6a7b8c9d-6666-4666-8666-666666666666",
     title: "Neurobiología del Parto y Protocolos para un Nacimiento Humanizado",
+    navTitle: "Neurobiología del Parto",
     tagline: "Actualizar la atención del nacimiento comienza por comprender su biología.",
     summary:
       "Edición 2026. Neurobiología, microbiota, epigenética y teoría del apego aplicadas a protocolos clínicos basados en evidencia.",
@@ -193,6 +196,7 @@ export const coursesCatalog: CatalogCourse[] = [
     slug: "rebozo-cert",
     id: "3a4b5c6d-3333-4333-8333-333333333333",
     title: "El Arte del Rebozo desde la Educación Somática",
+    navTitle: "El Arte del Rebozo (virtual)",
     tagline: "Deja de acompañar a ciegas. Aprende el método.",
     summary:
       "Formación especializada que integra la Técnica Rebozo, la educación somática y la atención humanizada, con certificación emitida por Maternidad y Medicina Humanizada NeoSer.",
@@ -233,6 +237,7 @@ export const coursesCatalog: CatalogCourse[] = [
     id: "7a8b9c0d-7777-4777-8777-777777777777",
     title:
       "El Arte del Rebozo desde la Educación Somática para el Embarazo, Parto y Postparto",
+    navTitle: "El Arte del Rebozo (semipresencial)",
     tagline: "Programa de Formación · La técnica en el cuerpo, con evidencia detrás.",
     summary:
       "Programa de formación de 64 horas académicas (4 créditos) en modalidad semipresencial: módulo virtual asincrónico + curso taller presencial con práctica clínica supervisada.",
@@ -243,7 +248,10 @@ export const coursesCatalog: CatalogCourse[] = [
     ],
     // Inversión confirmada por la clienta, pero las fechas de la próxima
     // edición siguen en programación: el CTA deriva a WhatsApp (sin checkout).
-    price: 720,
+    // El precio de vitrina es el del curso taller presencial (S/ 500), tal como
+    // pidió la clienta (obs. 10/08/2026); el desglose del programa completo
+    // sigue detallado en `priceTiers`.
+    price: 500,
     currency: "PEN",
     priceTiers: [
       {
@@ -351,18 +359,17 @@ export const coursesCatalog: CatalogCourse[] = [
     slug: "antropologia-parto",
     id: "5a6b7c8d-5555-4555-8555-555555555555",
     title: "Antropología y Sociología del Nacimiento",
+    navTitle: "Antropología del Nacimiento",
     tagline: "Una mirada profunda a los paradigmas del nacimiento.",
     summary:
       "Curso Internacional: paradigmas culturales del nacimiento, violencia obstétrica y el surgimiento de la partería posmoderna.",
     description: [
       "Curso Internacional dictado por NeoSer en alianza con Aurora Madre. Una visión integral sobre los modelos de atención, las dinámicas sociales y culturales que rodean el nacimiento y la violencia obstétrica desde una perspectiva de derechos humanos.",
     ],
-    price: 200,
+    // La inversión de la próxima edición aún no está definida por la clienta
+    // (obs. 10/08/2026): sin precio no hay checkout, se coordina por WhatsApp.
+    price: null,
     currency: "PEN",
-    priceTiers: [
-      { label: "Participantes en Perú", value: "S/ 200", tone: "pink" },
-      { label: "Participantes del extranjero", value: "USD 60", tone: "blue" },
-    ],
     mode: "Online",
     durationLabel: "1 mes · 8 sesiones",
     scheduleLabel: "Martes y jueves · 7:00 – 9:00 p. m. (hora Perú)",
@@ -379,7 +386,7 @@ export const coursesCatalog: CatalogCourse[] = [
       "Certificado digital (48 h · 3 créditos)",
     ],
     landingHref: "/cursos/antropologia-parto",
-    enrollment: "checkout",
+    enrollment: "whatsapp",
     whatsappText:
       "Hola%20NeoSer%2C%20quiero%20informaci%C3%B3n%20sobre%20el%20Curso%20Internacional%20Antropolog%C3%ADa%20y%20Sociolog%C3%ADa%20del%20Nacimiento",
   },
@@ -391,6 +398,7 @@ export const coursesCatalog: CatalogCourse[] = [
     slug: "herramientas-nacimiento-humanizado",
     id: "8a9b0c1d-8888-4888-8888-888888888888",
     title: "Herramientas para un Nacimiento Humanizado",
+    navTitle: "Herramientas para un Nacimiento Humanizado",
     tagline: "Una jornada con profesores especialistas.",
     summary:
       "Jornada académica con la participación de profesores especialistas invitados, centrada en herramientas prácticas para la atención del nacimiento.",

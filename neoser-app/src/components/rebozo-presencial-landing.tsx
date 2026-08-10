@@ -75,8 +75,24 @@ const includesIcons = [
   HeartHandshake,
 ];
 
-// Sección 11 — galería del taller con obstetras (Chiclayo, 2025)
+// Sección 11 — galería del taller con obstetras (Chiclayo, 2025).
+// Subtítulos revisados y aprobados por la clienta (obs. 10/08/2026).
 const gallery = [
+  {
+    src: "/assets/cursos/rebozo-presencial/taller-promocion-chiclayo-2025.jpg",
+    alt: "Primera Promoción en el Arte del Rebozo desde la Educación Somática — NeoSer, Chiclayo 2025",
+    caption:
+      "El Arte del Rebozo desde la Educación Somática — Primera Promoción Chiclayo 2025",
+    wide: true,
+  },
+  {
+    src: "/assets/cursos/rebozo-presencial/taller-manteo.jpg",
+    alt: "Relajación con rebozo aplicada en el cierre puerperal",
+    caption: "Relajación con rebozo y cierre puerperal",
+    wide: false,
+  },
+  // Las dos fotos apaisadas van en las posiciones 1 y 3: con 3 columnas el
+  // patrón wide → normal → wide → 4 normales llena la grilla sin huecos.
   {
     src: "/assets/cursos/rebozo-presencial/taller-circulo.jpg",
     alt: "Participantes del taller trabajando en círculo con rebozos — NeoSer, Chiclayo 2025",
@@ -84,21 +100,15 @@ const gallery = [
     wide: true,
   },
   {
-    src: "/assets/cursos/rebozo-presencial/taller-manteo.jpg",
-    alt: "Práctica de manteo con rebozo supervisada por la facilitadora",
-    caption: "Manteo supervisado",
-    wide: false,
-  },
-  {
     src: "/assets/cursos/rebozo-presencial/taller-rebozo-supino.jpg",
-    alt: "Técnica de sostén con rebozo aplicada en decúbito supino",
-    caption: "Técnica de sostén",
+    alt: "Práctica de la técnica de manteo con rebozo en decúbito supino",
+    caption: "Técnica de manteo",
     wide: false,
   },
   {
     src: "/assets/cursos/rebozo-presencial/taller-pelota-parto.jpg",
-    alt: "Acompañamiento del trabajo de parto con pelota y rebozo",
-    caption: "Acompañamiento del trabajo de parto",
+    alt: "Educación somática prenatal con pelota y rebozo",
+    caption: "Educación somática prenatal y rebozo",
     wide: false,
   },
   {
@@ -113,6 +123,15 @@ const gallery = [
     caption: "Práctica clínica supervisada",
     wide: false,
   },
+  // PENDIENTE (obs. 10/08/2026): falta la foto "Rebozo y Educación Somática en
+  // parejas" (_MG_4271.jpg en el Drive de la clienta). Cuando llegue, guardarla
+  // como taller-parejas.jpg en esta misma carpeta y descomentar el bloque.
+  // {
+  //   src: "/assets/cursos/rebozo-presencial/taller-parejas.jpg",
+  //   alt: "Práctica en parejas de rebozo y educación somática durante el taller presencial",
+  //   caption: "Rebozo y Educación Somática en parejas",
+  //   wide: false,
+  // },
 ];
 
 export function RebozoPresencialLanding() {
@@ -610,7 +629,7 @@ export function RebozoPresencialLanding() {
             <div className="flex justify-center" data-aos="fade-up">
               <div className="relative w-full max-w-sm overflow-hidden rounded-3xl border-4 border-white bg-gradient-to-br from-pink-light to-blue-light shadow-lg">
                 <Image
-                  src="/assets/formadora-diana.png"
+                  src="/assets/formadora-diana-v2.jpg"
                   alt="Obsta. Diana Silva Mejía"
                   width={800}
                   height={1024}
