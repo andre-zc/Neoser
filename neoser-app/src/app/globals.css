@@ -132,9 +132,15 @@
   .nav-dropdown-panel-wide { min-width: 44rem; left: 0; transform: translateX(0) translateY(6px); }
   .nav-dropdown:hover .nav-dropdown-panel-wide,
   .nav-dropdown:focus-within .nav-dropdown-panel-wide { transform: translateX(0) translateY(0); }
-  .nav-dropdown-columns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem 1.25rem; }
+  .nav-dropdown-columns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
   .nav-dropdown-group + .nav-dropdown-group { margin-top: 0.5rem; }
   .nav-dropdown-columns .nav-dropdown-group + .nav-dropdown-group { margin-top: 0; }
+  /* Hasta ~1120px los enlaces del navbar arrancan muy a la izquierda y el panel
+     de 3 columnas se saldría por la derecha: ahí baja a 2 columnas. */
+  @media (max-width: 1120px) {
+    .nav-dropdown-panel-wide { min-width: 34rem; }
+    .nav-dropdown-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
   .nav-dropdown-group-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink-dark); padding: 0 0.75rem; margin-bottom: 0.35rem; }
   .nav-dropdown-item { display: block; padding: 0.5rem 0.75rem; border-radius: 12px; font-size: 14px; line-height: 1.35; font-weight: 500; color: var(--navy); text-decoration: none; transition: background 0.2s ease, color 0.2s ease; }
   .nav-dropdown-item:hover, .nav-dropdown-item:focus-visible { background: var(--pink-light); color: var(--pink-dark); }
