@@ -400,8 +400,8 @@ export function RebozoLanding() {
                   className="h-[28rem] w-full object-cover object-top"
                   priority
                 />
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
-                  <span className="rounded-full bg-pink px-4 py-1.5 text-xs font-semibold text-white shadow">
+                <div className="absolute bottom-4 left-1/2 max-w-[calc(100%-1.5rem)] -translate-x-1/2">
+                  <span className="block whitespace-nowrap rounded-full bg-pink px-3 py-1.5 text-[11px] font-semibold text-white shadow sm:px-4 sm:text-xs">
                     Obsta. Diana Silva Mejía
                   </span>
                 </div>

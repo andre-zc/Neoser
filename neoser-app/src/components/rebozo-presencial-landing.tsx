@@ -635,8 +635,8 @@ export function RebozoPresencialLanding() {
                   height={1024}
                   className="h-[28rem] w-full object-cover object-top"
                 />
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
-                  <span className="rounded-full bg-pink px-4 py-1.5 text-xs font-semibold text-white shadow">
+                <div className="absolute bottom-4 left-1/2 max-w-[calc(100%-1.5rem)] -translate-x-1/2">
+                  <span className="block whitespace-nowrap rounded-full bg-pink px-3 py-1.5 text-[11px] font-semibold text-white shadow sm:px-4 sm:text-xs">
                     Obsta. Diana Silva Mejía
                   </span>
                 </div>
@@ -764,7 +764,7 @@ export function RebozoPresencialLanding() {
         <DecorParticles variant="b" />
         <div className="container-main relative">
           <div
-            className="surface-card mx-auto max-w-2xl p-8 text-center shadow-sm md:p-12"
+            className="surface-card mx-auto max-w-2xl p-5 text-center shadow-sm sm:p-8 md:p-12"
             data-aos="fade-up"
           >
             <p className="section-tag mb-2">Informes</p>
@@ -778,20 +778,20 @@ export function RebozoPresencialLanding() {
               matrícula.
             </p>
 
-            <div className="flex flex-wrap justify-center gap-3">
+            <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
               <a
                 href={WHATSAPP_HREF}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-primary text-sm"
+                className="btn-primary justify-center whitespace-nowrap !px-4 text-sm"
               >
-                <MessageCircle className="h-4 w-4" /> WhatsApp {CONTACT_PHONE}
+                <MessageCircle className="h-4 w-4 shrink-0" /> WhatsApp {CONTACT_PHONE}
               </a>
               <a
                 href={`mailto:${CONTACT_EMAIL}`}
-                className="btn-pink-outline text-sm"
+                className="btn-pink-outline justify-center whitespace-nowrap !px-4 text-sm"
               >
-                <Mail className="h-4 w-4" /> {CONTACT_EMAIL}
+                <Mail className="h-4 w-4 shrink-0" /> {CONTACT_EMAIL}
               </a>
             </div>
           </div>
