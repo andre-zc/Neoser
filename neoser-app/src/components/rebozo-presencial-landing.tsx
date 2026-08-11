@@ -627,17 +627,19 @@ export function RebozoPresencialLanding() {
         <div className="container-main relative">
           <div className="grid items-center gap-12 lg:grid-cols-[0.8fr_1.2fr]">
             <div className="flex justify-center" data-aos="fade-up">
-              <div className="relative w-full max-w-sm overflow-hidden rounded-3xl border-4 border-white bg-gradient-to-br from-pink-light to-blue-light shadow-lg">
-                <Image
-                  src="/assets/formadora-diana-v2.jpg"
-                  alt="Obsta. Diana Silva Mejía"
-                  width={800}
-                  height={1024}
-                  className="h-[28rem] w-full object-cover object-top"
-                />
-                <div className="absolute bottom-4 left-1/2 max-w-[calc(100%-1.5rem)] -translate-x-1/2">
-                  <span className="block whitespace-nowrap rounded-full bg-pink px-3 py-1.5 text-[11px] font-semibold text-white shadow sm:px-4 sm:text-xs">
-                    Obsta. Diana Silva Mejía
+              <div className="relative w-full max-w-sm">
+                <div className="overflow-hidden rounded-3xl border-4 border-white bg-gradient-to-br from-pink-light to-blue-light shadow-lg">
+                  <Image
+                    src="/assets/formadora-diana-v2.jpg"
+                    alt="Obsta. Diana Silva Mejía"
+                    width={800}
+                    height={1024}
+                    className="h-[28rem] w-full object-cover object-top"
+                  />
+                </div>
+                <div className="pointer-events-none absolute inset-x-0 bottom-4 z-10 flex justify-center px-3">
+                  <span className="name-pill">
+                    {"Obsta.\u00A0Diana\u00A0Silva\u00A0Mejía"}
                   </span>
                 </div>
               </div>

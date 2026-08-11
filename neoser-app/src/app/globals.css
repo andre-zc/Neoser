@@ -255,6 +255,28 @@
   .navbar.scrolled .btn-nav-cta { background: var(--pink); color: var(--white); border-color: var(--pink); box-shadow: 0 6px 18px rgba(232,135,155,0.35); }
   .navbar.scrolled .btn-nav-cta:hover { background: var(--pink-dark); border-color: var(--pink-dark); }
 
+  /* Píldora de nombre sobre foto — nowrap forzado (iOS no respeta Tailwind
+     ahora si el badge vive dentro de overflow:hidden + left:50%) */
+  .name-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+    max-width: none;
+    flex-shrink: 0;
+    white-space: nowrap;
+    word-break: keep-all;
+    overflow-wrap: normal;
+    border-radius: 999px;
+    background: var(--pink);
+    color: var(--white);
+    padding: 0.4rem 0.9rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    box-shadow: 0 4px 14px rgba(15, 37, 72, 0.16);
+  }
+
   /* -- Section Titles -- */
   /* Eyebrow de sección — Montserrat (párrafos/UI del brand book) */
   .section-tag {
