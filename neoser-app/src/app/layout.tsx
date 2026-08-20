@@ -3,6 +3,7 @@ import { Montserrat, Noto_Serif_Display } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { WhatsappFab } from "@/components/whatsapp-button";
+import { SiteFooter } from "@/components/site-footer";
 import { WhatsappModalProvider } from "@/components/whatsapp-modal-provider";
 
 /** Cuerpo / UI / etiquetas — brand book */
@@ -117,6 +118,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <WhatsappModalProvider>
           {children}
+          <SiteFooter />
           <WhatsappFab />
         </WhatsappModalProvider>
 

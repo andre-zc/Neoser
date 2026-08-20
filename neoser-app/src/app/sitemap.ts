@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { services } from "@/lib/services";
 import { coursesCatalog } from "@/lib/courses-catalog";
+import { RUTAS_LEGALES } from "@/lib/legal";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://neoser.pe";
 
@@ -43,6 +44,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: "monthly" as const,
       priority: 0.7,
+    })),
+    // Páginas legales: deben ser indexables y accesibles (requisito de Culqi
+    // y del Código de Protección y Defensa del Consumidor).
+    ...RUTAS_LEGALES.map((r) => ({
+      url: `${SITE_URL}${r.href}`,
+      lastModified,
+      changeFrequency: "yearly" as const,
+      priority: 0.4,
     })),
   ];
 }

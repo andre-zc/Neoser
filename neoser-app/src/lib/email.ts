@@ -276,3 +276,123 @@ export function buildCoordinationNotificationEmail(
   return { subject, html };
 }
 
+
+type ComplaintEmailInput = {
+  correlativo: number;
+  fullName: string;
+  documentType: string;
+  documentNumber: string;
+  address: string;
+  phone: string;
+  email: string;
+  itemType: string;
+  itemDescription: string;
+  claimedAmount?: number | null;
+  complaintType: string;
+  detail: string;
+  consumerRequest: string;
+  createdAt: string;
+  plazoDias: number;
+};
+
+function complaintRow(label: string, value: string) {
+  return `
+    <tr>
+      <td style="padding: 8px 0; color: #718096; vertical-align: top; width: 40%;">${label}</td>
+      <td style="padding: 8px 0; color: #1F2A44; font-weight: 600;">${value}</td>
+    </tr>`;
+}
+
+/**
+ * Constancia para el consumidor de que su Hoja de Reclamación fue registrada.
+ * El Reglamento del Libro de Reclamaciones exige dejar constancia del reclamo
+ * y del plazo de respuesta.
+ */
+export function buildComplaintAckEmail(input: ComplaintEmailInput) {
+  const tipo = input.complaintType === "queja" ? "queja" : "reclamo";
+  const subject = `Constancia de ${tipo} N.º ${input.correlativo} — NeoSer`;
+  const fecha = new Date(input.createdAt).toLocaleString("es-PE", {
+    timeZone: "America/Lima",
+  });
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 560px; margin: 0 auto; background: #FFF8F2; padding: 32px;">
+      <div style="background: #FFFFFF; border-radius: 16px; padding: 32px;">
+        <h1 style="color: #1F2A44; font-size: 20px; margin: 0 0 8px;">Recibimos tu ${tipo}</h1>
+        <p style="color: #4A5568; font-size: 14px; line-height: 1.6; margin: 0 0 20px;">
+          Hola ${input.fullName}, dejamos constancia de que tu ${tipo} fue
+          registrado en nuestro Libro de Reclamaciones.
+        </p>
+        <div style="background:#FFF8F2;border-radius:12px;padding:16px 20px;margin-bottom:20px;text-align:center;">
+          <p style="margin:0;color:#718096;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;">Número de hoja</p>
+          <p style="margin:4px 0 0;color:#1F2A44;font-size:24px;font-weight:bold;">N.º ${input.correlativo}</p>
+          <p style="margin:6px 0 0;color:#718096;font-size:12px;">${fecha}</p>
+        </div>
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+          ${complaintRow("Tipo", tipo === "queja" ? "Queja (atención)" : "Reclamo (producto o servicio)")}
+          ${complaintRow("Bien contratado", input.itemDescription)}
+          ${complaintRow("Tu pedido", input.consumerRequest)}
+        </table>
+        <p style="color:#4A5568;font-size:13px;line-height:1.6;margin:20px 0 0;">
+          Daremos respuesta en un plazo máximo de <strong>${input.plazoDias} días hábiles</strong>,
+          conforme al Código de Protección y Defensa del Consumidor (Ley 29571).
+        </p>
+        <p style="color:#718096;font-size:12px;line-height:1.6;margin:16px 0 0;">
+          Conserva este correo como constancia. Si necesitas agregar información,
+          respóndelo indicando el número de hoja.
+        </p>
+      </div>
+      <p style="color: #A0AEC0; font-size: 12px; text-align: center; margin: 24px 0 0;">
+        NeoSer — Maternidad y Medicina Humanizada · Chiclayo, Perú
+      </p>
+    </div>
+  `.trim();
+
+  return { subject, html };
+}
+
+/** Aviso interno con la hoja completa, para que NeoSer pueda responder a tiempo. */
+export function buildComplaintInternalEmail(input: ComplaintEmailInput) {
+  const tipo = input.complaintType === "queja" ? "QUEJA" : "RECLAMO";
+  const subject = `[${tipo} N.º ${input.correlativo}] ${input.fullName} — responder en ${input.plazoDias} días hábiles`;
+  const fecha = new Date(input.createdAt).toLocaleString("es-PE", {
+    timeZone: "America/Lima",
+  });
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 620px; margin: 0 auto; background: #FFF8F2; padding: 32px;">
+      <div style="background: #FFFFFF; border-radius: 16px; padding: 32px;">
+        <div style="background:#FDECEC;border-left:4px solid #D64545;border-radius:8px;padding:12px 16px;margin-bottom:20px;">
+          <p style="margin:0;color:#8A2020;font-size:14px;font-weight:bold;">
+            Plazo legal: ${input.plazoDias} días hábiles para responder
+          </p>
+          <p style="margin:6px 0 0;color:#8A2020;font-size:13px;line-height:1.5;">
+            Registrado el ${fecha}. El incumplimiento del plazo es infracción
+            sancionable por INDECOPI.
+          </p>
+        </div>
+        <h1 style="color: #1F2A44; font-size: 20px; margin: 0 0 16px;">
+          ${tipo} N.º ${input.correlativo}
+        </h1>
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+          ${complaintRow("Consumidor", input.fullName)}
+          ${complaintRow("Documento", `${input.documentType} ${input.documentNumber}`)}
+          ${complaintRow("Domicilio", input.address)}
+          ${complaintRow("Teléfono", input.phone)}
+          ${complaintRow("Correo", input.email)}
+          ${complaintRow("Tipo de bien", input.itemType)}
+          ${complaintRow("Descripción del bien", input.itemDescription)}
+          ${complaintRow("Monto reclamado", input.claimedAmount ? `S/ ${input.claimedAmount}` : "No indica")}
+        </table>
+        <div style="margin-top: 16px; padding: 16px; background: #FFF8F2; border-radius: 12px;">
+          <p style="color: #718096; font-size: 13px; margin: 0 0 6px;">Detalle</p>
+          <p style="color: #1F2A44; font-size: 14px; line-height: 1.6; margin: 0;">${input.detail}</p>
+        </div>
+        <div style="margin-top: 12px; padding: 16px; background: #FFF8F2; border-radius: 12px;">
+          <p style="color: #718096; font-size: 13px; margin: 0 0 6px;">Pedido del consumidor</p>
+          <p style="color: #1F2A44; font-size: 14px; line-height: 1.6; margin: 0;">${input.consumerRequest}</p>
+        </div>
+      </div>
+    </div>
+  `.trim();
+
+  return { subject, html };
+}

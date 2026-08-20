@@ -219,3 +219,34 @@ export const culqiWebhookSchema = z.object({
     .passthrough(),
 });
 
+
+// ============================================
+// Libro de Reclamaciones (INDECOPI)
+// ============================================
+
+// Campos de la Hoja de Reclamación según el Reglamento del Libro de
+// Reclamaciones. Debe estar integrado en la web (Culqi rechaza los enlaces a
+// formularios externos), por eso se valida y persiste aquí.
+export const complaintBookSchema = z.object({
+  // 2. Identificación del consumidor
+  fullName: z.string().min(2).max(160),
+  documentType: z.enum(["DNI", "CE", "Pasaporte", "RUC"]),
+  documentNumber: z.string().min(6).max(20),
+  address: z.string().min(5).max(240),
+  phone: z.string().min(7).max(20),
+  email: z.string().email(),
+  isMinor: z.boolean().default(false),
+  guardianName: z.string().max(160).optional(),
+
+  // 3. Identificación del bien contratado
+  itemType: z.enum(["producto", "servicio"]),
+  itemDescription: z.string().min(3).max(500),
+  claimedAmount: z.number().nonnegative().max(999999).optional(),
+
+  // 4. Detalle de la reclamación
+  // reclamo = disconformidad con el producto/servicio
+  // queja   = malestar respecto a la atención
+  complaintType: z.enum(["reclamo", "queja"]),
+  detail: z.string().min(10).max(3000),
+  consumerRequest: z.string().min(5).max(2000),
+});
