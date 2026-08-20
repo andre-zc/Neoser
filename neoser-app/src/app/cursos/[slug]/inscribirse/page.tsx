@@ -134,12 +134,14 @@ export default async function InscribirsePage({
             courseTitle={course.title}
             coursePrice={Number(course.price)}
             courseCurrency={course.currency}
+            priceUSD={cat?.priceUSD}
+            whatsappHref={cat ? whatsappHref(cat.whatsappText) : undefined}
           />
 
           {notes.length > 0 && (
             <div className="surface-card p-6 text-sm leading-relaxed text-gray-500">
               <p className="mb-2 font-semibold text-navy">
-                ¿Eres egresada NeoSer o participas desde el extranjero?
+                Tarifas con descuento para egresadas NeoSer
               </p>
               <ul className="mb-3 space-y-1">
                 {notes.map((t) => (
@@ -149,8 +151,8 @@ export default async function InscribirsePage({
                 ))}
               </ul>
               <p>
-                Estas tarifas y los pagos internacionales se coordinan de forma
-                directa. Escríbenos por{" "}
+                Las tarifas preferenciales para egresadas se coordinan de forma
+                directa (no se aplican en el pago online). Escríbenos por{" "}
                 <a
                   href={whatsappHref(cat!.whatsappText)}
                   target="_blank"

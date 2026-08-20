@@ -120,6 +120,111 @@ export function buildEnrollmentConfirmationEmail(input: EnrollmentEmailInput) {
   return { subject, html };
 }
 
+type PaypalPendingInput = {
+  guestName: string;
+  guestEmail: string;
+  guestPhone: string;
+  courseTitle: string;
+  amountUsd: number;
+  reference: string;
+  country?: string;
+  paypalUrl: string;
+};
+
+/**
+ * Correo INTERNO para NeoSer: alguien inició un pago internacional por PayPal.
+ * Es la pieza clave del flujo manual — sin esto Diana vería un ingreso en
+ * PayPal sin saber de quién es ni a qué curso corresponde.
+ */
+export function buildPaypalPendingInternalEmail(input: PaypalPendingInput) {
+  const subject = `PAGO PENDIENTE (PayPal ${input.reference}) — ${input.guestName} · ${input.courseTitle}`;
+  const row = (label: string, value: string) => `
+    <tr>
+      <td style="padding: 8px 0; color: #718096; vertical-align: top; width: 38%;">${label}</td>
+      <td style="padding: 8px 0; color: #1F2A44; font-weight: 600;">${value}</td>
+    </tr>`;
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 560px; margin: 0 auto; background: #FFF8F2; padding: 32px;">
+      <div style="background: #FFFFFF; border-radius: 16px; padding: 32px;">
+        <div style="background:#FFF4E5;border-left:4px solid #F0A020;border-radius:8px;padding:12px 16px;margin-bottom:20px;">
+          <p style="margin:0;color:#8A5A00;font-size:14px;font-weight:bold;">Falta verificar el pago en PayPal</p>
+          <p style="margin:6px 0 0;color:#8A5A00;font-size:13px;line-height:1.5;">
+            Esta persona llenó el formulario y fue enviada a PayPal. PayPal no nos
+            avisa si pagó: revisa tu cuenta y confirma la inscripción.
+          </p>
+        </div>
+        <h1 style="color: #1F2A44; font-size: 20px; margin: 0 0 16px;">Nueva inscripción internacional</h1>
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+          ${row("Referencia", input.reference)}
+          ${row("Nombre", input.guestName)}
+          ${row("Curso", input.courseTitle)}
+          ${row("Monto esperado", `USD ${input.amountUsd}`)}
+          ${row("Correo", input.guestEmail)}
+          ${row("WhatsApp / teléfono", input.guestPhone)}
+          ${input.country ? row("País", input.country) : ""}
+        </table>
+        <p style="color:#4A5568;font-size:13px;line-height:1.6;margin:20px 0 0;">
+          Cuando confirmes el pago en PayPal, marca la inscripción como pagada en
+          Supabase y mueve el negocio en HubSpot a «Cierre ganado».
+        </p>
+      </div>
+    </div>
+  `.trim();
+
+  return { subject, html };
+}
+
+/**
+ * Correo al cliente con las instrucciones para completar el pago internacional.
+ * Incluye la referencia para que podamos cruzar su pago con su inscripción.
+ */
+export function buildPaypalInstructionsEmail(input: PaypalPendingInput) {
+  const subject = `Completa tu pago — ${input.courseTitle} (ref. ${input.reference})`;
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 560px; margin: 0 auto; background: #FFF8F2; padding: 32px;">
+      <div style="background: #FFFFFF; border-radius: 16px; padding: 32px;">
+        <h1 style="color: #1F2A44; font-size: 22px; margin: 0 0 16px;">¡Hola ${input.guestName}!</h1>
+        <p style="color: #4A5568; font-size: 15px; line-height: 1.6; margin: 0 0 20px;">
+          Recibimos tu solicitud de inscripción a <strong>${input.courseTitle}</strong>.
+          Para reservar tu cupo solo falta completar el pago.
+        </p>
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px; color: #1F2A44; margin-bottom: 24px;">
+          <tr>
+            <td style="padding: 8px 0; color: #718096;">Monto</td>
+            <td style="padding: 8px 0; text-align: right;"><strong>USD ${input.amountUsd}</strong></td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #718096;">Tu referencia</td>
+            <td style="padding: 8px 0; text-align: right;"><strong>${input.reference}</strong></td>
+          </tr>
+        </table>
+        <div style="text-align:center;margin-bottom:24px;">
+          <a href="${input.paypalUrl}" style="display:inline-block;background:#0070BA;color:#ffffff;text-decoration:none;font-weight:bold;font-size:15px;padding:14px 32px;border-radius:999px;">
+            Pagar con PayPal
+          </a>
+        </div>
+        <div style="background:#FFF8F2;border-radius:12px;padding:16px 20px;">
+          <p style="margin:0 0 8px;color:#1F2A44;font-size:14px;font-weight:bold;">Importante</p>
+          <p style="margin:0;color:#4A5568;font-size:13px;line-height:1.6;">
+            Al pagar, escribe tu referencia <strong>${input.reference}</strong> en la nota de PayPal.
+            Cuando termines, envíanos el comprobante por WhatsApp para confirmar tu cupo:
+            confirmamos tu inscripción apenas verifiquemos el pago.
+          </p>
+        </div>
+        <p style="color: #4A5568; font-size: 14px; line-height: 1.6; margin: 20px 0 0;">
+          Si tienes cualquier duda, respóndenos este correo o escríbenos a
+          <a href="mailto:dsilva@neoserperu.com" style="color: #E89BAB;">dsilva@neoserperu.com</a>.
+        </p>
+      </div>
+      <p style="color: #A0AEC0; font-size: 12px; text-align: center; margin: 24px 0 0;">
+        NeoSer — Maternidad y Medicina Humanizada · Chiclayo, Perú
+      </p>
+    </div>
+  `.trim();
+
+  return { subject, html };
+}
+
 type CoordinationNotificationInput = {
   fullName: string;
   institution: string;

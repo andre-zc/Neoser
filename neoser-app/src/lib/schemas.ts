@@ -159,6 +159,28 @@ export const culqiChargeRequestSchema = z.object({
   guestName: z.string().min(2).max(120),
   guestEmail: z.string().email(),
   guestPhone: z.string().min(7).max(20),
+  // Moneda elegida en el checkout. PEN = tarjeta/Yape (Perú); USD = tarjeta
+  // internacional. El monto de cada una lo resuelve el backend, no el cliente.
+  currency: z.enum(["PEN", "USD"]).default("PEN"),
+  notes: z.string().max(500).optional(),
+  utmSource: z.string().max(80).optional(),
+});
+
+// ============================================
+// PayPal — frontend -> /api/payments/paypal/intent
+// ============================================
+
+// Pagos internacionales vía PayPal.me. A diferencia de Culqi NO hay token ni
+// confirmacion: esto solo registra la INTENCION de pago (inscripcion pendiente)
+// y devuelve el enlace de PayPal. El monto tampoco se manda desde el cliente:
+// el backend lo resuelve del catalogo para evitar manipulacion del precio.
+export const paypalIntentRequestSchema = z.object({
+  courseId: z.string().uuid(),
+  guestName: z.string().min(2).max(120),
+  guestEmail: z.string().email(),
+  guestPhone: z.string().min(7).max(20),
+  /** Pais de residencia declarado; contexto util para Diana al verificar. */
+  country: z.string().min(2).max(60).optional(),
   notes: z.string().max(500).optional(),
   utmSource: z.string().max(80).optional(),
 });

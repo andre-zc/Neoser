@@ -24,9 +24,14 @@ import crypto from "crypto";
 export type CulqiChargeInput = {
   /** source_id devuelto por Custom Checkout (tkn_test_* / tkn_live_*) */
   token: string;
-  /** Monto en céntimos. Ej: S/. 350.00 -> 35000 */
+  /** Monto en céntimos de la moneda elegida. Ej: S/. 350.00 -> 35000 */
   amountCents: number;
-  currency: "PEN";
+  /**
+   * PEN = tarjeta + Yape (Perú). USD = tarjeta internacional.
+   * OJO: cobrar en USD requiere que el comercio tenga multimoneda habilitada
+   * en su cuenta Culqi; si no, Culqi rechaza el cargo.
+   */
+  currency: "PEN" | "USD";
   /** Email del comprador. Culqi lo usa como identificador del cargo. */
   customerEmail: string;
   /** Nombre completo del comprador (lo splitamos a first_name/last_name antes

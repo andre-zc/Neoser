@@ -43,6 +43,12 @@ export type CatalogCourse = {
   /** Precio base para el checkout. `null` = inversión a consultar. */
   price: number | null;
   currency: string;
+  /**
+   * Tarifa internacional en USD para el pago con PayPal. Si falta, el curso NO
+   * abre pago internacional online y el CTA para el extranjero deriva a
+   * WhatsApp (no inventamos un monto ni lo dejamos abierto).
+   */
+  priceUSD?: number;
   /** Desglose de inversión (Perú / extranjero / egresadas). */
   priceTiers?: CoursePriceTier[];
   mode: string;
@@ -91,6 +97,9 @@ export const coursesCatalog: CatalogCourse[] = [
     ],
     price: 300,
     currency: "PEN",
+    // Tarifa del extranjero (PayPal). Coincide con el tier "Participantes del
+    // extranjero" de abajo. Las egresadas (USD 60) se coordinan aparte.
+    priceUSD: 75,
     priceTiers: [
       {
         label: "Participantes en Perú",

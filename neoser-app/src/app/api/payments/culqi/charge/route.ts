@@ -10,6 +10,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { culqiChargeRequestSchema } from "@/lib/schemas";
+import { coursesCatalog } from "@/lib/courses-catalog";
 import { createCulqiCharge } from "@/lib/payments/culqi";
 import {
   fulfillSuccessfulCharge,
@@ -34,6 +35,7 @@ export async function POST(request: NextRequest) {
       guestName,
       guestEmail,
       guestPhone,
+      currency,
       notes,
       utmSource,
     } = parsed.data;
@@ -53,9 +55,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // payments.amount es soles decimal; Culqi requiere céntimos enteros.
-    const amountCents = Math.round(Number(course.price) * 100);
-    const currency = "PEN" as const;
+    // 2. Resolver el monto según la moneda elegida. El precio en soles vive en
+    // la BD; la tarifa internacional (USD) en el catálogo estático. En ambos
+    // casos lo decide el servidor para que no se pueda manipular desde el
+    // cliente enviando "USD" para pagar menos.
+    let amountValue: number;
+    if (currency === "USD") {
+      const catalogCourse = coursesCatalog.find((c) => c.id === course.id);
+      if (!catalogCourse?.priceUSD || catalogCourse.priceUSD <= 0) {
+        return NextResponse.json(
+          {
+            error:
+              "Este curso no tiene tarifa internacional publicada. Escríbenos por WhatsApp.",
+          },
+          { status: 409 },
+        );
+      }
+      amountValue = catalogCourse.priceUSD;
+    } else {
+      amountValue = Number(course.price);
+    }
+
+    // Culqi requiere el monto en céntimos enteros (de la moneda elegida).
+    const amountCents = Math.round(amountValue * 100);
 
     // 2. Ejecutar charge contra Culqi.
     // metadata acompaña al cargo y vuelve en el webhook → permite que el

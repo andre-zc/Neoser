@@ -167,6 +167,53 @@ export async function syncEnrollmentToHubspot(input: HubspotEnrollmentInput) {
   return { skipped: false as const, ok: true as const };
 }
 
+type HubspotPendingEnrollmentInput = {
+  fullName: string;
+  email: string;
+  phone: string;
+  courseName: string;
+  /** Monto en USD (pago internacional por PayPal). */
+  amount: number;
+  reference: string;
+  country?: string;
+};
+
+/**
+ * Inscripción internacional por PayPal que TODAVÍA NO está pagada.
+ *
+ * Se registra como negocio en la etapa inicial (no "Cierre ganado") porque
+ * PayPal.me no confirma el pago: Diana debe verificarlo en PayPal y recién ahí
+ * mover la tarjeta. El nombre del negocio lleva "PENDIENTE" para que se
+ * distinga de un solo vistazo de las inscripciones ya cobradas por Culqi.
+ */
+export async function syncPendingPaypalEnrollmentToHubspot(
+  input: HubspotPendingEnrollmentInput,
+) {
+  const token = getHubspotToken();
+  if (!token) return { skipped: true as const };
+
+  const { firstname, lastname } = splitName(input.fullName);
+  await createOrUpsertContact({
+    firstname,
+    lastname,
+    email: input.email,
+    phone: input.phone,
+    fuente_origen: "paypal_internacional",
+    neoser_servicio_interes: input.courseName,
+  });
+
+  await createDeal({
+    dealname: `Inscripción PENDIENTE (PayPal ${input.reference}) - ${input.courseName} - ${input.fullName}`,
+    dealstage: "1362213948", // "Lead nueva" — falta verificar el pago
+    pipeline: "default",
+    amount: input.amount,
+    neoser_servicio_interes: input.courseName,
+    neoser_source: "paypal_internacional",
+  });
+
+  return { skipped: false as const, ok: true as const };
+}
+
 type HubspotCoordinationInput = {
   fullName: string;
   email: string;
