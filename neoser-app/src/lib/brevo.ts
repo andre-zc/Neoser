@@ -35,30 +35,7 @@ function normalizePhoneE164(phone: string): string | null {
   return null;
 }
 
-export async function upsertBrevoContact(input: BrevoContactInput) {
-  const apiKey = process.env.EMAIL_API_KEY;
-  if (!apiKey) return { skipped: true as const, reason: "no_api_key" };
-  if (!input.email) return { skipped: true as const, reason: "no_email" };
-  if (input.listIds.length === 0)
-    return { skipped: true as const, reason: "no_list_ids" };
-
-  const normalizedPhone = input.phone ? normalizePhoneE164(input.phone) : null;
-
-  const body = {
-    email: input.email,
-    attributes: {
-      ...(input.firstName ? { FIRSTNAME: input.firstName } : {}),
-      ...(input.lastName ? { LASTNAME: input.lastName } : {}),
-      // SMS solo si pudimos normalizar a E.164 (Brevo lo valida estrictamente)
-      ...(normalizedPhone ? { SMS: normalizedPhone } : {}),
-      // Guardamos el teléfono crudo como atributo custom (visible en UI sin validación)
-      ...(input.phone ? { TELEFONO: input.phone } : {}),
-      ...(input.attributes ?? {}),
-    },
-    listIds: input.listIds,
-    updateEnabled: true, // si ya existe, actualiza en vez de error
-  };
-
+async function postBrevoContact(apiKey: string, body: Record<string, unknown>) {
   const response = await fetch(`${BREVO_BASE_URL}/contacts`, {
     method: "POST",
     headers: {
@@ -68,13 +45,74 @@ export async function upsertBrevoContact(input: BrevoContactInput) {
     },
     body: JSON.stringify(body),
   });
+  const ok = response.ok || response.status === 204;
+  return { ok, status: response.status, details: ok ? "" : await response.text() };
+}
 
-  if (!response.ok && response.status !== 204) {
-    const details = await response.text();
-    throw new Error(`Brevo upsertContact failed: ${response.status} ${details}`);
+// Brevo exige que SMS sea único entre contactos. Se detecta ese caso concreto
+// (no cualquier 400) para no enmascarar otros errores de la API.
+function isDuplicateSmsError(result: { status: number; details: string }) {
+  if (result.status !== 400) return false;
+  const d = result.details.toLowerCase();
+  return (
+    d.includes("sms") &&
+    (d.includes("duplicate_parameter") || d.includes("already associated"))
+  );
+}
+
+export async function upsertBrevoContact(input: BrevoContactInput) {
+  const apiKey = process.env.EMAIL_API_KEY;
+  if (!apiKey) return { skipped: true as const, reason: "no_api_key" };
+  if (!input.email) return { skipped: true as const, reason: "no_email" };
+  if (input.listIds.length === 0)
+    return { skipped: true as const, reason: "no_list_ids" };
+
+  const normalizedPhone = input.phone ? normalizePhoneE164(input.phone) : null;
+
+  // Los nombres de atributo deben existir en la cuenta de Brevo: los que no
+  // existen se descartan EN SILENCIO, la API responde 201 igual. Esta cuenta
+  // usa NOMBRE/APELLIDOS (los de la interfaz en español), no FIRSTNAME/LASTNAME.
+  const attributes: Record<string, string | number | boolean> = {
+    ...(input.firstName ? { NOMBRE: input.firstName } : {}),
+    ...(input.lastName ? { APELLIDOS: input.lastName } : {}),
+    // Teléfono crudo como texto: visible en la UI y sin la validación de
+    // unicidad que Brevo impone al campo SMS.
+    ...(input.phone ? { TELEFONO: input.phone } : {}),
+    ...(input.attributes ?? {}),
+  };
+
+  const base = {
+    email: input.email,
+    listIds: input.listIds,
+    updateEnabled: true, // si ya existe, actualiza en vez de error
+  };
+
+  // SMS solo si pudimos normalizar a E.164 (Brevo lo valida estrictamente).
+  let result = await postBrevoContact(apiKey, {
+    ...base,
+    attributes: normalizedPhone
+      ? { ...attributes, SMS: normalizedPhone }
+      : attributes,
+  });
+
+  // Dos personas con el mismo teléfono — o alguien que reenvía el formulario
+  // corrigiendo su correo — hacían fallar el alta entera y el contacto se
+  // perdía sin rastro. Se reintenta sin SMS: el número igual queda en TELEFONO.
+  if (!result.ok && normalizedPhone && isDuplicateSmsError(result)) {
+    console.warn(
+      `Brevo: el teléfono ${normalizedPhone} ya pertenece a otro contacto; ` +
+        `se registra ${input.email} sin el campo SMS.`,
+    );
+    result = await postBrevoContact(apiKey, { ...base, attributes });
   }
 
-  return { skipped: false as const, ok: true as const, status: response.status };
+  if (!result.ok) {
+    throw new Error(
+      `Brevo upsertContact failed: ${result.status} ${result.details}`,
+    );
+  }
+
+  return { skipped: false as const, ok: true as const, status: result.status };
 }
 
 // Helpers de conveniencia para los 3 casos de uso:
@@ -100,7 +138,7 @@ export async function syncLeadToBrevo(input: {
     phone: input.phone,
     attributes: {
       SOURCE: input.source,
-      MARKETING_OPTIN: input.marketingConsent ? "true" : "false",
+      MARKETING_OPTIN: Boolean(input.marketingConsent),
       ...(input.serviceInterest ? { SERVICE_INTEREST: input.serviceInterest } : {}),
     },
     listIds: [listId],
@@ -127,7 +165,7 @@ export async function syncEnrollmentToBrevo(input: {
     attributes: {
       COURSE_NAME: input.courseName,
       AMOUNT_PAID: input.amount,
-      MARKETING_OPTIN: input.marketingConsent ? "true" : "false",
+      MARKETING_OPTIN: Boolean(input.marketingConsent),
     },
     listIds: [listId],
   });
