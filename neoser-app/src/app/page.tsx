@@ -194,6 +194,7 @@ export default function HomePage() {
   const heroSlides = [
     {
       bg: "hero-bg-1",
+      tone: "hero-tone-blue",
       title: <>Maternidad y <br /><span className="highlight">Medicina Humanizada</span></>,
       sub: "Sentamos bases sólidas para la familia mediante un acompañamiento integral y humanizado durante el proceso del nacimiento.",
       ctas: [
@@ -207,6 +208,7 @@ export default function HomePage() {
     },
     {
       bg: "hero-bg-3",
+      tone: "hero-tone-pink",
       title: <>Parto y Cesárea<br /><span className="text-white/90">Humanizados</span></>,
       sub: "Acompañamos cada nacimiento con contacto piel con piel inmediato, cero separación entre mamá y bebé y la presencia del papá, respetando el proceso de nacimiento y favoreciendo el inicio temprano de la lactancia materna.",
       ctas: [
@@ -220,6 +222,7 @@ export default function HomePage() {
     },
     {
       bg: "hero-bg-2",
+      tone: "hero-tone-blue",
       title: <>Porque nacer y vivir<br /><span className="highlight">con amor cambia el mundo</span></>,
       sub: "Más de 2,000 profesionales formados y 500 nacimientos humanizados acompañados.",
       ctas: [
@@ -234,6 +237,7 @@ export default function HomePage() {
     },
     {
       bg: "hero-bg-4",
+      tone: "hero-tone-pink",
       title: <>Acompañamiento<br /><span className="text-white/90">Integral y Respetuoso</span></>,
       sub: "Transformamos el miedo en confianza mediante una preparación prenatal integral que fortalece a la familia.",
       ctas: [
@@ -254,13 +258,24 @@ export default function HomePage() {
 
       {/* ===== HERO SLIDER ===== */}
       <section id="inicio" className="hero-slider-section">
+        {/* Fondo del hero: vive en la seccion, no en el slider, para que el
+            degradado siga bajando por detras de la tarjeta de estadisticas. */}
+        <div className="hero-bg-layer" aria-hidden="true">
+          {heroSlides.map((slide, i) => (
+            <div
+              key={i}
+              className={`hero-bg-fill ${slide.bg} ${activeSlide === i ? "opacity-100" : "opacity-0"}`}
+            />
+          ))}
+        </div>
+
         <div className="relative w-full" style={{ height: "calc(100vh + 9rem)", minHeight: "600px", maxHeight: "840px" }}>
           {heroSlides.map((slide, i) => {
             const isActive = activeSlide === i;
             const isAdjacent = activeSlide === (i + 3) % 4 || activeSlide === (i + 1) % 4;
             if (!isActive && !isAdjacent) return null;
             return (
-            <div key={i} className={`absolute inset-0 flex items-end overflow-hidden transition-opacity duration-700 pt-44 pb-52 ${slide.bg} ${isActive ? "opacity-100 z-10" : "opacity-0 z-0"}`}>
+            <div key={i} className={`absolute inset-0 flex items-end overflow-hidden transition-opacity pt-44 pb-52 ${slide.tone} ${isActive ? "opacity-100 z-10 duration-700" : "pointer-events-none opacity-0 z-0 duration-300"}`}>
               {isActive && (
                 <div className="hero-particles">
                   <span className="particle particle-circle" style={{ width: 320, height: 320, top: -60, right: -80, background: "#e8879b", opacity: 0.07 }} />
@@ -305,7 +320,7 @@ export default function HomePage() {
           );
           })}
 
-          <div className="absolute bottom-64 left-0 right-0 z-20 flex justify-center gap-2">
+          <div className="hero-dots">
             {[0, 1, 2, 3].map((i) => (
               <button key={i} onClick={() => setActiveSlide(i)} className="h-3 rounded-full transition-all duration-300" style={{ width: activeSlide === i ? 36 : 12, background: activeSlide === i ? "#e8879b" : "rgba(255,255,255,0.5)" }} />
             ))}
