@@ -83,6 +83,10 @@ export async function POST(request: Request) {
             (d.country ? ` · País: ${d.country}` : ""),
         source: d.utmSource || "paypal_internacional",
         wa_consent: false,
+        marketing_consent: d.marketingConsent ?? false,
+        marketing_consent_at: d.marketingConsent
+          ? new Date().toISOString()
+          : null,
         lead_status: "propuesta_enviada",
       })
       .select("id")
@@ -193,6 +197,7 @@ export async function POST(request: Request) {
         phone: d.guestPhone,
         courseName: course.title,
         amount: amountUsd,
+        marketingConsent: d.marketingConsent,
       });
     } catch (err) {
       console.error("Brevo pending enrollment sync failed:", err);

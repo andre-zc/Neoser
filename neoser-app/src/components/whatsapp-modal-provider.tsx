@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { services } from "@/lib/services";
+import { MarketingOptIn } from "@/components/marketing-opt-in";
 
 type ModalContextValue = {
   open: () => void;
@@ -82,6 +83,7 @@ function WhatsappLeadModal({ onClose }: { onClose: () => void }) {
     const serviceInterest = String(formData.get("serviceInterest") || "");
     const gestationWeeks = formData.get("gestationWeeks");
     const messageInput = String(formData.get("message") || "").trim();
+    const marketingConsent = formData.get("marketingConsent") === "on";
 
     const payload = {
       fullName,
@@ -91,6 +93,7 @@ function WhatsappLeadModal({ onClose }: { onClose: () => void }) {
         `Contacto por WhatsApp${serviceInterest ? ` - interesada en ${serviceInterest}` : ""}`,
       source: "whatsapp_button",
       waConsent: true,
+      marketingConsent,
       email: email || undefined,
       serviceInterest: serviceInterest || undefined,
       gestationWeeks: gestationWeeks ? Number(gestationWeeks) : undefined,
@@ -207,6 +210,8 @@ function WhatsappLeadModal({ onClose }: { onClose: () => void }) {
             rows={3}
             className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-[#25D366] focus:outline-none focus:ring-2 focus:ring-[#25D366]/20"
           />
+          <MarketingOptIn />
+
           <p className="text-xs leading-relaxed text-gray-500">
             Al continuar acepto recibir mensajes relacionados a mi consulta.
           </p>

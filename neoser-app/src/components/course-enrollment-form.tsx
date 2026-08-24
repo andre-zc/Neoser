@@ -19,6 +19,7 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import { formatUsd } from "@/lib/payments/paypal";
+import { MarketingOptIn } from "@/components/marketing-opt-in";
 
 type Props = {
   courseId: string;
@@ -40,6 +41,7 @@ type ChargePayload = {
   guestEmail: string;
   guestPhone: string;
   currency: "PEN" | "USD";
+  marketingConsent?: boolean;
   notes?: string;
   utmSource?: string;
 };
@@ -256,6 +258,7 @@ export function CourseEnrollmentForm({
       guestEmail: String(formData.get("guestEmail") || "").trim(),
       guestPhone: String(formData.get("guestPhone") || "").trim(),
       country: String(formData.get("country") || "").trim() || undefined,
+      marketingConsent: formData.get("marketingConsent") === "on",
       notes: String(formData.get("notes") || "").trim() || undefined,
     };
   }
@@ -315,6 +318,7 @@ export function CourseEnrollmentForm({
       guestEmail: data.guestEmail,
       guestPhone: data.guestPhone,
       currency: chargeCurrency,
+      marketingConsent: data.marketingConsent,
       notes: data.notes,
     };
 
@@ -519,6 +523,8 @@ export function CourseEnrollmentForm({
           maxLength={500}
           className={`min-h-24 ${inputClass}`}
         />
+
+        <MarketingOptIn description="Novedades de nuestros programas, nuevas ediciones y recursos para tu práctica profesional." />
 
         <button
           type="submit"

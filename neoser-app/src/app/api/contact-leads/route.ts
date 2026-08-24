@@ -72,6 +72,11 @@ export async function POST(request: Request) {
         message: parsed.data.message,
         source: parsed.data.source,
         wa_consent: parsed.data.waConsent,
+        marketing_consent: parsed.data.marketingConsent ?? false,
+        // Fecha del consentimiento: evidencia ante una fiscalizacion.
+        marketing_consent_at: parsed.data.marketingConsent
+          ? new Date().toISOString()
+          : null,
         gestation_weeks: parsed.data.gestationWeeks ?? null,
         service_interest: parsed.data.serviceInterest ?? null,
         expected_due_date: parsed.data.expectedDueDate ?? null,
@@ -109,6 +114,7 @@ export async function POST(request: Request) {
           phone: parsed.data.phone,
           source: parsed.data.source,
           serviceInterest: parsed.data.serviceInterest,
+          marketingConsent: parsed.data.marketingConsent,
         });
       } catch (error) {
         console.error("Brevo lead sync failed:", error);

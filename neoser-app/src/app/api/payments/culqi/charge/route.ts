@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
       guestEmail,
       guestPhone,
       currency,
+      marketingConsent,
       notes,
       utmSource,
     } = parsed.data;
@@ -140,6 +141,7 @@ export async function POST(request: NextRequest) {
         guestName,
         guestEmail,
         guestPhone,
+        marketingConsent,
         notes,
         utmSource,
       },

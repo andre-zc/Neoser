@@ -24,6 +24,7 @@ export type FulfillmentMetadata = {
   guestName: string;
   guestEmail: string;
   guestPhone: string;
+  marketingConsent?: boolean;
   notes?: string;
   utmSource?: string;
 };
@@ -87,6 +88,10 @@ export async function fulfillSuccessfulCharge(
           `Inscripción en curso "${metadata.courseTitle}" (charge: ${chargeId})`,
         source: metadata.utmSource || "course_enrollment",
         wa_consent: false,
+        marketing_consent: metadata.marketingConsent ?? false,
+        marketing_consent_at: metadata.marketingConsent
+          ? new Date().toISOString()
+          : null,
         lead_status: "inscrito",
       })
       .select("id")
@@ -168,6 +173,7 @@ export async function fulfillSuccessfulCharge(
         phone: metadata.guestPhone,
         courseName: metadata.courseTitle,
         amount: amountSoles,
+        marketingConsent: metadata.marketingConsent,
       });
     } catch (err) {
       console.error("Brevo enrollment sync failed:", err);

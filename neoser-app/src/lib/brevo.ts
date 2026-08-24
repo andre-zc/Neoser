@@ -85,6 +85,9 @@ export async function syncLeadToBrevo(input: {
   phone: string;
   source: string;
   serviceInterest?: string;
+  /** Opt-in comercial. Permite segmentar campañas en Brevo sin escribir a
+   *  quienes solo dieron consentimiento transaccional. */
+  marketingConsent?: boolean;
 }) {
   const listId = Number(process.env.BREVO_LIST_LEADS);
   if (!listId) return { skipped: true as const, reason: "no_list_env" };
@@ -97,6 +100,7 @@ export async function syncLeadToBrevo(input: {
     phone: input.phone,
     attributes: {
       SOURCE: input.source,
+      MARKETING_OPTIN: input.marketingConsent ? "true" : "false",
       ...(input.serviceInterest ? { SERVICE_INTEREST: input.serviceInterest } : {}),
     },
     listIds: [listId],
@@ -109,6 +113,7 @@ export async function syncEnrollmentToBrevo(input: {
   phone: string;
   courseName: string;
   amount: number;
+  marketingConsent?: boolean;
 }) {
   const listId = Number(process.env.BREVO_LIST_ENROLLMENTS);
   if (!listId) return { skipped: true as const, reason: "no_list_env" };
@@ -122,6 +127,7 @@ export async function syncEnrollmentToBrevo(input: {
     attributes: {
       COURSE_NAME: input.courseName,
       AMOUNT_PAID: input.amount,
+      MARKETING_OPTIN: input.marketingConsent ? "true" : "false",
     },
     listIds: [listId],
   });

@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { services } from "@/lib/services";
+import { MarketingOptIn } from "@/components/marketing-opt-in";
 
 const sourceOptions = [
   { value: "web", label: "Sitio web" },
@@ -29,6 +30,7 @@ export function ContactLeadForm() {
       message: String(formData.get("message") || ""),
       source: String(formData.get("source") || "web"),
       waConsent: formData.get("waConsent") === "on",
+      marketingConsent: formData.get("marketingConsent") === "on",
       email: (formData.get("email") as string) || undefined,
       serviceInterest: (formData.get("serviceInterest") as string) || undefined,
       gestationWeeks: formData.get("gestationWeeks")
@@ -124,6 +126,8 @@ export function ContactLeadForm() {
         placeholder="Mensaje"
         className="min-h-28 w-full rounded-xl border border-gray-200 px-4 py-3 text-sm"
       />
+      <MarketingOptIn />
+
       <label className="flex items-start gap-2 text-xs text-gray-600">
         <input name="waConsent" type="checkbox" required className="mt-0.5" />
         <span>Acepto recibir mensajes relacionados a mi consulta.</span>

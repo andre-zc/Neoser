@@ -17,6 +17,9 @@ export const contactLeadSchema = z.object({
   message: z.string().min(5).max(2000),
   source: leadSourceSchema.default("web"),
   waConsent: z.boolean(),
+  // Consentimiento COMERCIAL (opt-in de campañas). Distinto de waConsent, que
+  // solo habilita responder la consulta. Opcional y por defecto false.
+  marketingConsent: z.boolean().optional().default(false),
   gestationWeeks: z.number().int().min(0).max(45).optional(),
   serviceInterest: z.string().min(3).max(120).optional(),
   expectedDueDate: z.string().date().optional(),
@@ -162,6 +165,7 @@ export const culqiChargeRequestSchema = z.object({
   // Moneda elegida en el checkout. PEN = tarjeta/Yape (Perú); USD = tarjeta
   // internacional. El monto de cada una lo resuelve el backend, no el cliente.
   currency: z.enum(["PEN", "USD"]).default("PEN"),
+  marketingConsent: z.boolean().optional().default(false),
   notes: z.string().max(500).optional(),
   utmSource: z.string().max(80).optional(),
 });
@@ -181,6 +185,7 @@ export const paypalIntentRequestSchema = z.object({
   guestPhone: z.string().min(7).max(20),
   /** Pais de residencia declarado; contexto util para Diana al verificar. */
   country: z.string().min(2).max(60).optional(),
+  marketingConsent: z.boolean().optional().default(false),
   notes: z.string().max(500).optional(),
   utmSource: z.string().max(80).optional(),
 });
