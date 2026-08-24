@@ -31,6 +31,7 @@ import { SiteHeader } from "@/components/site-header";
 import { CoordinationForm } from "@/components/coordination-form";
 import { CountUp } from "@/components/count-up";
 import { coursesCatalog, formatCoursePrice } from "@/lib/courses-catalog";
+import { LEGAL } from "@/lib/legal";
 
 const GoogleMapEmbed = dynamic(
   () => import("@/components/google-map-embed").then((m) => m.GoogleMapEmbed),
@@ -956,7 +957,7 @@ export default function HomePage() {
                   {[
                     { icon: MapPin, iconColor: "text-pink", iconBg: "bg-pink-light", label: "Dirección", value: "Calle Los Sauces 542, Urb. Santa Victoria, Chiclayo, Lambayeque, Perú" },
                     { icon: Phone, iconColor: "text-blue", iconBg: "bg-blue-light", label: "Teléfono", value: "+51 932 713 071" },
-                    { icon: Mail, iconColor: "text-pink", iconBg: "bg-pink-light", label: "Email", value: "contacto@neoser.pe" },
+                    { icon: Mail, iconColor: "text-pink", iconBg: "bg-pink-light", label: "Email", value: LEGAL.email },
                     { icon: Clock, iconColor: "text-blue", iconBg: "bg-blue-light", label: "Horario", value: "Lunes a Sábado: 8:00 AM - 7:00 PM" },
                   ].map((c) => (
                     <div key={c.label} className="flex items-start gap-4">

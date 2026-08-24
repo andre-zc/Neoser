@@ -1,3 +1,5 @@
+import { LEGAL } from "@/lib/legal";
+
 type SendEmailInput = {
   to: string;
   subject: string;
@@ -13,7 +15,9 @@ function getEmailApiKey() {
 }
 
 function getEmailFrom() {
-  return process.env.EMAIL_FROM || "contacto@neoser.pe";
+  // El remitente debe estar verificado en Brevo o el envio se rechaza; el de
+  // respaldo es el mismo que hay configurado en EMAIL_FROM.
+  return process.env.EMAIL_FROM || "neoser.admin@gmail.com";
 }
 
 async function sendViaBrevo(input: SendEmailInput) {
@@ -108,7 +112,7 @@ export function buildEnrollmentConfirmationEmail(input: EnrollmentEmailInput) {
           En las próximas 24 horas te contactaremos por WhatsApp para coordinar el inicio y enviarte el material.
         </p>
         <p style="color: #4A5568; font-size: 14px; line-height: 1.6; margin: 16px 0 0;">
-          Si tienes alguna duda, escríbenos a <a href="mailto:contacto@neoser.pe" style="color: #E89BAB;">contacto@neoser.pe</a>.
+          Si tienes alguna duda, escríbenos a <a href="mailto:${LEGAL.email}" style="color: #E89BAB;">${LEGAL.email}</a>.
         </p>
       </div>
       <p style="color: #A0AEC0; font-size: 12px; text-align: center; margin: 24px 0 0;">

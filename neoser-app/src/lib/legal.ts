@@ -15,7 +15,11 @@ export const LEGAL = {
   telefono: "+51 932 713 071",
   telefonoLink: "+51932713071",
   whatsapp: "51932713071",
-  email: "contacto@neoser.pe",
+  // contacto@neoser.pe NO existe: el dominio neoser.pe no tiene registros MX,
+  // asi que nadie recibiria nada. INDECOPI exige un canal de contacto operativo
+  // en el Libro de Reclamaciones y Culqi lo verifica, de modo que se usa el
+  // buzon real del negocio: neoserperu.com si tiene Google Workspace.
+  email: "dsilva@neoserperu.com",
   emailAcademico: "dsilva@neoserperu.com",
   horario: "Lunes a Sábado, 8:00 a. m. – 7:00 p. m.",
   ciudad: "Chiclayo, Lambayeque, Perú",
