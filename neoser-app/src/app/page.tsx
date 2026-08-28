@@ -19,6 +19,7 @@ import {
   X,
   Activity,
   Sparkles,
+  Brain,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -121,6 +122,20 @@ export default function HomePage() {
   const bookingUrl = calBookingUrl || "#contacto";
 
   const news = [
+    {
+      day: "18",
+      month: "Ago 2026",
+      title: "Apertura del Curso de Neurobiología del Parto",
+      desc: "Dimos inicio a la formación internacional que integra neurobiología, microbiota y protocolos para un nacimiento humanizado.",
+      icon: Brain,
+      img: "/assets/cursos/neurobiologia-parto.jpg",
+      logo: false,
+      full: [
+        "El pasado 18 de agosto dimos inicio al Curso Internacional «Neurobiología del Parto y Protocolos para un Nacimiento Humanizado», una de las formaciones insignia de NeoSer Perú en alianza con AuroraMadre Academia.",
+        "Con la dirección académica de la Obst. Diana Silva Mejía y la docencia del Dr. Beltrán Lares, profesionales de la salud de Perú y Latinoamérica iniciaron un recorrido de actualización que integra neurobiología, microbiota, epigenética, neurociencias y teoría del apego.",
+        "La apertura marcó el comienzo de una edición orientada a fortalecer la práctica clínica con protocolos basados en evidencia científica, en el marco del Programa de Formación de Mediadores NeoSer para la Humanización del Nacimiento.",
+      ],
+    },
     {
       day: "15",
       month: "Mar 2026",
@@ -535,9 +550,9 @@ export default function HomePage() {
             <h3 className="mb-8 text-center text-2xl font-bold text-navy">Próximos Eventos</h3>
             <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-3">
               {[
-                { id: "agosto", month: "18 de agosto 2026", title: <>Neurobiología del Parto<br />y Protocolos</>, desc: "Virtual sincrónica, 64 h académicas. Inscripciones abiertas." },
+                { id: "seminario-protocolos", month: "8 de septiembre 2026", title: <>Seminario Protocolos para un<br />Nacimiento Humanizado</>, desc: "Virtual en vivo, 4 seminarios online. Inscripciones abiertas." },
+                { id: "neurobiologia", month: "29 de setiembre 2026", title: <>Neurobiología del Parto<br />Edición 2026 II</>, desc: "Virtual sincrónica, 64 h académicas. Inscripciones abiertas." },
                 { id: "rebozo-presencial", month: "Edición 2026", title: <>El Arte del Rebozo<br />Programa de Formación</>, desc: "64 h académicas, semipresencial. Fechas en programación: consulta por WhatsApp." },
-                { id: "jornada", month: "Edición 2026", title: <>Herramientas para un<br />Nacimiento Humanizado</>, desc: "Jornada con profesores especialistas. Fecha por confirmar." },
               ].map((ev) => (
                 <div key={ev.id} className="group relative overflow-hidden rounded-2xl border border-navy/5 bg-cream p-6 transition duration-300 hover:-translate-y-1 hover:shadow-lg">
                   <span className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-pink to-blue transition-transform duration-300 group-hover:scale-x-100" />

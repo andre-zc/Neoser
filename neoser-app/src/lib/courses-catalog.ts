@@ -90,7 +90,7 @@ export const coursesCatalog: CatalogCourse[] = [
     navTitle: "Neurobiología del Parto",
     tagline: "Actualizar la atención del nacimiento comienza por comprender su biología.",
     summary:
-      "Edición 2026. Neurobiología, microbiota, epigenética y teoría del apego aplicadas a protocolos clínicos basados en evidencia.",
+      "Edición 2026 II. Neurobiología, microbiota, epigenética y teoría del apego aplicadas a protocolos clínicos basados en evidencia.",
     description: [
       "La ciencia del nacimiento ha evolucionado. Hoy comprendemos que los procesos biológicos que ocurren durante el embarazo, el parto y el nacimiento influyen en la salud presente y futura de la madre y el recién nacido.",
       "Este curso integra los avances en neurobiología, microbiota, epigenética, neurociencias y teoría del apego para fortalecer la práctica clínica mediante protocolos basados en evidencia científica.",
@@ -116,7 +116,7 @@ export const coursesCatalog: CatalogCourse[] = [
     ],
     mode: "Virtual sincrónica",
     durationLabel: "64 horas académicas · 8 sesiones",
-    startLabel: "Martes 18 de agosto de 2026",
+    startLabel: "Martes 29 de setiembre de 2026",
     scheduleLabel: "Martes y jueves · 7:00 – 9:00 p. m. (hora Perú)",
     audience:
       "Obstetras, médicos gineco-obstetras, neonatólogos, pediatras y profesionales vinculados a la atención materno-perinatal.",
@@ -199,7 +199,119 @@ export const coursesCatalog: CatalogCourse[] = [
   },
 
   // ---------------------------------------------------------------------
-  // 2. El Arte del Rebozo — virtual — landing propia
+  // 2. Seminario Internacional: Protocolos para un Nacimiento Humanizado
+  // ---------------------------------------------------------------------
+  {
+    slug: "seminario-protocolos-nacimiento-humanizado",
+    id: "9a8b7c6d-eeee-4eee-aeee-eeeeeeeeeeee",
+    title: "Protocolos para un Nacimiento Humanizado",
+    navTitle: "Seminario Protocolos",
+    tagline:
+      "Actualización profesional desde la evidencia científica y la protección de la fisiología del nacimiento.",
+    summary:
+      "Seminario Internacional virtual en vivo. 4 seminarios online. Inicio: 8 de septiembre de 2026. Perú: S/ 150 · Internacional: USD 60.",
+    description: [
+      "El Seminario Internacional Protocolos para un Nacimiento Humanizado propone un espacio de actualización y reflexión sobre diferentes prácticas de atención durante el parto, nacimiento y primeras horas de vida, a la luz de la evidencia científica, la fisiología, microbiota, epigenética y el respeto de los procesos biológicos de la madre y su bebé.",
+      "Este seminario constituye la segunda parte de la formación iniciada con Neurobiología del Parto, llevando sus fundamentos hacia el análisis de protocolos, rutinas e intervenciones presentes en la práctica clínica.",
+      "Forma parte del Programa de Formación de Mediadores NeoSer para la Humanización del Nacimiento, orientado a fortalecer profesionales capaces de generar cambios responsables desde sus propios espacios de atención.",
+    ],
+    price: 150,
+    currency: "PEN",
+    priceUSD: 60,
+    priceTiers: [
+      {
+        label: "Participantes en Perú",
+        value: "S/ 150",
+        tone: "pink",
+      },
+      {
+        label: "Participantes del extranjero",
+        value: "USD 60",
+        tone: "blue",
+      },
+    ],
+    mode: "Virtual en vivo",
+    durationLabel: "32 horas académicas · 4 seminarios",
+    startLabel: "Martes 08 de septiembre de 2026",
+    scheduleLabel: "Martes y jueves · 7:00 – 9:00 p. m. (hora Perú)",
+    audience:
+      "Obstetras, médicos y profesionales vinculados a la salud materno-perinatal interesados en fortalecer su práctica desde la evidencia científica, la fisiología y la humanización del nacimiento.",
+    certification:
+      "Certificado digital con código QR por 32 horas académicas, equivalentes a 2 créditos académicos.",
+    image: "/assets/cursos/seminario-protocolos-portada.png",
+    icon: "ShieldCheck",
+    includes: [
+      "04 seminarios online en vivo",
+      "NeoSer Workbook",
+      "Videos documentales y bibliografía complementaria",
+      "Acceso a las grabaciones durante 1 año",
+      "32 horas académicas · 2 créditos académicos",
+      "Certificado digital con código QR",
+    ],
+    modules: [
+      {
+        n: "I",
+        title: "Obstetricia del Nuevo Milenio",
+        purpose:
+          "Desafíos actuales y actualización de la práctica profesional para una atención humanizada del nacimiento.",
+        topics: [],
+      },
+      {
+        n: "II",
+        title: "Evaluación de protocolos y rutinas",
+        purpose:
+          "Análisis crítico de diferentes prácticas e intervenciones utilizadas durante la atención del parto y nacimiento.",
+        topics: [],
+      },
+      {
+        n: "III",
+        title: "Evidencia científica y recomendaciones de la OMS",
+        purpose:
+          "Revisión de la evidencia disponible y recomendaciones aplicables a la atención materno-perinatal.",
+        topics: [],
+      },
+      {
+        n: "IV",
+        title: "Protocolos flexibles y adaptables",
+        purpose:
+          "Discusión e intercambio orientados a la construcción de protocolos respetuosos de la fisiología y adaptables a diferentes contextos de atención.",
+        topics: [],
+      },
+      {
+        n: "V",
+        title: "Implementación de cambios",
+        purpose:
+          "Herramientas para promover transformaciones responsables desde los propios espacios de práctica profesional.",
+        topics: [],
+      },
+    ],
+    faq: [
+      {
+        q: "¿A quién está dirigido el seminario?",
+        a: "A obstetras, médicos y profesionales vinculados a la salud materno-perinatal que buscan fortalecer su práctica desde la evidencia científica, la fisiología y la humanización del nacimiento.",
+      },
+      {
+        q: "¿Necesito haber llevado Neurobiología del Parto?",
+        a: "Este seminario es la segunda parte de la formación iniciada con Neurobiología del Parto, pero está abierto a profesionales interesados en actualizar sus protocolos clínicos. Si no llevas el curso previo, igual puedes inscribirte.",
+      },
+      {
+        q: "¿Qué pasa si no puedo asistir a una sesión en vivo?",
+        a: "Todas las sesiones quedan grabadas y disponibles durante 1 año para que puedas revisarlas a tu ritmo.",
+      },
+      {
+        q: "¿Cómo puedo pagar desde el extranjero?",
+        a: "Puedes pagar en línea con tarjeta en dólares (USD 60) desde el formulario de inscripción. Si prefieres otra opción, escríbenos por WhatsApp.",
+      },
+    ],
+    brochureHref: "/assets/cursos/seminario-protocolos-flyer.png",
+    landingHref: "/cursos/seminario-protocolos-nacimiento-humanizado",
+    enrollment: "checkout",
+    whatsappText:
+      "Hola%20NeoSer%2C%20quiero%20informaci%C3%B3n%20sobre%20el%20Seminario%20Internacional%20Protocolos%20para%20un%20Nacimiento%20Humanizado",
+  },
+
+  // ---------------------------------------------------------------------
+  // 3. El Arte del Rebozo — virtual — landing propia
   // ---------------------------------------------------------------------
   {
     slug: "rebozo-cert",

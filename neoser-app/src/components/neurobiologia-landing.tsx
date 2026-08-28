@@ -181,7 +181,7 @@ export function NeurobiologiaLanding() {
         <div className="container-main relative">
           <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
             <span className="rounded-full bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-navy shadow-sm">
-              Curso virtual · Edición 2026
+              Curso virtual · Edición 2026 II
             </span>
             <span className="inline-flex items-center gap-2 rounded-full bg-pink-light px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-pink-dark">
               <Sparkles className="h-3.5 w-3.5" /> Inscripciones abiertas
@@ -222,7 +222,7 @@ export function NeurobiologiaLanding() {
 
               <div className="mt-6 flex flex-wrap gap-2">
                 {[
-                  "Inicio: 18 de agosto de 2026",
+                  `Inicio: ${course.startLabel}`,
                   "🌎 Virtual sincrónica",
                   "64 h académicas · 4 créditos",
                   "Campus Virtual 12 meses",
@@ -267,7 +267,7 @@ export function NeurobiologiaLanding() {
                   <Brain className="h-5 w-5" />
                 </span>
                 <p className="text-sm font-semibold leading-tight text-navy">
-                  Edición 2026
+                  Edición 2026 II
                   <br />
                   <span className="text-xs font-normal text-gray-400">
                     Cupos limitados
@@ -609,7 +609,7 @@ export function NeurobiologiaLanding() {
           >
             <p className="section-tag mb-2">Inversión</p>
             <h2 className="section-title mb-6">
-              Reserva tu vacante en la <span className="text-pink">Edición 2026.</span>
+              Reserva tu vacante en la <span className="text-pink">Edición 2026 II.</span>
             </h2>
 
             <div className="mx-auto mb-8 grid max-w-md gap-4 sm:grid-cols-2">

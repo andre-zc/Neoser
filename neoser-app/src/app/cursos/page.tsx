@@ -15,7 +15,7 @@ import {
 export const metadata: Metadata = {
   title: "Catálogo de Cursos 2026",
   description:
-    "Formación profesional NeoSer 2026: Neurobiología del Parto, El Arte del Rebozo (virtual y programa semipresencial de 64 h), Antropología y Sociología del Nacimiento y la jornada Herramientas para un Nacimiento Humanizado.",
+    "Formación profesional NeoSer 2026: Neurobiología del Parto, Seminario Protocolos para un Nacimiento Humanizado, El Arte del Rebozo (virtual y programa semipresencial de 64 h), Antropología y Sociología del Nacimiento y la jornada Herramientas para un Nacimiento Humanizado.",
   alternates: { canonical: "/cursos" },
 };
 
