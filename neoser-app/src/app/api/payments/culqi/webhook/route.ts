@@ -2,35 +2,49 @@
  * POST /api/payments/culqi/webhook
  *
  * Recibe eventos asíncronos de Culqi (confirmaciones, refunds, etc).
- * Valida firma HMAC, valida payload con Zod, y delega:
+ * Valida autenticación, valida payload con Zod, y delega:
  *  - charge.creation.succeeded → fulfillSuccessfulCharge (idempotente)
  *  - refund.creation.succeeded → marca payment como 'refunded'
  *  - charge.creation.failed    → ignora (ya manejado en /charge)
  *
- * Configurar URL en CulqiPanel > Webhooks y mismo secret en CULQI_WEBHOOK_SECRET.
+ * Configurar URL y autenticación en CulqiPanel > Eventos > Webhooks.
  */
 
 import { NextRequest, NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { culqiWebhookSchema } from "@/lib/schemas";
 import {
-  verifyCulqiWebhookSignature,
+  verifyCulqiWebhookAuthentication,
   mapCulqiEventToPaymentStatus,
+  sanitizeCulqiPayload,
 } from "@/lib/payments/culqi";
 import { fulfillSuccessfulCharge } from "@/lib/payments/culqi-fulfillment";
 
 export async function POST(request: NextRequest) {
   const rawBody = await request.text();
 
-  // Culqi usa nombres de header que pueden variar según versión del panel.
-  // Probamos los más comunes.
+  // HTTP Basic es el modo preferido. Los headers de firma quedan como
+  // compatibilidad legado hasta confirmar su nombre en CulqiPanel.
   const signature =
     request.headers.get("x-culqi-signature") ||
     request.headers.get("culqi-signature") ||
     request.headers.get("x-culqi-signature-256");
 
-  if (!verifyCulqiWebhookSignature(rawBody, signature)) {
-    return NextResponse.json({ error: "Firma invalida" }, { status: 401 });
+  const authentication = verifyCulqiWebhookAuthentication(rawBody, {
+    authorization: request.headers.get("authorization"),
+    signature,
+  });
+
+  if (authentication === "not_configured") {
+    console.error("[culqi/webhook] autenticación no configurada");
+    return NextResponse.json(
+      { error: "Webhook no configurado" },
+      { status: 503 },
+    );
+  }
+
+  if (authentication !== "verified") {
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
   let eventRaw: unknown;
@@ -42,10 +56,9 @@ export async function POST(request: NextRequest) {
 
   const parsed = culqiWebhookSchema.safeParse(eventRaw);
   if (!parsed.success) {
-    console.error(
-      "Culqi webhook payload no soportado:",
-      JSON.stringify(parsed.error.flatten()),
-    );
+    console.error("[culqi/webhook] payload no soportado", {
+      issueCount: parsed.error.issues.length,
+    });
     return NextResponse.json(
       { error: "Payload no soportado" },
       { status: 400 },
@@ -75,12 +88,14 @@ export async function POST(request: NextRequest) {
         .update({
           status: "approved",
           paid_at: new Date().toISOString(),
-          raw_payload: event.data,
+          raw_payload: sanitizeCulqiPayload(event.data),
         })
         .eq("provider_payment_id", event.data.id);
 
       if (error) {
-        console.error("Webhook update (partial) failed:", error);
+        console.error("[culqi/webhook] actualización parcial falló", {
+          errorCode: error.code,
+        });
       }
       return NextResponse.json({ ok: true, partial: true });
     }
@@ -100,11 +115,13 @@ export async function POST(request: NextRequest) {
         notes: md.notes,
         utmSource: md.utmSource,
       },
-      rawPayload: event.data,
+      rawPayload: sanitizeCulqiPayload(event.data),
     });
 
     if (!result.ok) {
-      console.error("Webhook fulfillment failed:", result.error);
+      console.error("[culqi/webhook] fulfillment falló", {
+        errorCode: result.error,
+      });
       return NextResponse.json(
         { error: "Error procesando webhook" },
         { status: 500 },
@@ -123,11 +140,16 @@ export async function POST(request: NextRequest) {
   if (newStatus === "refunded") {
     const { error } = await supabase
       .from("payments")
-      .update({ status: "refunded", raw_payload: event.data })
-      .eq("provider_payment_id", event.data.id);
+      .update({
+        status: "refunded",
+        raw_payload: sanitizeCulqiPayload(event.data),
+      })
+      .eq("provider_payment_id", event.data.charge_id ?? event.data.id);
 
     if (error) {
-      console.error("Webhook refund update failed:", error);
+      console.error("[culqi/webhook] actualización de devolución falló", {
+        errorCode: error.code,
+      });
       return NextResponse.json(
         { error: "No se pudo registrar refund" },
         { status: 500 },

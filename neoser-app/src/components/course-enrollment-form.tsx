@@ -16,7 +16,7 @@
  * eso es la opción "alternativa" y no la principal.
  */
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import { formatUsd } from "@/lib/payments/paypal";
 import { MarketingOptIn } from "@/components/marketing-opt-in";
@@ -46,39 +46,71 @@ type ChargePayload = {
   utmSource?: string;
 };
 
-// Tipos mínimos del Custom Checkout (la libreria es JS, no TS).
+type Culqi3DSParameters = {
+  eci: string;
+  xid: string;
+  cavv: string;
+  protocolVersion: string;
+  directoryServerTransactionId?: string;
+};
+
+type CulqiCheckoutInstance = {
+  token?: { id: string; email?: string };
+  order?: unknown;
+  error?: {
+    type?: string;
+    merchant_message?: string;
+    user_message?: string;
+  };
+  culqi?: () => void;
+  closeCheckout?: () => void;
+  open: () => void;
+  close: () => void;
+};
+
+type CulqiCheckoutConfig = {
+  settings: { title: string; currency: "PEN" | "USD"; amount: number };
+  client: { email: string };
+  options: {
+    lang: string;
+    installments: boolean;
+    modal: boolean;
+    paymentMethods: Record<string, boolean>;
+    paymentMethodsSort: string[];
+  };
+  appearance: Record<string, unknown>;
+};
+
+type Culqi3DSApi = {
+  publicKey: string;
+  settings: {
+    charge: { totalAmount: number; returnUrl: string; currency: string };
+    card: { email: string };
+  };
+  options: Record<string, unknown>;
+  generateDevice: () => Promise<string>;
+  initAuthentication: (token: string) => Promise<void> | void;
+  reset: () => void;
+};
+
+// Tipos mínimos de los SDK de Culqi (ambas librerías son JS, no TS).
 declare global {
   interface Window {
-    Culqi?: {
-      publicKey: string;
-      settings: (s: {
-        title: string;
-        currency: string;
-        amount: number;
-        order?: string;
-      }) => void;
-      options: (o: Record<string, unknown>) => void;
-      open: () => void;
-      close: () => void;
-      token?: { id: string; email: string };
-      error?: {
-        type?: string;
-        merchant_message?: string;
-        user_message?: string;
-      };
-    };
-    culqi?: () => void;
+    CulqiCheckout?: new (
+      publicKey: string,
+      config: CulqiCheckoutConfig,
+    ) => CulqiCheckoutInstance;
+    Culqi3DS?: Culqi3DSApi;
   }
 }
 
 const CULQI_PUBLIC_KEY = process.env.NEXT_PUBLIC_CULQI_PUBLIC_KEY ?? "";
 
 /**
- * Culqi activo por defecto. La variable existe solo como interruptor de
- * emergencia: poner NEXT_PUBLIC_CULQI_ENABLED="false" lo oculta sin tocar código
- * (útil si la pasarela cae o la cuenta queda suspendida).
+ * Activación explícita y segura. Si la variable falta o tiene otro valor, el
+ * checkout queda oculto en lugar de mostrar un medio de pago incompleto.
  */
-const CULQI_ENABLED = process.env.NEXT_PUBLIC_CULQI_ENABLED !== "false";
+const CULQI_ENABLED = process.env.NEXT_PUBLIC_CULQI_ENABLED === "true";
 
 // Evita el falso positivo de HTML5 con "correo@gmail" (sin TLD), que el
 // servidor rechazaría después de que la persona ya llenó todo el formulario.
@@ -93,6 +125,19 @@ function formatPrice(price: number, currency: string) {
 
 const inputClass =
   "w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-pink focus:outline-none focus:ring-2 focus:ring-pink/20";
+
+function isCulqi3DSParameters(value: unknown): value is Culqi3DSParameters {
+  if (!value || typeof value !== "object") return false;
+  const parameters = value as Record<string, unknown>;
+  return (
+    typeof parameters.eci === "string" &&
+    typeof parameters.xid === "string" &&
+    typeof parameters.cavv === "string" &&
+    typeof parameters.protocolVersion === "string" &&
+    (parameters.directoryServerTransactionId === undefined ||
+      typeof parameters.directoryServerTransactionId === "string")
+  );
+}
 
 export function CourseEnrollmentForm({
   courseId,
@@ -148,37 +193,70 @@ export function CourseEnrollmentForm({
     ? formatUsd(priceUSD!)
     : formatPrice(coursePrice, courseCurrency);
 
-  // Guardamos el payload del form aquí porque el callback global `culqi()`
-  // se invoca fuera del scope del onSubmit (es asincrónico desde el modal).
+  // Estado transitorio del SDK; no provoca renders y evita callbacks duplicados.
   const pendingChargeRef = useRef<ChargePayload | null>(null);
+  const checkoutRef = useRef<CulqiCheckoutInstance | null>(null);
+  const processingRef = useRef(false);
+  const threeDsContextRef = useRef<{
+    token: string;
+    payload: ChargePayload;
+    deviceFingerprintId: string;
+  } | null>(null);
 
-  // Registrar el callback global de Culqi UNA sola vez.
-  // Culqi llama a window.culqi() cuando termina la tokenización (éxito o error).
-  useEffect(() => {
-    if (!CULQI_ENABLED) return;
-
-    // Flag (closure) para bloquear procesamiento concurrente. Culqi puede
-    // invocar window.culqi() multiples veces (click doble del usuario en el
-    // modal, race condition interno del SDK). Sin esta guarda, cada
-    // invocacion genera un cargo nuevo => DOBLE COBRO en producción real.
-    let processing = false;
-
-    async function submitCharge(token: string, payload: ChargePayload) {
+  const submitCharge = useCallback(
+    async (
+      token: string,
+      payload: ChargePayload,
+      deviceFingerprintId: string,
+      authentication3DS?: Culqi3DSParameters,
+    ) => {
       try {
         const response = await fetch("/api/payments/culqi/charge", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...payload, token }),
+          body: JSON.stringify({
+            ...payload,
+            token,
+            deviceFingerprintId,
+            ...(authentication3DS ? { authentication3DS } : {}),
+          }),
         });
 
         const data = await response.json().catch(() => ({}));
 
-        if (response.ok && data.ok) {
-          try {
-            window.Culqi?.close();
-          } catch {
-            /* ignore */
+        if (response.status === 202 && data.requires3DS) {
+          if (authentication3DS) {
+            throw new Error("No se pudo completar la autenticación bancaria.");
           }
+
+          const Culqi3DS = window.Culqi3DS;
+          if (!Culqi3DS) {
+            throw new Error(
+              "La autenticación bancaria no está disponible. Recarga la página.",
+            );
+          }
+
+          threeDsContextRef.current = { token, payload, deviceFingerprintId };
+          Culqi3DS.publicKey = CULQI_PUBLIC_KEY;
+          Culqi3DS.settings = {
+            charge: {
+              totalAmount:
+                payload.currency === "USD" && usdAvailable
+                  ? Math.round(priceUSD! * 100)
+                  : Math.round(Number(coursePrice) * 100),
+              returnUrl: window.location.href,
+              currency: payload.currency,
+            },
+            card: { email: payload.guestEmail },
+          };
+          await Culqi3DS.initAuthentication(token);
+          return;
+        }
+
+        if (response.ok && data.ok) {
+          checkoutRef.current?.close();
+          window.Culqi3DS?.reset();
+          threeDsContextRef.current = null;
           const ref = encodeURIComponent(data.chargeId || "");
           window.location.href = `/checkout/success?ref=${ref}`;
           return;
@@ -186,69 +264,63 @@ export function CourseEnrollmentForm({
 
         // 402: tarjeta rechazada (request válido, banco dijo no) → mostrar inline
         if (response.status === 402) {
-          processing = false; // permitir reintento con otra tarjeta
+          processingRef.current = false;
+          threeDsContextRef.current = null;
+          window.Culqi3DS?.reset();
           setStatus("error");
           setError(data.message || "Tu tarjeta fue rechazada. Intenta con otra.");
-          try {
-            window.Culqi?.close();
-          } catch {
-            /* ignore */
-          }
+          checkoutRef.current?.close();
           return;
         }
 
         throw new Error(data.error || "No se pudo procesar el pago");
       } catch (err) {
-        processing = false; // permitir reintento ante error de red/server
+        processingRef.current = false;
+        threeDsContextRef.current = null;
+        window.Culqi3DS?.reset();
         setStatus("error");
         setError(err instanceof Error ? err.message : "Error inesperado");
-        try {
-          window.Culqi?.close();
-        } catch {
-          /* ignore */
-        }
+        checkoutRef.current?.close();
+      }
+    },
+    [coursePrice, priceUSD, usdAvailable],
+  );
+
+  // Culqi3DS publica el resultado mediante postMessage en el mismo origen.
+  useEffect(() => {
+    if (!CULQI_ENABLED) return;
+
+    function handleThreeDsMessage(event: MessageEvent<unknown>) {
+      if (event.origin !== window.location.origin || !event.data) return;
+      const response = event.data as Record<string, unknown>;
+
+      if (isCulqi3DSParameters(response.parameters3DS)) {
+        const context = threeDsContextRef.current;
+        threeDsContextRef.current = null;
+        if (!context || !processingRef.current) return;
+        void submitCharge(
+          context.token,
+          context.payload,
+          context.deviceFingerprintId,
+          response.parameters3DS,
+        );
+        return;
+      }
+
+      if (response.error) {
+        processingRef.current = false;
+        threeDsContextRef.current = null;
+        window.Culqi3DS?.reset();
+        setStatus("error");
+        setError(
+          "No se pudo validar la compra con tu banco. Intenta nuevamente.",
+        );
       }
     }
 
-    window.culqi = function culqiCallback() {
-      const C = window.Culqi;
-      if (!C) return;
-
-      if (C.token) {
-        if (processing) return;
-        processing = true;
-
-        const token = C.token.id;
-        const pending = pendingChargeRef.current;
-        if (!pending) {
-          processing = false;
-          setStatus("error");
-          setError("Estado de pago inválido. Recarga la página e intenta de nuevo.");
-          return;
-        }
-        void submitCharge(token, pending);
-      } else if (C.error) {
-        processing = false;
-        const message =
-          C.error.user_message ||
-          C.error.merchant_message ||
-          "No se pudo procesar el pago";
-        setStatus("error");
-        setError(message);
-        try {
-          C.close();
-        } catch {
-          /* ignore */
-        }
-      }
-    };
-
-    return () => {
-      if (window.culqi) {
-        window.culqi = undefined;
-      }
-    };
-  }, []);
+    window.addEventListener("message", handleThreeDsMessage);
+    return () => window.removeEventListener("message", handleThreeDsMessage);
+  }, [submitCharge]);
 
   /** Lee y normaliza los campos comunes del formulario. */
   function readForm(form: HTMLFormElement) {
@@ -295,15 +367,19 @@ export function CourseEnrollmentForm({
     }
   }
 
-  function submitCulqi(form: HTMLFormElement, chargeCurrency: "PEN" | "USD") {
+  async function submitCulqi(
+    form: HTMLFormElement,
+    chargeCurrency: "PEN" | "USD",
+  ) {
     if (!CULQI_PUBLIC_KEY) {
       setStatus("error");
       setError("Sistema de pago no configurado. Contáctanos por WhatsApp.");
       return;
     }
 
-    // Check basado en window.Culqi directo: el runtime real es window.Culqi.
-    if (!window.Culqi) {
+    const CulqiCheckout = window.CulqiCheckout;
+    const Culqi3DS = window.Culqi3DS;
+    if (!CulqiCheckout || !Culqi3DS) {
       setStatus("error");
       setError(
         "El sistema de pago aún se está cargando. Espera un segundo y reintenta.",
@@ -322,27 +398,34 @@ export function CourseEnrollmentForm({
       notes: data.notes,
     };
 
-    pendingChargeRef.current = payload;
-    setStatus("loading");
-
     // El monto mostrado en el modal debe coincidir con el que cobrará el
     // backend para esa moneda (el backend es la fuente autoritativa).
     const amountValue =
       chargeCurrency === "USD" && usdAvailable ? priceUSD! : Number(coursePrice);
     const amountCents = Math.round(amountValue * 100);
-
     const logoUrl = `${window.location.origin}/assets/logo-color.png`;
 
-    window.Culqi.publicKey = CULQI_PUBLIC_KEY;
-    window.Culqi.settings({
-      title: "NeoSer",
-      currency: chargeCurrency,
-      amount: amountCents,
-    });
-    window.Culqi.options({
-      lang: "es",
-      installments: false,
-      paymentMethods: {
+    pendingChargeRef.current = payload;
+    processingRef.current = false;
+    threeDsContextRef.current = null;
+    setStatus("loading");
+
+    try {
+      checkoutRef.current?.close();
+      Culqi3DS.reset();
+      Culqi3DS.publicKey = CULQI_PUBLIC_KEY;
+      Culqi3DS.options = {
+        showModal: true,
+        showLoading: true,
+        showIcon: true,
+        style: { btnColor: "#1b3a6b", btnTextColor: "#FFFFFF" },
+      };
+      const deviceFingerprintId = await Culqi3DS.generateDevice();
+      if (!deviceFingerprintId) {
+        throw new Error("No se pudo iniciar la validación segura del pago.");
+      }
+
+      const paymentMethods = {
         tarjeta: true,
         // Yape solo opera en soles: en USD hay que ocultarlo.
         yape: chargeCurrency === "PEN",
@@ -350,23 +433,92 @@ export function CourseEnrollmentForm({
         agente: false,
         billetera: false,
         cuotealo: false,
-      },
-      style: {
-        logo: logoUrl,
-        bannerColor: "#1b3a6b",
-        buttonBackground: "#1b3a6b",
-        menuColor: "#e8879b",
-        linksColor: "#e8879b",
-        buttonText: "Pagar",
-        buttonTextColor: "#FFFFFF",
-        priceColor: "#1b3a6b",
-      },
-      customer: {
-        email: payload.guestEmail,
-        phoneNumber: payload.guestPhone,
-      },
-    });
-    window.Culqi.open();
+      };
+      const config: CulqiCheckoutConfig = {
+        settings: {
+          title: "NeoSer",
+          currency: chargeCurrency,
+          amount: amountCents,
+        },
+        client: { email: payload.guestEmail },
+        options: {
+          lang: "es",
+          installments: false,
+          modal: true,
+          paymentMethods,
+          paymentMethodsSort: Object.keys(paymentMethods).filter(
+            (paymentMethod) =>
+              paymentMethods[paymentMethod as keyof typeof paymentMethods],
+          ),
+        },
+        appearance: {
+          theme: "default",
+          hiddenCulqiLogo: false,
+          hiddenBannerContent: false,
+          hiddenBanner: false,
+          hiddenToolBarAmount: false,
+          hiddenEmail: true,
+          menuType: "sidebar",
+          buttonCardPayText: "Pagar",
+          logo: logoUrl,
+          defaultStyle: {
+            bannerColor: "#1b3a6b",
+            buttonBackground: "#1b3a6b",
+            menuColor: "#e8879b",
+            linksColor: "#e8879b",
+            buttonTextColor: "#FFFFFF",
+            priceColor: "#1b3a6b",
+          },
+        },
+      };
+
+      const checkout = new CulqiCheckout(CULQI_PUBLIC_KEY, config);
+      checkoutRef.current = checkout;
+      checkout.closeCheckout = () => {
+        if (!processingRef.current) setStatus("idle");
+      };
+      checkout.culqi = () => {
+        if (checkout.token) {
+          if (processingRef.current) return;
+          const pending = pendingChargeRef.current;
+          if (!pending) {
+            setStatus("error");
+            setError(
+              "Estado de pago inválido. Recarga la página e intenta de nuevo.",
+            );
+            return;
+          }
+
+          processingRef.current = true;
+          setStatus("loading");
+          checkout.close();
+          void submitCharge(
+            checkout.token.id,
+            pending,
+            deviceFingerprintId,
+          );
+          return;
+        }
+
+        if (checkout.error) {
+          processingRef.current = false;
+          setStatus("error");
+          setError(
+            checkout.error.user_message ||
+              checkout.error.merchant_message ||
+              "No se pudo procesar el pago",
+          );
+          checkout.close();
+        }
+      };
+
+      checkout.open();
+      setStatus("idle");
+    } catch (err) {
+      processingRef.current = false;
+      setStatus("error");
+      setError(err instanceof Error ? err.message : "Error inesperado");
+    }
   }
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -378,7 +530,7 @@ export function CourseEnrollmentForm({
       void submitPaypal(form);
       return;
     }
-    submitCulqi(form, method === "culqi-usd" ? "USD" : "PEN");
+    void submitCulqi(form, method === "culqi-usd" ? "USD" : "PEN");
   }
 
   // Sin ninguna vía de pago disponible se deriva a coordinación directa en vez
@@ -416,16 +568,28 @@ export function CourseEnrollmentForm({
   return (
     <>
       {CULQI_ENABLED && (
-        <Script
-          src="https://checkout.culqi.com/js/v4"
-          strategy="afterInteractive"
-          onError={() => {
-            setStatus("error");
-            setError(
-              "No se pudo cargar el sistema de pago. Revisa tu conexión y recarga.",
-            );
-          }}
-        />
+        <>
+          <Script
+            src="https://js.culqi.com/checkout-js"
+            strategy="afterInteractive"
+            onError={() => {
+              setStatus("error");
+              setError(
+                "No se pudo cargar el sistema de pago. Revisa tu conexión y recarga.",
+              );
+            }}
+          />
+          <Script
+            src="https://3ds.culqi.com"
+            strategy="afterInteractive"
+            onError={() => {
+              setStatus("error");
+              setError(
+                "No se pudo cargar la validación bancaria. Recarga la página.",
+              );
+            }}
+          />
+        </>
       )}
       <form onSubmit={onSubmit} className="surface-card space-y-4 p-6 md:p-8">
         <div className="rounded-xl bg-cream p-4">

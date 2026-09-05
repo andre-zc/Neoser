@@ -161,8 +161,8 @@ export async function fulfillSuccessfulCharge(
         orderReference: chargeId,
         source: metadata.utmSource || "course_enrollment",
       });
-    } catch (err) {
-      console.error("HubSpot enrollment sync failed:", err);
+    } catch {
+      console.error("[culqi/fulfillment] sync con HubSpot falló");
     }
 
     // 5b. Sync Brevo (no-bloqueante)
@@ -175,8 +175,8 @@ export async function fulfillSuccessfulCharge(
         amount: amountSoles,
         marketingConsent: metadata.marketingConsent,
       });
-    } catch (err) {
-      console.error("Brevo enrollment sync failed:", err);
+    } catch {
+      console.error("[culqi/fulfillment] sync con Brevo falló");
     }
 
     // 5c. Email confirmación (no-bloqueante)
@@ -189,8 +189,8 @@ export async function fulfillSuccessfulCharge(
         orderReference: chargeId,
       });
       await sendEmail({ to: metadata.guestEmail, subject, html });
-    } catch (err) {
-      console.error("Confirmation email failed:", err);
+    } catch {
+      console.error("[culqi/fulfillment] email de confirmación falló");
     }
 
     return {
@@ -199,10 +199,10 @@ export async function fulfillSuccessfulCharge(
       enrollmentId: enrollment.id,
       paymentId: payment.id,
     };
-  } catch (error) {
+  } catch {
     return {
       ok: false,
-      error: error instanceof Error ? error.message : "unknown",
+      error: "fulfillment_failed",
     };
   }
 }
@@ -217,7 +217,7 @@ export async function recordFailedCharge(input: {
   currency: string;
   rawPayload: unknown;
 }): Promise<{ paymentId?: string }> {
-  // Sin chargeId no hay identificador único: solo logueamos y omitimos.
+  // Sin chargeId no hay identificador único: se omite sin registrar payload.
   if (!input.chargeId) {
     console.warn("[culqi] charge fallido sin chargeId, no se registra");
     return {};
@@ -243,7 +243,9 @@ export async function recordFailedCharge(input: {
     .single();
 
   if (error) {
-    console.error("recordFailedCharge failed:", error);
+    console.error("[culqi/fulfillment] registro de rechazo falló", {
+      errorCode: error.code,
+    });
     return {};
   }
   return { paymentId: data?.id };

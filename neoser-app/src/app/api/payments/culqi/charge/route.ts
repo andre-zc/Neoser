@@ -36,6 +36,8 @@ export async function POST(request: NextRequest) {
       guestEmail,
       guestPhone,
       currency,
+      deviceFingerprintId,
+      authentication3DS,
       marketingConsent,
       notes,
       utmSource,
@@ -89,6 +91,9 @@ export async function POST(request: NextRequest) {
       currency,
       customerEmail: guestEmail,
       customerFullName: guestName,
+      customerPhone: guestPhone,
+      deviceFingerprintId,
+      authentication3DS,
       description: `Inscripción: ${course.title}`,
       metadata: {
         courseId: course.id,
@@ -97,20 +102,25 @@ export async function POST(request: NextRequest) {
         guestName,
         guestEmail,
         guestPhone,
-        ...(notes ? { notes } : {}),
-        ...(utmSource ? { utmSource } : {}),
       },
     });
 
+    // Culqi puede pedir un reto 3DS antes de decidir el cargo. No se registra
+    // como rechazado: el navegador abrirá la autenticación y reintentará con
+    // el mismo token y deviceFingerprintId.
+    if (charge.requires3DS) {
+      return NextResponse.json(
+        { ok: false, status: "requires_3ds", requires3DS: true },
+        { status: 202 },
+      );
+    }
+
     // 3a. Cargo rechazado / error de API: registrar para auditoría y devolver 402
     if (!charge.ok) {
-      // Log diagnostico: el response completo de Culqi para diagnosticar fallas
-      // de integracion ("El comercio tiene problemas...", llaves invalidas, etc).
-      console.error("[culqi/charge] charge.ok=false detalle:", {
+      // Solo campos técnicos. Nunca escribir payloads, mensajes, nombres,
+      // teléfonos o correos en los logs de producción.
+      console.error("[culqi/charge] cargo rechazado", {
         outcomeType: charge.outcomeType,
-        userMessage: charge.userMessage,
-        chargeId: charge.chargeId,
-        rawResponse: charge.raw,
       });
       await recordFailedCharge({
         chargeId: charge.chargeId,
@@ -151,10 +161,9 @@ export async function POST(request: NextRequest) {
     if (!result.ok) {
       // Crítico: cargo cobrado pero persistencia falló. El webhook (idempotente)
       // hará el insert cuando llegue. Devolvemos OK al usuario para no bloquearlo.
-      console.error(
-        "Culqi fulfillment failed despite successful charge:",
-        result.error,
-      );
+      console.error("[culqi/charge] persistencia posterior al cobro falló", {
+        errorCode: result.error,
+      });
       return NextResponse.json({
         ok: true,
         status: "approved",
@@ -170,8 +179,8 @@ export async function POST(request: NextRequest) {
       leadId: result.leadId,
       enrollmentId: result.enrollmentId,
     });
-  } catch (error) {
-    console.error("Culqi charge endpoint error:", error);
+  } catch {
+    console.error("[culqi/charge] error inesperado");
     return NextResponse.json(
       { error: "Error inesperado al procesar el pago" },
       { status: 500 },

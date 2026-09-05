@@ -165,6 +165,21 @@ export const culqiChargeRequestSchema = z.object({
   // Moneda elegida en el checkout. PEN = tarjeta/Yape (Perú); USD = tarjeta
   // internacional. El monto de cada una lo resuelve el backend, no el cliente.
   currency: z.enum(["PEN", "USD"]).default("PEN"),
+  // Identificador generado por Culqi3DS en el navegador. Debe mantenerse
+  // idéntico en el primer cargo y en el reintento autenticado.
+  deviceFingerprintId: z.string().uuid(),
+  // Culqi devuelve estos valores al completar el reto 3DS. El backend los
+  // reenvía al segundo intento de cargo sin aceptar campos adicionales.
+  authentication3DS: z
+    .object({
+      eci: z.string().min(1).max(20),
+      xid: z.string().min(1).max(200),
+      cavv: z.string().min(1).max(200),
+      protocolVersion: z.string().min(1).max(20),
+      directoryServerTransactionId: z.string().min(1).max(200).optional(),
+    })
+    .strict()
+    .optional(),
   marketingConsent: z.boolean().optional().default(false),
   notes: z.string().max(500).optional(),
   utmSource: z.string().max(80).optional(),
@@ -202,6 +217,7 @@ export const culqiWebhookSchema = z.object({
   data: z
     .object({
       id: z.string().min(1), // chr_xxx
+      charge_id: z.string().min(1).optional(), // presente en refunds (rfn_xxx)
       object: z.string().optional(),
       amount: z.number().int().optional(),
       currency_code: z.string().optional(),
