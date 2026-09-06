@@ -18,6 +18,13 @@ import {
 } from "@/lib/payments/culqi-fulfillment";
 
 export async function POST(request: NextRequest) {
+  if (process.env.NEXT_PUBLIC_CULQI_ENABLED !== "true") {
+    return NextResponse.json(
+      { error: "Pagos con Culqi temporalmente no disponibles" },
+      { status: 503 },
+    );
+  }
+
   try {
     const payload = await request.json();
     const parsed = culqiChargeRequestSchema.safeParse(payload);
