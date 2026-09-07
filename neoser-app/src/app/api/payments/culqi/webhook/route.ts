@@ -18,7 +18,11 @@ import {
   mapCulqiEventToPaymentStatus,
   sanitizeCulqiPayload,
 } from "@/lib/payments/culqi";
-import { fulfillSuccessfulCharge } from "@/lib/payments/culqi-fulfillment";
+import {
+  fulfillSuccessfulCharge,
+  recordSuccessfulQaCharge,
+} from "@/lib/payments/culqi-fulfillment";
+import { PAYMENT_QA_PURPOSE } from "@/lib/payments/payment-qa";
 
 export async function POST(request: NextRequest) {
   const rawBody = await request.text();
@@ -72,6 +76,24 @@ export async function POST(request: NextRequest) {
   // === charge.creation.succeeded → approved ===
   if (newStatus === "approved") {
     const md = event.data.metadata ?? {};
+
+    if (md.paymentPurpose === PAYMENT_QA_PURPOSE) {
+      const qaResult = await recordSuccessfulQaCharge({
+        chargeId: event.data.id,
+        amountCents: event.data.amount ?? 0,
+        currency: event.data.currency_code ?? "PEN",
+        rawPayload: sanitizeCulqiPayload(event.data),
+      });
+
+      if (!qaResult.ok) {
+        return NextResponse.json(
+          { error: "Error registrando prueba de cobro" },
+          { status: 500 },
+        );
+      }
+
+      return NextResponse.json({ ok: true, paymentQa: true });
+    }
 
     // Necesitamos la metadata completa para crear lead/enrollment.
     // Si falta (ej. cargo creado fuera del flow del sitio), solo actualizamos

@@ -15,16 +15,18 @@ import { createCulqiCharge } from "@/lib/payments/culqi";
 import {
   fulfillSuccessfulCharge,
   recordFailedCharge,
+  recordSuccessfulQaCharge,
 } from "@/lib/payments/culqi-fulfillment";
+import {
+  getPaymentQaAmount,
+  isPaymentQaCourse,
+  PAYMENT_QA_COOKIE_NAME,
+  PAYMENT_QA_PURPOSE,
+  PAYMENT_QA_TITLE,
+  verifyPaymentQaSession,
+} from "@/lib/payments/payment-qa";
 
 export async function POST(request: NextRequest) {
-  if (process.env.NEXT_PUBLIC_CULQI_ENABLED !== "true") {
-    return NextResponse.json(
-      { error: "Pagos con Culqi temporalmente no disponibles" },
-      { status: 503 },
-    );
-  }
-
   try {
     const payload = await request.json();
     const parsed = culqiChargeRequestSchema.safeParse(payload);
@@ -50,19 +52,68 @@ export async function POST(request: NextRequest) {
       utmSource,
     } = parsed.data;
 
+    const isQaCourse = isPaymentQaCourse(courseId);
+    const isAuthorizedQa =
+      isQaCourse &&
+      verifyPaymentQaSession(
+        request.cookies.get(PAYMENT_QA_COOKIE_NAME)?.value,
+      );
+
+    // La ruta de QA usa un producto interno y una sesión HTTP-only. Nunca
+    // reutiliza el curso publicado ni permite que el cliente decida el monto.
+    if (isQaCourse && !isAuthorizedQa) {
+      return NextResponse.json({ error: "Curso no disponible" }, { status: 404 });
+    }
+
+    if (
+      !isAuthorizedQa &&
+      process.env.NEXT_PUBLIC_CULQI_ENABLED !== "true"
+    ) {
+      return NextResponse.json(
+        { error: "Pagos con Culqi temporalmente no disponibles" },
+        { status: 503 },
+      );
+    }
+
     // 1. Resolver curso desde DB (precio autoritativo, no se confía en el cliente)
     const supabase = createServiceClient();
-    const { data: course, error: courseError } = await supabase
-      .from("courses")
-      .select("id, title, price, currency, slug, is_published")
-      .eq("id", courseId)
-      .single();
+    let course: {
+      id: string;
+      title: string;
+      price: number;
+      currency: string;
+      slug: string;
+      is_published: boolean;
+    };
 
-    if (courseError || !course || !course.is_published) {
-      return NextResponse.json(
-        { error: "Curso no disponible" },
-        { status: 404 },
-      );
+    if (isAuthorizedQa) {
+      course = {
+        id: courseId,
+        title: PAYMENT_QA_TITLE,
+        price: getPaymentQaAmount("PEN"),
+        currency: "PEN",
+        slug: PAYMENT_QA_PURPOSE,
+        is_published: false,
+      };
+    } else {
+      const { data: storedCourse, error: courseError } = await supabase
+        .from("courses")
+        .select("id, title, price, currency, slug, is_published")
+        .eq("id", courseId)
+        .single();
+
+      if (courseError || !storedCourse || !storedCourse.is_published) {
+        return NextResponse.json(
+          { error: "Curso no disponible" },
+          { status: 404 },
+        );
+      }
+
+      course = {
+        ...storedCourse,
+        price: Number(storedCourse.price),
+        slug: storedCourse.slug ?? "",
+      };
     }
 
     // 2. Resolver el monto según la moneda elegida. El precio en soles vive en
@@ -70,7 +121,9 @@ export async function POST(request: NextRequest) {
     // casos lo decide el servidor para que no se pueda manipular desde el
     // cliente enviando "USD" para pagar menos.
     let amountValue: number;
-    if (currency === "USD") {
+    if (isAuthorizedQa) {
+      amountValue = getPaymentQaAmount(currency);
+    } else if (currency === "USD") {
       const catalogCourse = coursesCatalog.find((c) => c.id === course.id);
       if (!catalogCourse?.priceUSD || catalogCourse.priceUSD <= 0) {
         return NextResponse.json(
@@ -101,15 +154,19 @@ export async function POST(request: NextRequest) {
       customerPhone: guestPhone,
       deviceFingerprintId,
       authentication3DS,
-      description: `Inscripción: ${course.title}`,
-      metadata: {
-        courseId: course.id,
-        courseTitle: course.title,
-        courseSlug: course.slug ?? "",
-        guestName,
-        guestEmail,
-        guestPhone,
-      },
+      description: isAuthorizedQa
+        ? "Prueba real de cobro NeoSer — Protocolos"
+        : `Inscripción: ${course.title}`,
+      metadata: isAuthorizedQa
+        ? { paymentPurpose: PAYMENT_QA_PURPOSE }
+        : {
+            courseId: course.id,
+            courseTitle: course.title,
+            courseSlug: course.slug,
+            guestName,
+            guestEmail,
+            guestPhone,
+          },
     });
 
     // Culqi puede pedir un reto 3DS antes de decidir el cargo. No se registra
@@ -134,6 +191,7 @@ export async function POST(request: NextRequest) {
         amountCents,
         currency,
         rawPayload: charge.raw,
+        purpose: isAuthorizedQa ? PAYMENT_QA_PURPOSE : undefined,
       });
       return NextResponse.json(
         {
@@ -146,7 +204,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 3b. Cargo exitoso: crear lead+enrollment+payment + disparar syncs
+    // 3b. Una prueba aprobada se registra sin crear inscripción ni contaminar
+    // HubSpot, Brevo o los correos transaccionales del curso real.
+    if (isAuthorizedQa) {
+      const qaResult = await recordSuccessfulQaCharge({
+        chargeId: charge.chargeId!,
+        amountCents,
+        currency,
+        rawPayload: charge.raw,
+      });
+
+      return NextResponse.json({
+        ok: true,
+        status: "approved",
+        chargeId: charge.chargeId,
+        ...(qaResult.ok ? {} : { warning: "Registro en sincronización" }),
+      });
+    }
+
+    // 3c. Cargo exitoso normal: crear lead+enrollment+payment + syncs.
     const result = await fulfillSuccessfulCharge({
       chargeId: charge.chargeId!,
       amountCents,

@@ -29,6 +29,10 @@ Copiar `.env.example` a `.env.local` y completar:
 - `EMAIL_API_KEY`
 - `EMAIL_FROM`
 - `PROTOCOLS_WHATSAPP_GROUP_URL` (solo servidor; invitación al grupo del curso Protocolos)
+- `PAYMENTS_QA_ACCESS_KEY` (solo servidor; clave privada de la prueba de cobros)
+
+La prueba aislada de Culqi vive en `/pruebas/pagos/protocolos`. No aparece en
+el catálogo ni crea inscripciones, leads o sincronizaciones de CRM.
 
 ## Base de datos
 Ejecutar el esquema en Supabase SQL editor:

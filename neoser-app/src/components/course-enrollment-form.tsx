@@ -30,6 +30,14 @@ type Props = {
   priceUSD?: number;
   /** Enlace de WhatsApp del curso, para consultas antes de pagar. */
   whatsappHref?: string;
+  /** Desactiva PayPal en flujos que requieren confirmación automática. */
+  allowPaypal?: boolean;
+  /** Oculta el consentimiento comercial en pruebas operativas internas. */
+  showMarketingOptIn?: boolean;
+  /** Texto alternativo para el botón principal. */
+  submitLabel?: string;
+  /** Permite Culqi solo en una ruta privada aunque el checkout público esté apagado. */
+  forceCulqiEnabled?: boolean;
 };
 
 /** Vías de pago disponibles en el checkout. */
@@ -146,15 +154,20 @@ export function CourseEnrollmentForm({
   courseCurrency,
   priceUSD,
   whatsappHref,
+  allowPaypal = true,
+  showMarketingOptIn = true,
+  submitLabel,
+  forceCulqiEnabled = false,
 }: Props) {
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [error, setError] = useState<string>("");
 
+  const culqiAvailable = CULQI_ENABLED || forceCulqiEnabled;
   const usdAvailable = typeof priceUSD === "number" && priceUSD > 0;
 
   // Opciones visibles según lo que esté configurado para este curso.
   const methods: { id: PayMethod; label: string; detail: string }[] = [
-    ...(CULQI_ENABLED
+    ...(culqiAvailable
       ? [
           {
             id: "culqi-pen" as const,
@@ -163,7 +176,7 @@ export function CourseEnrollmentForm({
           },
         ]
       : []),
-    ...(CULQI_ENABLED && usdAvailable
+    ...(culqiAvailable && usdAvailable
       ? [
           {
             id: "culqi-usd" as const,
@@ -172,7 +185,7 @@ export function CourseEnrollmentForm({
           },
         ]
       : []),
-    ...(usdAvailable
+    ...(allowPaypal && usdAvailable
       ? [
           {
             id: "paypal" as const,
@@ -288,7 +301,7 @@ export function CourseEnrollmentForm({
 
   // Culqi3DS publica el resultado mediante postMessage en el mismo origen.
   useEffect(() => {
-    if (!CULQI_ENABLED) return;
+    if (!culqiAvailable) return;
 
     function handleThreeDsMessage(event: MessageEvent<unknown>) {
       if (event.origin !== window.location.origin || !event.data) return;
@@ -320,7 +333,7 @@ export function CourseEnrollmentForm({
 
     window.addEventListener("message", handleThreeDsMessage);
     return () => window.removeEventListener("message", handleThreeDsMessage);
-  }, [submitCharge]);
+  }, [culqiAvailable, submitCharge]);
 
   /** Lee y normaliza los campos comunes del formulario. */
   function readForm(form: HTMLFormElement) {
@@ -567,7 +580,7 @@ export function CourseEnrollmentForm({
 
   return (
     <>
-      {CULQI_ENABLED && (
+      {culqiAvailable && (
         <>
           <Script
             src="https://js.culqi.com/checkout-js"
@@ -688,7 +701,9 @@ export function CourseEnrollmentForm({
           className={`min-h-24 ${inputClass}`}
         />
 
-        <MarketingOptIn description="Novedades de nuestros programas, nuevas ediciones y recursos para tu práctica profesional." />
+        {showMarketingOptIn ? (
+          <MarketingOptIn description="Novedades de nuestros programas, nuevas ediciones y recursos para tu práctica profesional." />
+        ) : null}
 
         <button
           type="submit"
@@ -703,7 +718,7 @@ export function CourseEnrollmentForm({
             ? "Procesando..."
             : isPaypal
               ? "Continuar a PayPal"
-              : "Pagar e inscribirme"}
+              : submitLabel || "Pagar e inscribirme"}
         </button>
 
         {status === "error" && (

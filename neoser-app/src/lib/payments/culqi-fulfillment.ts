@@ -17,6 +17,7 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { syncEnrollmentToHubspot } from "@/lib/hubspot";
 import { syncEnrollmentToBrevo } from "@/lib/brevo";
 import { sendEmail, buildEnrollmentConfirmationEmail } from "@/lib/email";
+import { PAYMENT_QA_PURPOSE } from "@/lib/payments/payment-qa";
 
 export type FulfillmentMetadata = {
   courseId: string;
@@ -46,6 +47,54 @@ export type FulfillmentResult = {
   paymentId?: string;
   error?: string;
 };
+
+/**
+ * Registra una prueba de cobro sin crear lead, inscripción ni sincronizaciones
+ * externas. El cargo sigue quedando conciliable por su chr_* en payments.
+ */
+export async function recordSuccessfulQaCharge(input: {
+  chargeId: string;
+  amountCents: number;
+  currency: string;
+  rawPayload: unknown;
+}): Promise<{ ok: boolean; paymentId?: string }> {
+  const supabase = createServiceClient();
+  const operationalPayload =
+    input.rawPayload && typeof input.rawPayload === "object"
+      ? (input.rawPayload as Record<string, unknown>)
+      : {};
+
+  const { data, error } = await supabase
+    .from("payments")
+    .upsert(
+      {
+        enrollment_id: null,
+        lead_id: null,
+        payment_provider: "culqi",
+        provider_payment_id: input.chargeId,
+        amount: input.amountCents / 100,
+        currency: input.currency,
+        status: "approved",
+        raw_payload: {
+          ...operationalPayload,
+          purpose: PAYMENT_QA_PURPOSE,
+        },
+        paid_at: new Date().toISOString(),
+      },
+      { onConflict: "provider_payment_id" },
+    )
+    .select("id")
+    .single();
+
+  if (error || !data) {
+    console.error("[culqi/qa] registro del cobro aprobado falló", {
+      errorCode: error?.code,
+    });
+    return { ok: false };
+  }
+
+  return { ok: true, paymentId: data.id };
+}
 
 /**
  * Procesa un cargo exitoso de Culqi:
@@ -216,6 +265,7 @@ export async function recordFailedCharge(input: {
   amountCents: number;
   currency: string;
   rawPayload: unknown;
+  purpose?: string;
 }): Promise<{ paymentId?: string }> {
   // Sin chargeId no hay identificador único: se omite sin registrar payload.
   if (!input.chargeId) {
@@ -235,7 +285,14 @@ export async function recordFailedCharge(input: {
         amount: input.amountCents / 100,
         currency: input.currency,
         status: "rejected",
-        raw_payload: input.rawPayload as object | null,
+        raw_payload: input.purpose
+          ? {
+              ...(input.rawPayload && typeof input.rawPayload === "object"
+                ? (input.rawPayload as Record<string, unknown>)
+                : {}),
+              purpose: input.purpose,
+            }
+          : (input.rawPayload as object | null),
       },
       { onConflict: "provider_payment_id" },
     )

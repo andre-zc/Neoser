@@ -2,6 +2,10 @@ import "server-only";
 
 import QRCode from "qrcode";
 import { createServiceClient } from "@/lib/supabase/service";
+import {
+  isPaymentQaRawPayload,
+  PAYMENT_QA_COURSE_ID,
+} from "@/lib/payments/payment-qa";
 
 export const PROTOCOLS_COURSE_ID =
   "9a8b7c6d-eeee-4eee-aeee-eeeeeeeeeeee";
@@ -29,6 +33,7 @@ export function getProtocolsWhatsappGroupUrl(): string | null {
 }
 
 type PaymentContext = {
+  kind: "course" | "payment_qa";
   status: string;
   provider: string;
   courseId: string;
@@ -48,11 +53,22 @@ export async function getPaymentContext(
     const supabase = createServiceClient();
     const { data: payment, error: paymentError } = await supabase
       .from("payments")
-      .select("status, payment_provider, enrollment_id")
+      .select("status, payment_provider, enrollment_id, raw_payload")
       .eq("provider_payment_id", normalizedReference)
       .maybeSingle();
 
-    if (paymentError || !payment?.enrollment_id) return null;
+    if (paymentError || !payment) return null;
+
+    if (isPaymentQaRawPayload(payment.raw_payload)) {
+      return {
+        kind: "payment_qa",
+        status: payment.status,
+        provider: payment.payment_provider,
+        courseId: PAYMENT_QA_COURSE_ID,
+      };
+    }
+
+    if (!payment.enrollment_id) return null;
 
     const { data: enrollment, error: enrollmentError } = await supabase
       .from("enrollments")
@@ -63,6 +79,7 @@ export async function getPaymentContext(
     if (enrollmentError || !enrollment?.course_id) return null;
 
     return {
+      kind: "course",
       status: payment.status,
       provider: payment.payment_provider,
       courseId: enrollment.course_id,
