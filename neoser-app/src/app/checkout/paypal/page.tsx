@@ -2,6 +2,11 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { buildPaypalMeUrl } from "@/lib/payments/paypal";
 import { CONTACT_EMAIL, CONTACT_WHATSAPP } from "@/lib/courses-catalog";
+import {
+  buildProtocolsWhatsappHref,
+  getPaymentContext,
+  PROTOCOLS_COURSE_ID,
+} from "@/lib/payments/payment-context";
 
 export const metadata: Metadata = {
   title: "Completa tu pago",
@@ -24,6 +29,9 @@ export default async function PaypalPendingPage({
   const { ref, amount } = await searchParams;
   const reference = ref?.trim() || null;
   const amountUsd = amount ? Number(amount) : null;
+  const paymentContext = await getPaymentContext(reference ?? undefined);
+  const isProtocolsPayment =
+    paymentContext?.courseId === PROTOCOLS_COURSE_ID;
 
   const paypalUrl = buildPaypalMeUrl({ amount: amountUsd, currency: "USD" });
 
@@ -32,7 +40,12 @@ export default async function PaypalPendingPage({
       reference ? ` (referencia ${reference})` : ""
     }. Les envío el comprobante.`,
   );
-  const waHref = `https://wa.me/${CONTACT_WHATSAPP}?text=${waText}`;
+  const waHref = isProtocolsPayment
+    ? buildProtocolsWhatsappHref({
+        reference: reference ?? undefined,
+        paypalPending: true,
+      })
+    : `https://wa.me/${CONTACT_WHATSAPP}?text=${waText}`;
 
   return (
     <main className="min-h-screen bg-cream py-16 md:py-24">
@@ -92,7 +105,9 @@ export default async function PaypalPendingPage({
               rel="noopener noreferrer"
               className="flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3 font-semibold text-white transition hover:bg-[#1ebe5d]"
             >
-              Enviar comprobante por WhatsApp
+              {isProtocolsPayment
+                ? "Avisar mi pago por WhatsApp"
+                : "Enviar comprobante por WhatsApp"}
             </a>
           </div>
 
