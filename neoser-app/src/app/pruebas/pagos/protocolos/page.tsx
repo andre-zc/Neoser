@@ -102,14 +102,18 @@ export default async function ProtocolsPaymentQaPage() {
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
           <div className="rounded-2xl border border-navy/10 bg-white p-5">
             <p className="text-sm font-semibold text-gray-500">Prueba en soles</p>
-            <p className="mt-1 text-3xl font-bold text-navy">S/ 5.00</p>
+            <p className="mt-1 text-3xl font-bold text-navy">
+              S/ {PAYMENT_QA_PRICE_PEN.toFixed(2)}
+            </p>
             <p className="mt-2 text-xs leading-relaxed text-gray-500">
               Tarjeta nacional o Yape.
             </p>
           </div>
           <div className="rounded-2xl border border-navy/10 bg-white p-5">
             <p className="text-sm font-semibold text-gray-500">Prueba en dólares</p>
-            <p className="mt-1 text-3xl font-bold text-navy">USD 1.50</p>
+            <p className="mt-1 text-3xl font-bold text-navy">
+              USD {PAYMENT_QA_PRICE_USD.toFixed(2)}
+            </p>
             <p className="mt-2 text-xs leading-relaxed text-gray-500">
               Tarjeta con cobro en USD; requiere multimoneda activa.
             </p>

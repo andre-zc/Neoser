@@ -6,8 +6,10 @@ export const PAYMENT_QA_COURSE_ID =
   "9a8b7c6d-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
 export const PAYMENT_QA_PURPOSE = "protocolos_payment_qa";
 export const PAYMENT_QA_TITLE = "Prueba de pago — Curso Protocolos";
-export const PAYMENT_QA_PRICE_PEN = 5;
-export const PAYMENT_QA_PRICE_USD = 1.5;
+// Mínimos vigentes del checkout online de Culqi para que el laboratorio
+// reproduzca los mismos métodos disponibles que el curso publicado.
+export const PAYMENT_QA_PRICE_PEN = 6;
+export const PAYMENT_QA_PRICE_USD = 3;
 export const PAYMENT_QA_COOKIE_NAME = "neoser_payment_qa";
 
 const PAYMENT_QA_SESSION_TTL_SECONDS = 4 * 60 * 60;
