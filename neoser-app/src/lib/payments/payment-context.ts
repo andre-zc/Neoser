@@ -9,6 +9,25 @@ export const PROTOCOLS_COURSE_TITLE =
   "Protocolos para un Nacimiento Humanizado";
 export const PROTOCOLS_CONFIRMATION_WHATSAPP = "51959798948";
 
+export function getProtocolsWhatsappGroupUrl(): string | null {
+  const configuredUrl = process.env.PROTOCOLS_WHATSAPP_GROUP_URL?.trim();
+  if (!configuredUrl) return null;
+
+  try {
+    const groupUrl = new URL(configuredUrl);
+    const isWhatsappInvite =
+      groupUrl.protocol === "https:" &&
+      groupUrl.hostname === "chat.whatsapp.com" &&
+      /^\/[A-Za-z0-9]+$/.test(groupUrl.pathname);
+
+    if (!isWhatsappInvite) return null;
+
+    return `${groupUrl.origin}${groupUrl.pathname}`;
+  } catch {
+    return null;
+  }
+}
+
 type PaymentContext = {
   status: string;
   provider: string;

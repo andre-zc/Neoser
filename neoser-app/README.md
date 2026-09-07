@@ -28,6 +28,7 @@ Copiar `.env.example` a `.env.local` y completar:
 - `EMAIL_PROVIDER` (`hubspot` o `brevo`)
 - `EMAIL_API_KEY`
 - `EMAIL_FROM`
+- `PROTOCOLS_WHATSAPP_GROUP_URL` (solo servidor; invitación al grupo del curso Protocolos)
 
 ## Base de datos
 Ejecutar el esquema en Supabase SQL editor:

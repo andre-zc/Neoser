@@ -1,16 +1,25 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ArrowLeft, BookOpenCheck, CheckCircle2, Clock3 } from "lucide-react";
 import {
   buildProtocolsWhatsappHref,
   buildWhatsappQrDataUrl,
   getPaymentContext,
+  getProtocolsWhatsappGroupUrl,
   PROTOCOLS_COURSE_ID,
   PROTOCOLS_COURSE_TITLE,
 } from "@/lib/payments/payment-context";
 
 type SearchParams = Promise<{ ref?: string; orderRef?: string }>;
+
+export const metadata: Metadata = {
+  title: "Pago confirmado",
+  description:
+    "Confirmación de pago e indicaciones de acceso al curso adquirido en NeoSer.",
+  robots: { index: false, follow: false },
+};
 
 function WhatsappIcon({ className }: { className?: string }) {
   return (
@@ -27,7 +36,10 @@ function WhatsappIcon({ className }: { className?: string }) {
 }
 
 async function ProtocolsSuccessContent({ reference }: { reference: string }) {
-  const whatsappHref = buildProtocolsWhatsappHref({ reference });
+  const groupHref = getProtocolsWhatsappGroupUrl();
+  const hasDirectGroupAccess = Boolean(groupHref);
+  const whatsappHref =
+    groupHref ?? buildProtocolsWhatsappHref({ reference });
   const whatsappQrDataUrl = await buildWhatsappQrDataUrl(whatsappHref);
 
   return (
@@ -50,9 +62,9 @@ async function ProtocolsSuccessContent({ reference }: { reference: string }) {
                 ¡Te damos la bienvenida a NeoSer!
               </h1>
               <p className="mt-5 max-w-md text-base leading-relaxed text-white/80">
-                Ya tienes un lugar en {PROTOCOLS_COURSE_TITLE}. Ahora
-                coordinaremos contigo el ingreso al grupo y las indicaciones
-                previas.
+                Ya tienes un lugar en {PROTOCOLS_COURSE_TITLE}. Tu acceso al
+                grupo del curso está listo para que puedas recibir las
+                indicaciones y materiales.
               </p>
             </div>
 
@@ -68,15 +80,17 @@ async function ProtocolsSuccessContent({ reference }: { reference: string }) {
 
           <section className="px-7 py-10 sm:px-10 md:flex md:flex-col md:justify-center md:px-12 md:py-14">
             <p className="text-sm font-semibold text-pink-dark">
-              Tu siguiente paso
+              Tu acceso está listo
             </p>
             <h2 className="mt-2 text-2xl leading-tight text-navy sm:text-3xl">
-              Escríbenos para ingresar al grupo del curso
+              {hasDirectGroupAccess
+                ? "Únete al grupo de WhatsApp del curso"
+                : "Escríbenos para recibir el enlace del grupo"}
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-gray-500 sm:text-base">
-              Abriremos una conversación con un mensaje preparado. Revísalo y
-              envíalo para que podamos identificar tu pago y compartirte el
-              enlace del grupo.
+              {hasDirectGroupAccess
+                ? "Pulsa el botón para abrir la invitación. En el grupo recibirás los avisos, materiales e indicaciones del seminario."
+                : "No pudimos abrir la invitación directa. Escríbenos por WhatsApp para que podamos enviarte el acceso."}
             </p>
 
             <a
@@ -86,7 +100,9 @@ async function ProtocolsSuccessContent({ reference }: { reference: string }) {
               className="mt-7 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#25D366] px-5 py-4 text-center text-base font-bold text-white shadow-[0_8px_0_#159447] transition-transform hover:-translate-y-0.5 hover:bg-[#20c45a] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#159447] active:translate-y-1 active:shadow-[0_4px_0_#159447]"
             >
               <WhatsappIcon className="h-6 w-6 shrink-0" />
-              Solicitar acceso al grupo
+              {hasDirectGroupAccess
+                ? "Únete al grupo de WhatsApp"
+                : "Escríbenos por WhatsApp"}
             </a>
 
             {whatsappQrDataUrl ? (
@@ -94,7 +110,11 @@ async function ProtocolsSuccessContent({ reference }: { reference: string }) {
                 <div className="rounded-xl bg-white p-2 shadow-sm ring-1 ring-navy/10">
                   <Image
                     src={whatsappQrDataUrl}
-                    alt="Código QR para solicitar acceso al grupo de WhatsApp"
+                    alt={
+                      hasDirectGroupAccess
+                        ? "Código QR para unirse al grupo de WhatsApp"
+                        : "Código QR para escribir a NeoSer por WhatsApp"
+                    }
                     width={184}
                     height={184}
                     unoptimized
@@ -106,8 +126,9 @@ async function ProtocolsSuccessContent({ reference }: { reference: string }) {
                     ¿Estás en una computadora?
                   </p>
                   <p className="mt-2 text-xs leading-relaxed text-gray-500 sm:text-sm">
-                    Escanea el código con la cámara de tu celular para abrir el
-                    mensaje en WhatsApp.
+                    {hasDirectGroupAccess
+                      ? "Escanea el código con la cámara de tu celular para abrir la invitación al grupo."
+                      : "Escanea el código con la cámara de tu celular para escribirnos por WhatsApp."}
                   </p>
                 </div>
               </div>
@@ -117,7 +138,7 @@ async function ProtocolsSuccessContent({ reference }: { reference: string }) {
               <div className="flex gap-3">
                 <BookOpenCheck className="mt-0.5 h-5 w-5 shrink-0 text-pink-dark" />
                 <p className="text-sm leading-relaxed text-gray-600">
-                  Recibirás el enlace de ingreso al grupo y los materiales del
+                  Dentro del grupo recibirás los materiales y avisos del
                   seminario.
                 </p>
               </div>
@@ -196,6 +217,7 @@ export default async function CheckoutSuccessPage({
   const paymentContext = await getPaymentContext(reference);
   const isProtocolsPayment =
     paymentContext?.courseId === PROTOCOLS_COURSE_ID &&
+    paymentContext.provider === "culqi" &&
     paymentContext.status === "approved";
 
   if (isProtocolsPayment && reference) {
