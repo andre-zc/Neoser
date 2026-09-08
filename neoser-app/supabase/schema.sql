@@ -23,6 +23,12 @@ create table if not exists public.enrollments (
   user_id uuid not null references auth.users(id) on delete cascade,
   course_id uuid not null references public.courses(id) on delete cascade,
   notes text,
+  identity_document text,
+  profession text,
+  workplace text,
+  city text,
+  country text,
+  registration_details_completed_at timestamptz,
   status text not null default 'pending' check (status in ('pending', 'paid', 'cancelled')),
   created_at timestamptz not null default now(),
   unique (user_id, course_id)

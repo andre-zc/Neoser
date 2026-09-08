@@ -85,6 +85,15 @@ function formatPrice(amount: number, currency: string) {
   return `${currency} ${Number(amount).toLocaleString("es-PE")}`;
 }
 
+function escapeHtml(value: string | number | null | undefined) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 export function buildEnrollmentConfirmationEmail(input: EnrollmentEmailInput) {
   const subject = `Inscripción confirmada — ${input.courseTitle}`;
   const html = `
@@ -118,6 +127,88 @@ export function buildEnrollmentConfirmationEmail(input: EnrollmentEmailInput) {
       <p style="color: #A0AEC0; font-size: 12px; text-align: center; margin: 24px 0 0;">
         NeoSer — Maternidad y Medicina Humanizada · Chiclayo, Perú
       </p>
+    </div>
+  `.trim();
+
+  return { subject, html };
+}
+
+type ProtocolsRegistrationNotificationInput = {
+  fullName: string;
+  identityDocument: string;
+  whatsappPhone: string;
+  email: string;
+  profession: string;
+  workplace: string;
+  city: string;
+  country: string;
+  courseTitle: string;
+  paymentReference: string;
+  paymentProvider: string;
+  amount: number;
+  currency: string;
+  paidAt?: string | null;
+  completedAt: string;
+};
+
+/**
+ * Aviso interno enviado solo después de guardar los datos posteriores al pago.
+ * Todos los valores declarados por la participante se escapan antes de formar
+ * el HTML para evitar que contenido ingresado en el formulario se interprete.
+ */
+export function buildProtocolsRegistrationNotificationEmail(
+  input: ProtocolsRegistrationNotificationInput,
+) {
+  const subject = `Nueva inscripción completada — ${input.courseTitle}`;
+  const formatDate = (value?: string | null) => {
+    if (!value) return "No disponible";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "No disponible";
+    return date.toLocaleString("es-PE", { timeZone: "America/Lima" });
+  };
+  const row = (label: string, value: string) => `
+    <tr>
+      <td style="padding:9px 0;color:#718096;vertical-align:top;width:40%;">${escapeHtml(label)}</td>
+      <td style="padding:9px 0;color:#1F2A44;font-weight:600;">${escapeHtml(value)}</td>
+    </tr>`;
+
+  const html = `
+    <div style="font-family:Arial,sans-serif;max-width:620px;margin:0 auto;background:#FFF8F2;padding:32px;">
+      <div style="background:#FFFFFF;border-radius:16px;padding:32px;">
+        <div style="background:#EAF8F0;border-left:4px solid #25A65A;border-radius:8px;padding:12px 16px;margin-bottom:20px;">
+          <p style="margin:0;color:#176B3A;font-size:14px;font-weight:bold;">Pago confirmado y formulario completado</p>
+          <p style="margin:6px 0 0;color:#176B3A;font-size:13px;line-height:1.5;">
+            La participante ya recibió el acceso al grupo de WhatsApp del curso.
+          </p>
+        </div>
+        <h1 style="color:#1F2A44;font-size:21px;margin:0 0 18px;">Nueva inscripción en Protocolos</h1>
+
+        <h2 style="color:#E8879B;font-size:14px;text-transform:uppercase;letter-spacing:.5px;margin:0 0 8px;">Datos de la participante</h2>
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">
+          ${row("Nombres y apellidos", input.fullName)}
+          ${row("DNI o cédula", input.identityDocument)}
+          ${row("Número de WhatsApp", input.whatsappPhone)}
+          ${row("Correo electrónico", input.email)}
+          ${row("Profesión / ocupación", input.profession)}
+          ${row("Centro donde labora", input.workplace)}
+          ${row("Ciudad", input.city)}
+          ${row("País", input.country)}
+        </table>
+
+        <h2 style="color:#E8879B;font-size:14px;text-transform:uppercase;letter-spacing:.5px;margin:24px 0 8px;">Datos del pago</h2>
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">
+          ${row("Curso", input.courseTitle)}
+          ${row("Monto pagado", formatPrice(input.amount, input.currency))}
+          ${row("Proveedor", input.paymentProvider.toUpperCase())}
+          ${row("Referencia", input.paymentReference)}
+          ${row("Fecha del pago", formatDate(input.paidAt))}
+          ${row("Formulario completado", formatDate(input.completedAt))}
+        </table>
+
+        <p style="margin:24px 0 0;padding:14px 16px;background:#FFF8F2;border-radius:10px;color:#718096;font-size:12px;line-height:1.5;">
+          Información confidencial para la gestión interna de la inscripción. No reenviar fuera del equipo de NeoSer.
+        </p>
+      </div>
     </div>
   `.trim();
 

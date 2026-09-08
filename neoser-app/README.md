@@ -28,6 +28,7 @@ Copiar `.env.example` a `.env.local` y completar:
 - `EMAIL_PROVIDER` (`hubspot` o `brevo`)
 - `EMAIL_API_KEY`
 - `EMAIL_FROM`
+- `ENROLLMENT_NOTIFY_EMAIL` (aviso interno cuando se completa la inscripción del curso Protocolos)
 - `PROTOCOLS_WHATSAPP_GROUP_URL` (solo servidor; invitación al grupo del curso Protocolos)
 - `PAYMENTS_QA_ACCESS_KEY` (solo servidor; clave privada de la prueba de cobros)
 

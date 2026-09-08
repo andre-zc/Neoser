@@ -37,6 +37,7 @@ type PaymentContext = {
   status: string;
   provider: string;
   courseId: string;
+  registrationCompleted: boolean;
 };
 
 /**
@@ -65,16 +66,39 @@ export async function getPaymentContext(
         status: payment.status,
         provider: payment.payment_provider,
         courseId: PAYMENT_QA_COURSE_ID,
+        registrationCompleted: false,
       };
     }
 
     if (!payment.enrollment_id) return null;
 
-    const { data: enrollment, error: enrollmentError } = await supabase
+    let { data: enrollment, error: enrollmentError } = await supabase
       .from("enrollments")
-      .select("course_id")
+      .select("course_id, registration_details_completed_at")
       .eq("id", payment.enrollment_id)
       .maybeSingle();
+
+    // Permite desplegar el código antes de ejecutar la migración sin romper la
+    // confirmación de compras existentes. Mientras falte la columna se conserva
+    // temporalmente el acceso anterior; el formulario se activa al migrar la BD.
+    if (
+      enrollmentError &&
+      ["42703", "PGRST204"].includes(enrollmentError.code)
+    ) {
+      const fallback = await supabase
+        .from("enrollments")
+        .select("course_id")
+        .eq("id", payment.enrollment_id)
+        .maybeSingle();
+
+      enrollment = fallback.data
+        ? {
+            ...fallback.data,
+            registration_details_completed_at: "migration_pending",
+          }
+        : null;
+      enrollmentError = fallback.error;
+    }
 
     if (enrollmentError || !enrollment?.course_id) return null;
 
@@ -83,6 +107,9 @@ export async function getPaymentContext(
       status: payment.status,
       provider: payment.payment_provider,
       courseId: enrollment.course_id,
+      registrationCompleted: Boolean(
+        enrollment.registration_details_completed_at,
+      ),
     };
   } catch {
     // El cierre de compra genérico debe seguir disponible ante una caída externa.

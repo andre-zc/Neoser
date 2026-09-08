@@ -125,6 +125,43 @@ export const guestEnrollmentSchema = z.object({
 });
 
 // ============================================
+// Datos posteriores al pago — curso Protocolos
+// ============================================
+
+const trimmedRequiredText = (minimum: number, maximum: number) =>
+  z.string().trim().min(minimum).max(maximum);
+
+export const protocolsRegistrationSchema = z
+  .object({
+    // La referencia opaca del cargo demuestra que el formulario pertenece a
+    // un pago aprobado. El servidor vuelve a comprobarla antes de guardar.
+    reference: z
+      .string()
+      .trim()
+      .max(120)
+      .regex(/^chr_(?:test|live)_[A-Za-z0-9]+$/),
+    fullName: trimmedRequiredText(2, 120),
+    identityDocument: trimmedRequiredText(6, 30).regex(
+      /^[\p{L}\p{N}.\- ]+$/u,
+      "Ingresa un DNI o documento válido",
+    ),
+    whatsappPhone: z
+      .string()
+      .trim()
+      .min(7)
+      .max(24)
+      .regex(/^\+?[0-9()\- ]+$/, "Ingresa un número de WhatsApp válido")
+      .transform((value) => value.replace(/\D/g, ""))
+      .pipe(z.string().min(7).max(15)),
+    email: z.string().trim().email().max(254),
+    profession: trimmedRequiredText(2, 120),
+    workplace: trimmedRequiredText(2, 160),
+    city: trimmedRequiredText(2, 100),
+    country: trimmedRequiredText(2, 100),
+  })
+  .strict();
+
+// ============================================
 // Reunión de coordinación institucional (formulario sin calendario)
 // ============================================
 
