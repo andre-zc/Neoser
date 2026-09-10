@@ -28,6 +28,7 @@ import { ContactLeadForm } from "@/components/contact-lead-form";
 import { WhatsappInlineButton } from "@/components/whatsapp-button";
 import { services as servicesData } from "@/lib/services";
 import { ServicesCarousel } from "@/components/services-carousel";
+import { HomeTestimonials } from "@/components/home-testimonials";
 import { SiteHeader } from "@/components/site-header";
 import { CoordinationForm } from "@/components/coordination-form";
 import { CountUp } from "@/components/count-up";
@@ -199,13 +200,6 @@ export default function HomePage() {
     price:
       c.price !== null ? formatCoursePrice(c.price, c.currency) : "A consultar",
   }));
-
-  const testimonials = [
-    { seed: "mc", quote: "El diplomado cambió completamente mi manera de ver la atención del parto. Ahora aplico la medicina humanizada en cada consulta.", name: "María Carmen R.", role: "Obstetra - Trujillo", grad: "from-pink to-pink-dark" },
-    { seed: "lp", quote: "Gracias a NeoSer tuve el parto que soñaba. Me sentí acompañada, respetada y empoderada en cada momento.", name: "Lucía Pérez T.", role: "Mamá NeoSer - Chiclayo", grad: "from-blue to-navy" },
-    { seed: "av", quote: "La certificación en Rebozo fue una experiencia transformadora. El equipo de NeoSer es increíblemente profesional y cálido.", name: "Andrea Vargas M.", role: "Doula - Lima", grad: "from-pink-dark to-navy" },
-    { seed: "rs", quote: "Excelente formación. Los docentes tienen una pasión genuina por la maternidad humanizada. 100% recomendado.", name: "Rosa Sánchez L.", role: "Enfermera - Chiclayo", grad: "from-blue to-pink" },
-  ];
 
   const heroSlides = [
     {
@@ -550,7 +544,7 @@ export default function HomePage() {
             <h3 className="mb-8 text-center text-2xl font-bold text-navy">Próximos Eventos</h3>
             <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-3">
               {[
-                { id: "seminario-protocolos", month: "8 de septiembre 2026", title: <>Seminario Protocolos para un<br />Nacimiento Humanizado</>, desc: "Virtual en vivo, 4 seminarios online. Inscripciones abiertas." },
+                { id: "seminario-protocolos", month: "8 de septiembre 2026", title: <>Protocolos para un<br />Nacimiento Humanizado</>, desc: "Virtual en vivo, 4 seminarios online. Inscripciones abiertas." },
                 { id: "neurobiologia", month: "29 de setiembre 2026", title: <>Neurobiología del Parto<br />Edición 2026 II</>, desc: "Virtual sincrónica, 64 h académicas. Inscripciones abiertas." },
                 { id: "rebozo-presencial", month: "Edición 2026", title: <>El Arte del Rebozo<br />Programa de Formación</>, desc: "64 h académicas, semipresencial. Fechas en programación: consulta por WhatsApp." },
               ].map((ev) => (
@@ -565,36 +559,13 @@ export default function HomePage() {
               ))}
             </div>
           </div>
-
-          {/* Testimonios */}
-          <div className="mt-8" data-aos="fade-up">
-            <h3 className="mb-8 text-center text-2xl font-bold text-navy">Lo que dicen nuestros alumnos</h3>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {testimonials.map((t) => (
-                <div key={t.seed} className="testimonial-card">
-                  <span className="quote-icon">&ldquo;</span>
-                  <p className="testimonial-text mt-8 mb-6 text-sm">&ldquo;{t.quote}&rdquo;</p>
-                  <div className="flex items-center gap-3">
-                    <div className={`testimonial-avatar bg-gradient-to-br ${t.grad}`}>
-                      <svg viewBox="0 0 56 56" className="h-full w-full" aria-hidden="true">
-                        <circle cx="28" cy="22" r="9" fill="rgba(255,255,255,0.95)" />
-                        <path d="M10 56 Q10 38 28 38 Q46 38 46 56 Z" fill="rgba(255,255,255,0.95)" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-navy">{t.name}</p>
-                      <p className="text-xs text-gray-400">{t.role}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
+      <HomeTestimonials />
+
       {/* ===== NOSOTROS ===== */}
-      <section id="nosotros" className="relative overflow-hidden bg-cream py-12 md:py-16">
+      <section id="nosotros" className="relative overflow-hidden bg-white py-12 md:py-16">
         <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
           <span className="particle particle-circle" style={{ width: 300, height: 300, top: -80, right: -70, background: "var(--pink)", opacity: 0.05 }} />
           <span className="particle particle-ring" style={{ width: 120, height: 120, bottom: "10%", left: "6%", borderColor: "rgba(74,127,181,0.2)" }} />
@@ -622,6 +593,11 @@ export default function HomePage() {
                 NeoSer nace en Chiclayo con la visión de transformar la atención materna en el Perú.
                 Fundado por la Obst. Diana Silva Mejía y el Dr. Luis Chacaliaza, nuestro centro combina la
                 medicina basada en evidencia con el respeto profundo por la fisiología del nacimiento.
+              </p>
+              <p className="mb-4 leading-relaxed text-gray-500">
+                Somos referentes en partos humanizados en Chiclayo: acompañamos cada nacimiento con
+                cero separación entre mamá y bebé, contacto piel con piel inmediato e inicio temprano
+                de la lactancia materna, respetando el proceso fisiológico y la presencia de la familia.
               </p>
               <p className="mb-6 leading-relaxed text-gray-500">
                 Creemos que cada mujer merece ser escuchada, acompañada y respetada en una de las

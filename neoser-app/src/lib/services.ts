@@ -198,7 +198,7 @@ export const services: Service[] = [
     slug: "partos-humanizados",
     title: "Atención de Partos Humanizados",
     summary:
-      "Acompañamiento del nacimiento respetando los derechos biológicos de mamá y bebé.",
+      "Partos humanizados en Chiclayo: cero separación, piel con piel e inicio temprano de lactancia materna.",
     description: [
       "Atendemos el nacimiento desde una mirada que reconoce y protege los derechos anatómicos y biológicos de la madre y su bebé, promoviendo la libertad de movimiento, las posiciones verticales y el respeto por la fisiología del parto.",
       "Favorecemos la cero separación durante los primeros mil minutos de vida, el contacto piel con piel inmediato, el corte oportuno del cordón umbilical y el inicio temprano de la lactancia materna.",

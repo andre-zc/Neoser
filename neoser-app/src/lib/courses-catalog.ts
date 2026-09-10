@@ -205,7 +205,7 @@ export const coursesCatalog: CatalogCourse[] = [
     slug: "seminario-protocolos-nacimiento-humanizado",
     id: "9a8b7c6d-eeee-4eee-aeee-eeeeeeeeeeee",
     title: "Protocolos para un Nacimiento Humanizado",
-    navTitle: "Seminario Protocolos",
+    navTitle: "Protocolos para un Nacimiento Humanizado",
     tagline:
       "Actualización profesional desde la evidencia científica y la protección de la fisiología del nacimiento.",
     summary:

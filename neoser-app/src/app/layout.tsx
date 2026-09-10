@@ -5,6 +5,7 @@ import "./globals.css";
 import { WhatsappFab } from "@/components/whatsapp-button";
 import { SiteFooter } from "@/components/site-footer";
 import { WhatsappModalProvider } from "@/components/whatsapp-modal-provider";
+import { LEGAL } from "@/lib/legal";
 
 /** Cuerpo / UI / etiquetas — brand book */
 const montserrat = Montserrat({
@@ -27,6 +28,9 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://neoser.pe";
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 const GSC_VERIFICATION = process.env.NEXT_PUBLIC_GSC_VERIFICATION;
 
+const SITE_DESCRIPTION =
+  "Partos humanizados en Chiclayo: cero separación, piel con piel, acompañamiento respetuoso e inicio temprano de lactancia materna. Centro NeoSer de maternidad y medicina humanizada.";
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -36,22 +40,22 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "NeoSer | Maternidad y Medicina Humanizada — Chiclayo",
+    default: "NeoSer | Partos Humanizados y Maternidad — Chiclayo",
     template: "%s | NeoSer",
   },
-  description:
-    "Centro de maternidad y medicina humanizada en Chiclayo. Control prenatal, parto humanizado, técnica Rebozo, cursos profesionales y acompañamiento postparto.",
+  description: SITE_DESCRIPTION,
   keywords: [
-    "maternidad humanizada",
+    "partos humanizados Chiclayo",
     "parto humanizado Chiclayo",
+    "cero separación",
+    "piel con piel",
+    "lactancia materna Chiclayo",
+    "maternidad humanizada",
+    "acompañamiento al parto",
+    "cesárea humanizada",
     "control prenatal Chiclayo",
-    "técnica Rebozo",
-    "cursos de obstetricia",
-    "preparación al parto",
-    "lactancia materna",
-    "Spinning Babies Perú",
-    "centro de maternidad Lambayeque",
     "Diana Silva Mejía obstetra",
+    "centro de maternidad Lambayeque",
   ],
   authors: [{ name: "NeoSer" }],
   creator: "NeoSer",
@@ -64,23 +68,21 @@ export const metadata: Metadata = {
     locale: "es_PE",
     url: SITE_URL,
     siteName: "NeoSer",
-    title: "NeoSer | Maternidad y Medicina Humanizada — Chiclayo",
-    description:
-      "Centro de maternidad y medicina humanizada en Chiclayo. Acompañamos cada etapa de tu maternidad con calidez, profesionalismo y respeto.",
+    title: "NeoSer | Partos Humanizados en Chiclayo",
+    description: SITE_DESCRIPTION,
     images: [
       {
         url: "/assets/logo-full-color.png",
         width: 1200,
         height: 630,
-        alt: "NeoSer - Maternidad y Medicina Humanizada",
+        alt: "NeoSer - Partos humanizados en Chiclayo",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "NeoSer | Maternidad y Medicina Humanizada — Chiclayo",
-    description:
-      "Centro de maternidad humanizada en Chiclayo. Control prenatal, parto humanizado, cursos y acompañamiento postparto.",
+    title: "NeoSer | Partos Humanizados en Chiclayo",
+    description: SITE_DESCRIPTION,
     images: ["/assets/logo-full-color.png"],
   },
   robots: {
@@ -99,6 +101,54 @@ export const metadata: Metadata = {
   category: "health",
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": ["MedicalBusiness", "LocalBusiness"],
+  name: "NeoSer",
+  alternateName: "NeoSer Perú",
+  description: SITE_DESCRIPTION,
+  url: SITE_URL,
+  telephone: LEGAL.telefonoLink,
+  email: LEGAL.email,
+  image: `${SITE_URL}/assets/logo-full-color.png`,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Calle Los Sauces 542, Urb. Santa Victoria",
+    addressLocality: "Chiclayo",
+    addressRegion: "Lambayeque",
+    addressCountry: "PE",
+  },
+  areaServed: {
+    "@type": "City",
+    name: "Chiclayo",
+  },
+  medicalSpecialty: "Obstetrics",
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Servicios NeoSer",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Partos humanizados",
+          description:
+            "Acompañamiento del nacimiento con cero separación, contacto piel con piel e inicio temprano de la lactancia materna en Chiclayo.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Acompañamiento prenatal y postparto",
+          description:
+            "Control prenatal, preparación al parto y apoyo a la lactancia materna con enfoque humanizado.",
+        },
+      },
+    ],
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -114,6 +164,12 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://app.cal.com" />
         <link rel="preconnect" href="https://www.google.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationJsonLd),
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col">
         <WhatsappModalProvider>

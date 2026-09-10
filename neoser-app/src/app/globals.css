@@ -343,10 +343,57 @@
   .course-price { font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif; font-size: 1.2rem; font-weight: 700; color: var(--navy); }
 
   /* -- Testimonials -- */
-  .testimonial-card { background: var(--white); border-radius: 20px; padding: 2.25rem; position: relative; border: 1px solid rgba(27,58,107,0.06); }
-  .testimonial-card .quote-icon { font-size: 3rem; color: var(--pink-light); font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif; line-height: 1; position: absolute; top: 1rem; left: 1.5rem; }
-  .testimonial-text { font-style: italic; color: var(--gray-700); line-height: 1.7; }
-  .testimonial-avatar { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif; font-weight: 700; color: var(--white); font-size: 1.15rem; flex-shrink: 0; box-shadow: 0 4px 12px rgba(27,58,107,0.15); border: 2px solid var(--white); overflow: hidden; }
+  .testimonial-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 2rem 1.75rem 1.75rem;
+    position: relative;
+    border: 1px solid rgba(27,58,107,0.06);
+    box-shadow: 0 8px 28px rgba(27,58,107,0.04);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+  }
+  .testimonial-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(27,58,107,0.1);
+  }
+  .testimonial-card .quote-icon {
+    font-size: 3.5rem;
+    color: var(--pink-light);
+    font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif;
+    line-height: 1;
+    position: absolute;
+    top: 0.65rem;
+    left: 1.25rem;
+  }
+  .testimonial-text {
+    font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif;
+    font-style: italic;
+    color: var(--gray-700);
+    line-height: 1.75;
+  }
+  .testimonial-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-montserrat), system-ui, sans-serif;
+    font-weight: 700;
+    color: var(--white);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(27,58,107,0.15);
+    border: 2px solid var(--white);
+    overflow: hidden;
+  }
+  .testimonial-rail {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .testimonial-rail::-webkit-scrollbar { display: none; }
+  .testimonial-rail > * { scroll-snap-align: center; }
 
   /* -- Team -- */
   .team-member { text-align: center; transition: all 0.3s ease; }
