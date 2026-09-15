@@ -50,6 +50,11 @@ export async function POST(request: NextRequest) {
       marketingConsent,
       notes,
       utmSource,
+      utmMedium,
+      utmCampaign,
+      utmContent,
+      gclid,
+      landingPath,
     } = parsed.data;
 
     const isQaCourse = isPaymentQaCourse(courseId);
@@ -166,6 +171,12 @@ export async function POST(request: NextRequest) {
             guestName,
             guestEmail,
             guestPhone,
+            ...(utmSource ? { utmSource } : {}),
+            ...(utmMedium ? { utmMedium } : {}),
+            ...(utmCampaign ? { utmCampaign } : {}),
+            ...(utmContent ? { utmContent } : {}),
+            ...(gclid ? { gclid } : {}),
+            ...(landingPath ? { landingPath } : {}),
           },
     });
 
@@ -237,6 +248,11 @@ export async function POST(request: NextRequest) {
         marketingConsent,
         notes,
         utmSource,
+        utmMedium,
+        utmCampaign,
+        utmContent,
+        gclid,
+        landingPath,
       },
       rawPayload: charge.raw,
     });

@@ -82,6 +82,12 @@ export async function POST(request: Request) {
           `Inscripción internacional (PayPal ${reference}) — ${course.title}` +
             (d.country ? ` · País: ${d.country}` : ""),
         source: d.utmSource || "paypal_internacional",
+        utm_source: d.utmSource ?? null,
+        utm_medium: d.utmMedium ?? null,
+        utm_campaign: d.utmCampaign ?? null,
+        utm_content: d.utmContent ?? null,
+        gclid: d.gclid ?? null,
+        landing_path: d.landingPath ?? null,
         wa_consent: false,
         marketing_consent: d.marketingConsent ?? false,
         marketing_consent_at: d.marketingConsent

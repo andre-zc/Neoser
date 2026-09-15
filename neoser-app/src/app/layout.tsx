@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat, Noto_Serif_Display } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import { WhatsappFab } from "@/components/whatsapp-button";
 import { SiteFooter } from "@/components/site-footer";
 import { WhatsappModalProvider } from "@/components/whatsapp-modal-provider";
 import { LEGAL } from "@/lib/legal";
+import { SiteAnalytics } from "@/components/site-analytics";
 
 /** Cuerpo / UI / etiquetas — brand book */
 const montserrat = Montserrat({
@@ -177,23 +177,7 @@ export default function RootLayout({
           <SiteFooter />
           <WhatsappFab />
         </WhatsappModalProvider>
-
-        {GA_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="ga4-init" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${GA_ID}', { anonymize_ip: true });
-              `}
-            </Script>
-          </>
-        )}
+        <SiteAnalytics measurementId={GA_ID} />
       </body>
     </html>
   );

@@ -20,6 +20,8 @@ import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import { formatUsd } from "@/lib/payments/paypal";
 import { MarketingOptIn } from "@/components/marketing-opt-in";
+import { getCampaignAttribution } from "@/lib/analytics/attribution";
+import { sendGaEvent, sendGaEventOnce } from "@/lib/analytics/ga4";
 
 type Props = {
   courseId: string;
@@ -52,6 +54,11 @@ type ChargePayload = {
   marketingConsent?: boolean;
   notes?: string;
   utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmContent?: string;
+  gclid?: string;
+  landingPath?: string;
 };
 
 type Culqi3DSParameters = {
@@ -216,6 +223,25 @@ export function CourseEnrollmentForm({
     deviceFingerprintId: string;
   } | null>(null);
 
+  useEffect(() => {
+    const item = {
+      item_id: courseId,
+      item_name: courseTitle,
+      price: Number(coursePrice),
+      quantity: 1,
+    };
+    sendGaEventOnce(`view_item_${courseId}`, "view_item", {
+      currency: courseCurrency,
+      value: Number(coursePrice),
+      items: [item],
+    });
+    sendGaEventOnce(`begin_checkout_${courseId}`, "begin_checkout", {
+      currency: courseCurrency,
+      value: Number(coursePrice),
+      items: [item],
+    });
+  }, [courseCurrency, courseId, coursePrice, courseTitle]);
+
   const submitCharge = useCallback(
     async (
       token: string,
@@ -350,6 +376,7 @@ export function CourseEnrollmentForm({
 
   async function submitPaypal(form: HTMLFormElement) {
     const data = readForm(form);
+    const attribution = getCampaignAttribution();
     setStatus("loading");
     setError("");
 
@@ -357,7 +384,7 @@ export function CourseEnrollmentForm({
       const response = await fetch("/api/payments/paypal/intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ courseId, ...data }),
+        body: JSON.stringify({ courseId, ...data, ...attribution }),
       });
 
       const json = await response.json().catch(() => ({}));
@@ -401,6 +428,7 @@ export function CourseEnrollmentForm({
     }
 
     const data = readForm(form);
+    const attribution = getCampaignAttribution();
     const payload: ChargePayload = {
       courseId,
       guestName: data.guestName,
@@ -409,6 +437,7 @@ export function CourseEnrollmentForm({
       currency: chargeCurrency,
       marketingConsent: data.marketingConsent,
       notes: data.notes,
+      ...attribution,
     };
 
     // El monto mostrado en el modal debe coincidir con el que cobrará el
@@ -538,6 +567,25 @@ export function CourseEnrollmentForm({
     event.preventDefault();
     setError("");
     const form = event.currentTarget;
+
+    const selectedCurrency = method === "culqi-pen" ? "PEN" : "USD";
+    const selectedAmount =
+      selectedCurrency === "USD" && usdAvailable
+        ? Number(priceUSD)
+        : Number(coursePrice);
+    sendGaEvent("add_payment_info", {
+      currency: selectedCurrency,
+      value: selectedAmount,
+      payment_type: method,
+      items: [
+        {
+          item_id: courseId,
+          item_name: courseTitle,
+          price: selectedAmount,
+          quantity: 1,
+        },
+      ],
+    });
 
     if (method === "paypal") {
       void submitPaypal(form);

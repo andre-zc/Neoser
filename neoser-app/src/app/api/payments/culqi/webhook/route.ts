@@ -136,6 +136,11 @@ export async function POST(request: NextRequest) {
         guestPhone: md.guestPhone,
         notes: md.notes,
         utmSource: md.utmSource,
+        utmMedium: md.utmMedium,
+        utmCampaign: md.utmCampaign,
+        utmContent: md.utmContent,
+        gclid: md.gclid,
+        landingPath: md.landingPath,
       },
       rawPayload: sanitizeCulqiPayload(event.data),
     });

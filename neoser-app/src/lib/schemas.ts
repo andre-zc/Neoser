@@ -124,6 +124,15 @@ export const guestEnrollmentSchema = z.object({
   utmSource: z.string().max(80).optional(),
 });
 
+const campaignAttributionShape = {
+  utmSource: z.string().trim().max(80).optional(),
+  utmMedium: z.string().trim().max(80).optional(),
+  utmCampaign: z.string().trim().max(120).optional(),
+  utmContent: z.string().trim().max(120).optional(),
+  gclid: z.string().trim().max(200).optional(),
+  landingPath: z.string().trim().max(300).optional(),
+};
+
 // ============================================
 // Datos posteriores al pago — curso Protocolos
 // ============================================
@@ -219,7 +228,7 @@ export const culqiChargeRequestSchema = z.object({
     .optional(),
   marketingConsent: z.boolean().optional().default(false),
   notes: z.string().max(500).optional(),
-  utmSource: z.string().max(80).optional(),
+  ...campaignAttributionShape,
 });
 
 // ============================================
@@ -239,7 +248,7 @@ export const paypalIntentRequestSchema = z.object({
   country: z.string().min(2).max(60).optional(),
   marketingConsent: z.boolean().optional().default(false),
   notes: z.string().max(500).optional(),
-  utmSource: z.string().max(80).optional(),
+  ...campaignAttributionShape,
 });
 
 // ============================================

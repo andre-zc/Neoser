@@ -28,6 +28,11 @@ export type FulfillmentMetadata = {
   marketingConsent?: boolean;
   notes?: string;
   utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmContent?: string;
+  gclid?: string;
+  landingPath?: string;
 };
 
 export type FulfillmentInput = {
@@ -136,6 +141,12 @@ export async function fulfillSuccessfulCharge(
           metadata.notes ||
           `Inscripción en curso "${metadata.courseTitle}" (charge: ${chargeId})`,
         source: metadata.utmSource || "course_enrollment",
+        utm_source: metadata.utmSource ?? null,
+        utm_medium: metadata.utmMedium ?? null,
+        utm_campaign: metadata.utmCampaign ?? null,
+        utm_content: metadata.utmContent ?? null,
+        gclid: metadata.gclid ?? null,
+        landing_path: metadata.landingPath ?? null,
         wa_consent: false,
         marketing_consent: metadata.marketingConsent ?? false,
         marketing_consent_at: metadata.marketingConsent

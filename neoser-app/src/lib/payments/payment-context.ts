@@ -37,6 +37,9 @@ type PaymentContext = {
   status: string;
   provider: string;
   courseId: string;
+  courseTitle: string;
+  amount: number;
+  currency: string;
   registrationCompleted: boolean;
 };
 
@@ -54,7 +57,7 @@ export async function getPaymentContext(
     const supabase = createServiceClient();
     const { data: payment, error: paymentError } = await supabase
       .from("payments")
-      .select("status, payment_provider, enrollment_id, raw_payload")
+      .select("status, payment_provider, enrollment_id, amount, currency, raw_payload")
       .eq("provider_payment_id", normalizedReference)
       .maybeSingle();
 
@@ -66,6 +69,9 @@ export async function getPaymentContext(
         status: payment.status,
         provider: payment.payment_provider,
         courseId: PAYMENT_QA_COURSE_ID,
+        courseTitle: "Prueba operativa de pagos",
+        amount: Number(payment.amount),
+        currency: payment.currency,
         registrationCompleted: false,
       };
     }
@@ -102,11 +108,20 @@ export async function getPaymentContext(
 
     if (enrollmentError || !enrollment?.course_id) return null;
 
+    const { data: course } = await supabase
+      .from("courses")
+      .select("title")
+      .eq("id", enrollment.course_id)
+      .maybeSingle();
+
     return {
       kind: "course",
       status: payment.status,
       provider: payment.payment_provider,
       courseId: enrollment.course_id,
+      courseTitle: course?.title ?? "Curso NeoSer",
+      amount: Number(payment.amount),
+      currency: payment.currency,
       registrationCompleted: Boolean(
         enrollment.registration_details_completed_at,
       ),

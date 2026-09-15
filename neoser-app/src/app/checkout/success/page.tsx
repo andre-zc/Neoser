@@ -20,6 +20,7 @@ import {
   PROTOCOLS_COURSE_TITLE,
 } from "@/lib/payments/payment-context";
 import { ProtocolsRegistrationForm } from "@/components/protocols-registration-form";
+import { PurchaseAnalytics } from "@/components/purchase-analytics";
 
 type SearchParams = Promise<{
   ref?: string;
@@ -416,6 +417,19 @@ export default async function CheckoutSuccessPage({
     paymentContext?.courseId === PROTOCOLS_COURSE_ID &&
     paymentContext.provider === "culqi" &&
     paymentContext.status === "approved";
+  const purchaseAnalytics =
+    paymentContext?.kind === "course" &&
+    paymentContext.status === "approved" &&
+    reference ? (
+      <PurchaseAnalytics
+        transactionId={reference}
+        courseId={paymentContext.courseId}
+        courseTitle={paymentContext.courseTitle}
+        amount={paymentContext.amount}
+        currency={paymentContext.currency}
+        provider={paymentContext.provider}
+      />
+    ) : null;
 
   if (isPaymentQa && reference) {
     return <PaymentQaSuccessContent reference={reference} />;
@@ -423,16 +437,22 @@ export default async function CheckoutSuccessPage({
 
   if (isProtocolsPayment && reference) {
     return (
-      <ProtocolsSuccessContent
-        reference={reference}
-        registrationCompleted={paymentContext.registrationCompleted}
-      />
+      <>
+        {purchaseAnalytics}
+        <ProtocolsSuccessContent
+          reference={reference}
+          registrationCompleted={paymentContext.registrationCompleted}
+        />
+      </>
     );
   }
 
   return (
-    <Suspense fallback={null}>
-      <SuccessContent orderRef={reference} />
-    </Suspense>
+    <>
+      {purchaseAnalytics}
+      <Suspense fallback={null}>
+        <SuccessContent orderRef={reference} />
+      </Suspense>
+    </>
   );
 }

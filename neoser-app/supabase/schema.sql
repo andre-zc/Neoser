@@ -65,7 +65,9 @@ create table if not exists public.contact_leads (
   utm_source text,
   utm_medium text,
   utm_campaign text,
+  utm_content text,
   gclid text,
+  landing_path text,
   created_at timestamptz not null default now()
 );
 
