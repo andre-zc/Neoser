@@ -121,7 +121,7 @@ const keyInfo = [
   { icon: Calendar, label: "Inicio", value: course.startLabel! },
   { icon: Clock, label: "Horario", value: course.scheduleLabel! },
   { icon: Laptop, label: "Modalidad", value: "Virtual sincrónica" },
-  { icon: GraduationCap, label: "Duración", value: "64 horas académicas · 4 créditos" },
+  { icon: GraduationCap, label: "Duración", value: course.durationLabel },
   { icon: Users, label: "Dirigido a", value: course.audience! },
   { icon: Library, label: "Campus Virtual", value: "Acceso durante 12 meses" },
 ];

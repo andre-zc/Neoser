@@ -7,6 +7,7 @@ export const leadSourceSchema = z.enum([
   "referida",
   "web",
   "whatsapp_button",
+  "newsletter",
   "otro",
 ]);
 

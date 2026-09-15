@@ -12,6 +12,7 @@ import {
   Phone,
   Mail,
   Clock,
+  MessageCircle,
   Award,
   Globe,
   Trophy,
@@ -545,7 +546,7 @@ export default function HomePage() {
             <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-3">
               {[
                 { id: "seminario-protocolos", month: "8 de septiembre 2026", title: <>Protocolos para un<br />Nacimiento Humanizado</>, desc: "Virtual en vivo, 4 seminarios online. Inscripciones abiertas." },
-                { id: "neurobiologia", month: "29 de setiembre 2026", title: <>Neurobiología del Parto<br />Edición 2026 II</>, desc: "Virtual sincrónica, 64 h académicas. Inscripciones abiertas." },
+                { id: "neurobiologia", month: "08 de octubre 2026", title: <>Neurobiología del Parto<br />Edición 2026 II</>, desc: "Virtual sincrónica, jueves 7–9 p. m. Inscripciones abiertas." },
                 { id: "rebozo-presencial", month: "Edición 2026", title: <>El Arte del Rebozo<br />Programa de Formación</>, desc: "64 h académicas, semipresencial. Fechas en programación: consulta por WhatsApp." },
               ].map((ev) => (
                 <div key={ev.id} className="group relative overflow-hidden rounded-2xl border border-navy/5 bg-cream p-6 transition duration-300 hover:-translate-y-1 hover:shadow-lg">
@@ -947,15 +948,28 @@ export default function HomePage() {
                 <div className="space-y-5">
                   {[
                     { icon: MapPin, iconColor: "text-pink", iconBg: "bg-pink-light", label: "Dirección", value: "Calle Los Sauces 542, Urb. Santa Victoria, Chiclayo, Lambayeque, Perú" },
-                    { icon: Phone, iconColor: "text-blue", iconBg: "bg-blue-light", label: "Teléfono", value: "+51 932 713 071" },
-                    { icon: Mail, iconColor: "text-pink", iconBg: "bg-pink-light", label: "Email", value: LEGAL.email },
+                    { icon: Phone, iconColor: "text-blue", iconBg: "bg-blue-light", label: "Teléfono", value: LEGAL.telefono, href: `tel:${LEGAL.telefonoLink}` },
+                    { icon: MessageCircle, iconColor: "text-pink", iconBg: "bg-pink-light", label: "WhatsApp", value: LEGAL.whatsappManychatLabel, href: `https://wa.me/${LEGAL.whatsappManychat}` },
+                    { icon: Mail, iconColor: "text-pink", iconBg: "bg-pink-light", label: "Email", value: LEGAL.email, href: `mailto:${LEGAL.email}` },
                     { icon: Clock, iconColor: "text-blue", iconBg: "bg-blue-light", label: "Horario", value: "Lunes a Sábado: 8:00 AM - 7:00 PM" },
                   ].map((c) => (
                     <div key={c.label} className="flex items-start gap-4">
                       <div className={`contact-icon ${c.iconBg}`}><c.icon className={`h-5 w-5 ${c.iconColor}`} /></div>
                       <div>
                         <p className="font-semibold text-navy">{c.label}</p>
-                        <p className="text-gray-500">{c.value}</p>
+                        {"href" in c && c.href ? (
+                          <a
+                            href={c.href}
+                            className="text-gray-500 transition hover:text-pink"
+                            {...(c.href.startsWith("http")
+                              ? { target: "_blank", rel: "noopener noreferrer" }
+                              : {})}
+                          >
+                            {c.value}
+                          </a>
+                        ) : (
+                          <p className="text-gray-500">{c.value}</p>
+                        )}
                       </div>
                     </div>
                   ))}

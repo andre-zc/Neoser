@@ -15,6 +15,9 @@ export const LEGAL = {
   telefono: "+51 932 713 071",
   telefonoLink: "+51932713071",
   whatsapp: "51932713071",
+  /** WhatsApp ManyChat (automatizaciones / confirmaciones). */
+  whatsappManychat: "51959798948",
+  whatsappManychatLabel: "+51 959 798 948",
   // contacto@neoser.pe NO existe: el dominio neoser.pe no tiene registros MX,
   // asi que nadie recibiria nada. INDECOPI exige un canal de contacto operativo
   // en el Libro de Reclamaciones y Culqi lo verifica, de modo que se usa el

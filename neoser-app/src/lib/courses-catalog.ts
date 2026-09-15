@@ -115,9 +115,9 @@ export const coursesCatalog: CatalogCourse[] = [
       },
     ],
     mode: "Virtual sincrónica",
-    durationLabel: "64 horas académicas · 8 sesiones",
-    startLabel: "Martes 29 de setiembre de 2026",
-    scheduleLabel: "Martes y jueves · 7:00 – 9:00 p. m. (hora Perú)",
+    durationLabel: "2 meses · 64 horas académicas · 4 créditos",
+    startLabel: "Jueves 08 de octubre de 2026",
+    scheduleLabel: "Jueves · 7:00 – 9:00 p. m. (hora Perú), una vez a la semana",
     audience:
       "Obstetras, médicos gineco-obstetras, neonatólogos, pediatras y profesionales vinculados a la atención materno-perinatal.",
     certification:

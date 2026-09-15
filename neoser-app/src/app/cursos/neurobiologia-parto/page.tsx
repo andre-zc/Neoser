@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     title:
       "Neurobiología del Parto y Protocolos para un Nacimiento Humanizado | NeoSer",
     description:
-      "Actualizar la atención del nacimiento comienza por comprender su biología. Inicio: 29 de setiembre de 2026. Modalidad virtual sincrónica, 64 horas académicas.",
+      "Actualizar la atención del nacimiento comienza por comprender su biología. Inicio: jueves 08 de octubre de 2026. Modalidad virtual sincrónica, 64 horas académicas.",
     images: ["/assets/cursos/neurobiologia-parto.jpg"],
   },
 };

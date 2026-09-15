@@ -1,5 +1,8 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ClipboardList } from "lucide-react";
 import { useWhatsappModal } from "@/components/whatsapp-modal-provider";
 
 type WhatsAppIconProps = { className?: string };
@@ -18,6 +21,7 @@ function WhatsAppIcon({ className }: WhatsAppIconProps) {
   );
 }
 
+/** FAB circular de WhatsApp (arriba del botón Regístrate). */
 export function WhatsappFab() {
   const { open } = useWhatsappModal();
   return (
@@ -25,11 +29,34 @@ export function WhatsappFab() {
       type="button"
       onClick={open}
       aria-label="Escríbenos por WhatsApp"
-      className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-white shadow-lg ring-1 ring-black/10 transition hover:bg-[#1ebe5d] hover:shadow-xl hover:-translate-y-0.5 md:bottom-6 md:right-6 md:px-5 print:hidden"
+      className="fixed bottom-[5.75rem] right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg ring-1 ring-black/10 transition hover:bg-[#1ebe5d] hover:shadow-xl hover:-translate-y-0.5 md:bottom-[6.25rem] md:right-6 print:hidden"
     >
-      <WhatsAppIcon className="h-6 w-6" />
-      <span className="hidden text-sm font-semibold sm:inline">Escríbenos</span>
+      <WhatsAppIcon className="h-7 w-7" />
     </button>
+  );
+}
+
+/**
+ * FAB “¡Regístrate!” (modelo Toulouse Lautrec): lleva a /registrate
+ * para captar opt-in de novedades y capacitaciones.
+ */
+export function RegistrateFab() {
+  const pathname = usePathname();
+  if (pathname === "/registrate") return null;
+
+  return (
+    <Link
+      href="/registrate"
+      aria-label="Regístrate para recibir novedades"
+      className="group fixed bottom-5 right-5 z-50 flex items-center print:hidden md:bottom-6 md:right-6"
+    >
+      <span className="rounded-full bg-[var(--pink-dark)] px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition group-hover:bg-[var(--pink)]">
+        ¡Regístrate!
+      </span>
+      <span className="-ml-1 flex h-14 w-14 items-center justify-center rounded-full bg-[var(--pink-dark)] text-white shadow-lg ring-1 ring-black/10 transition group-hover:bg-[var(--pink)] group-hover:-translate-y-0.5">
+        <ClipboardList className="h-6 w-6" aria-hidden />
+      </span>
+    </Link>
   );
 }
 
