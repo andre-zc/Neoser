@@ -23,6 +23,9 @@ import { getCatalogCourse } from "@/lib/courses-catalog";
 
 const course = getCatalogCourse("neurobiologia-parto")!;
 const ENROLL_HREF = "/cursos/neurobiologia-parto/inscribirse";
+const WA_ASESORA = `https://wa.me/${LEGAL.whatsappManychat}?text=${encodeURIComponent(
+  "Hola NeoSer, quiero contactarme con una asesora académica sobre el curso Neurobiología del Parto.",
+)}`;
 
 const reasons = [
   {
@@ -50,6 +53,24 @@ const keyFacts = [
   { icon: GraduationCap, label: "Certificación", value: "64 h · 4 créditos" },
 ];
 
+function WhatsAppIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      aria-hidden
+    >
+      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.149-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
+    </svg>
+  );
+}
+
+/**
+ * Landing de campaña Meta Ads.
+ * Dos caminos al mismo nivel: (1) captación autorizada + WhatsApp,
+ * (2) inscripción/pago online. Contenido reutilizado de la página institucional.
+ */
 export function NeurobiologiaCampaignLanding() {
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -68,7 +89,7 @@ export function NeurobiologiaCampaignLanding() {
 
   return (
     <main className="bg-cream">
-      {/* Header mínimo: solo marca + CTAs (sin menú institucional) */}
+      {/* Header: marca + ambos caminos */}
       <header className="sticky top-0 z-40 border-b border-navy/5 bg-cream/95 backdrop-blur-md">
         <div className="container-main flex items-center justify-between gap-3 py-3">
           <Image
@@ -96,23 +117,20 @@ export function NeurobiologiaCampaignLanding() {
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
+      {/* Hero: copy + formulario (estilo UPC / recomendación Vanderley) */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-navy via-navy to-blue py-10 md:py-14">
+        <div className="pointer-events-none absolute inset-0 opacity-20">
           <Image
             src={course.image}
             alt=""
             fill
             priority
-            className="object-cover object-center"
+            className="object-cover object-[center_20%]"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/85 to-navy/55" />
-          <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-navy/30" />
         </div>
-
-        <div className="container-main relative py-16 md:py-24 lg:py-28">
-          <div className="max-w-2xl text-white" data-aos="fade-up">
+        <div className="container-main relative grid items-start gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+          <div className="text-white" data-aos="fade-up">
             <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-pink-light ring-1 ring-white/15">
               <Sparkles className="h-3.5 w-3.5" />
               Curso virtual · Edición 2026 II · Cupos limitados
@@ -124,14 +142,14 @@ export function NeurobiologiaCampaignLanding() {
                   'var(--font-playfair), "Noto Serif Display", Georgia, serif',
                 fontStyle: "italic",
                 fontWeight: 700,
-                fontSize: "clamp(2.2rem,5vw,3.6rem)",
+                fontSize: "clamp(2rem,4.5vw,3.2rem)",
                 lineHeight: 1,
               }}
             >
               Neurobiología
             </p>
             <h1
-              className="text-3xl font-bold leading-tight md:text-4xl lg:text-[2.75rem]"
+              className="text-2xl font-bold leading-tight md:text-3xl lg:text-4xl"
               style={{
                 fontFamily:
                   'var(--font-playfair), "Noto Serif Display", Georgia, serif',
@@ -142,41 +160,78 @@ export function NeurobiologiaCampaignLanding() {
             <p className="mt-4 text-base font-medium text-white/90 md:text-lg">
               {course.tagline}
             </p>
-            <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/70 md:text-base">
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/70">
               Actualiza tu práctica clínica con evidencia en neurobiología,
               microbiota, epigenética, neurociencias y teoría del apego.
             </p>
 
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              {keyFacts.map((f) => (
+                <div
+                  key={f.label}
+                  className="flex items-start gap-2.5 rounded-xl bg-white/8 px-3 py-2.5 ring-1 ring-white/10"
+                >
+                  <f.icon className="mt-0.5 h-4 w-4 flex-shrink-0 text-pink-light" />
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-wide text-white/50">
+                      {f.label}
+                    </p>
+                    <p className="text-xs font-medium leading-snug text-white/90">
+                      {f.value}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Camino compra — mismo nivel que el form */}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <a href="#informacion" className="btn-pink-outline !border-white !text-white hover:!bg-white hover:!text-navy">
-                Quiero recibir información
-              </a>
               <Link href={ENROLL_HREF} className="btn-primary justify-center">
                 Quiero inscribirme ahora <ArrowRight className="h-4 w-4" />
               </Link>
+              <a
+                href={WA_ASESORA}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1ebe5d]"
+              >
+                <WhatsAppIcon className="h-5 w-5" />
+                Hablar con una asesora
+              </a>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Datos clave */}
-      <section className="border-b border-navy/5 bg-white py-6">
-        <div className="container-main grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {keyFacts.map((f) => (
-            <div key={f.label} className="flex items-start gap-3">
-              <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-pink-light text-pink-dark">
-                <f.icon className="h-5 w-5" strokeWidth={1.7} />
-              </span>
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-400">
-                  {f.label}
-                </p>
-                <p className="text-sm font-semibold leading-snug text-navy">
-                  {f.value}
-                </p>
-              </div>
+          {/* Panel captación autorizada (donde iba la imagen en la institucional) */}
+          <div
+            className="rounded-3xl bg-white p-5 text-navy shadow-2xl md:p-6"
+            data-aos="fade-up"
+            data-aos-delay="80"
+          >
+            <p className="text-xs font-semibold uppercase tracking-wide text-pink">
+              Solicita información
+            </p>
+            <h2 className="mt-1 text-xl font-bold text-navy">
+              Déjanos tus datos y te contactamos
+            </h2>
+            <p className="mt-2 mb-4 text-sm text-gray-500">
+              Al autorizar, podemos enviarte información del curso y hacer
+              seguimiento. También puedes inscribirte y pagar en línea cuando
+              quieras.
+            </p>
+            <CampaignLeadForm
+              compact
+              submitLabel="Quiero recibir información"
+            />
+            <div className="mt-4 border-t border-navy/8 pt-4 text-center">
+              <p className="mb-2 text-xs text-gray-500">¿Listo para reservar?</p>
+              <Link
+                href={ENROLL_HREF}
+                className="btn-pink-outline w-full justify-center !py-2.5 text-sm"
+              >
+                Quiero inscribirme ahora
+              </Link>
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
@@ -210,7 +265,7 @@ export function NeurobiologiaCampaignLanding() {
         </div>
       </section>
 
-      {/* Incluye + inversión */}
+      {/* Incluye + inversión / compra */}
       <section className="bg-white py-16 md:py-20">
         <div className="container-main grid items-start gap-10 lg:grid-cols-2">
           <div data-aos="fade-up">
@@ -233,9 +288,9 @@ export function NeurobiologiaCampaignLanding() {
             className="rounded-3xl border border-navy/8 bg-cream p-6 shadow-sm md:p-8"
             data-aos="fade-up"
           >
-            <p className="section-tag mb-2">Inversión</p>
+            <p className="section-tag mb-2">Inversión · Inscripción online</p>
             <h2 className="section-title mb-6 text-2xl md:text-3xl">
-              Reserva tu vacante
+              Reserva tu vacante ahora
             </h2>
             <div className="mb-6 grid gap-3 sm:grid-cols-2">
               {(course.priceTiers ?? []).map((t) => (
@@ -275,6 +330,12 @@ export function NeurobiologiaCampaignLanding() {
             >
               Quiero inscribirme ahora <ArrowRight className="h-4 w-4" />
             </Link>
+            <a
+              href="#informacion"
+              className="btn-pink-outline mt-3 w-full justify-center"
+            >
+              Prefiero recibir información primero
+            </a>
             <p className="mt-3 text-center text-xs text-gray-400">
               Pago seguro con tarjeta o Yape · Cupos limitados
             </p>
@@ -282,7 +343,7 @@ export function NeurobiologiaCampaignLanding() {
         </div>
       </section>
 
-      {/* Módulos compactos */}
+      {/* Módulos */}
       <section className="py-16 md:py-20">
         <div className="container-main">
           <div className="mx-auto mb-10 max-w-2xl text-center" data-aos="fade-up">
@@ -355,39 +416,38 @@ export function NeurobiologiaCampaignLanding() {
         </div>
       </section>
 
-      {/* Formulario: recibir información */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-navy via-navy to-blue py-16 text-white md:py-20">
-        <div className="container-main relative">
-          <div className="mx-auto max-w-xl" data-aos="fade-up">
-            <div className="mb-8 text-center">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-pink-light">
-                Paso siguiente
-              </p>
-              <h2 className="text-2xl font-bold md:text-3xl">
-                ¿Quieres recibir información?
-              </h2>
-              <p className="mt-3 text-sm text-white/70">
-                Déjanos tus datos y te atendemos por WhatsApp para resolver
-                dudas, fechas y formas de pago.
-              </p>
-            </div>
-            <div className="rounded-3xl bg-white p-6 text-navy shadow-xl md:p-8">
-              <CampaignLeadForm />
-            </div>
-            <p className="mt-6 text-center text-sm text-white/60">
-              ¿Ya decidiste?{" "}
-              <Link
-                href={ENROLL_HREF}
-                className="font-semibold text-pink-light underline-offset-2 hover:underline"
-              >
-                Inscribirme ahora
-              </Link>
+      {/* Cierre dual: info + compra */}
+      <section className="bg-gradient-to-br from-navy via-navy to-blue py-14 text-white md:py-16">
+        <div className="container-main">
+          <div className="mx-auto max-w-2xl text-center" data-aos="fade-up">
+            <h2 className="text-2xl font-bold md:text-3xl">
+              Elige cómo quieres continuar
+            </h2>
+            <p className="mt-3 text-sm text-white/70">
+              Ambos caminos están abiertos: déjanos tus datos con autorización
+              o reserva tu vacante con pago en línea.
             </p>
+            <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+              <a href="#informacion" className="btn-pink-outline !border-white !text-white hover:!bg-white hover:!text-navy">
+                Quiero recibir información
+              </a>
+              <Link href={ENROLL_HREF} className="btn-primary justify-center">
+                Quiero inscribirme ahora <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <a
+              href={WA_ASESORA}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[#7CFFB2] underline-offset-2 hover:underline"
+            >
+              <WhatsAppIcon className="h-4 w-4" />
+              O escríbele a una asesora académica por WhatsApp
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Footer mínimo legal (Culqi / confianza) */}
       <footer className="border-t border-navy/5 bg-cream py-8">
         <div className="container-main flex flex-col items-center gap-3 text-center text-xs text-gray-500">
           <Image
@@ -414,6 +474,17 @@ export function NeurobiologiaCampaignLanding() {
           </div>
         </div>
       </footer>
+
+      {/* WhatsApp fijo (obligatorio en campaña) */}
+      <a
+        href={WA_ASESORA}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Hablar con una asesora por WhatsApp"
+        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg ring-1 ring-black/10 transition hover:-translate-y-0.5 hover:bg-[#1ebe5d] md:bottom-6 md:right-6"
+      >
+        <WhatsAppIcon className="h-7 w-7" />
+      </a>
     </main>
   );
 }
