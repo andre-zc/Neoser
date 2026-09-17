@@ -62,22 +62,23 @@ export const metadata: Metadata = {
   applicationName: "NeoSer",
   icons: {
     icon: [
-      { url: "/assets/favicon-48.png", type: "image/png", sizes: "48x48" },
-      { url: "/assets/favicon-96.png", type: "image/png", sizes: "96x96" },
-      { url: "/assets/favicon-192.png", type: "image/png", sizes: "192x192" },
-      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      // URL nueva (2026) para forzar que Google deje de usar el favicon viejo de Vercel.
+      { url: "/brand/neoser-icon-48.png", type: "image/png", sizes: "48x48" },
+      { url: "/brand/neoser-icon-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/brand/neoser-icon-512.png", type: "image/png", sizes: "512x512" },
+      { url: "/brand/neoser-favicon.ico", sizes: "any" },
       { url: "/favicon.ico", sizes: "any" },
     ],
     apple: [
+      { url: "/brand/neoser-icon-192.png", sizes: "192x192", type: "image/png" },
       { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
-      { url: "/assets/favicon-192.png", sizes: "192x192", type: "image/png" },
     ],
-    shortcut: "/assets/favicon-48.png",
+    shortcut: "/brand/neoser-icon-48.png",
   },
   manifest: "/site.webmanifest",
   other: {
     "msapplication-TileColor": "#1b3a6b",
-    "msapplication-TileImage": "/assets/favicon-192.png",
+    "msapplication-TileImage": "/brand/neoser-icon-192.png",
   },
   alternates: {
     canonical: "/",
@@ -130,7 +131,7 @@ const organizationJsonLd = {
   telephone: LEGAL.telefonoLink,
   email: LEGAL.email,
   image: `${SITE_URL}/assets/logo-full-color.png`,
-  logo: `${SITE_URL}/assets/logo-icon.png`,
+  logo: `${SITE_URL}/brand/neoser-icon-512.png`,
   address: {
     "@type": "PostalAddress",
     streetAddress: "Calle Los Sauces 542, Urb. Santa Victoria",
