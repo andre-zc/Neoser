@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { MarketingOptIn } from "@/components/marketing-opt-in";
 import { LEGAL } from "@/lib/legal";
@@ -141,6 +142,22 @@ export function CampaignLeadForm({
         <input name="waConsent" type="checkbox" required className="mt-0.5" />
         <span>
           Autorizo que me contacten por WhatsApp sobre esta consulta. *
+        </span>
+      </label>
+
+      <label className="flex items-start gap-2 text-xs text-gray-600">
+        <input name="privacy" type="checkbox" required className="mt-0.5" />
+        <span>
+          He leído y acepto la{" "}
+          <Link
+            href="/politica-de-privacidad"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-pink underline-offset-2 hover:underline"
+          >
+            Política de Privacidad
+          </Link>{" "}
+          (Ley de Protección de Datos Personales). *
         </span>
       </label>
 
