@@ -59,6 +59,14 @@ export const metadata: Metadata = {
   authors: [{ name: "NeoSer" }],
   creator: "NeoSer",
   publisher: "NeoSer",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: "/favicon.ico",
+  },
   alternates: {
     canonical: "/",
   },
@@ -110,6 +118,7 @@ const organizationJsonLd = {
   telephone: LEGAL.telefonoLink,
   email: LEGAL.email,
   image: `${SITE_URL}/assets/logo-full-color.png`,
+  logo: `${SITE_URL}/assets/logo-icon.png`,
   address: {
     "@type": "PostalAddress",
     streetAddress: "Calle Los Sauces 542, Urb. Santa Victoria",
