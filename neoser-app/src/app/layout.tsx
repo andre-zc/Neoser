@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat, Noto_Serif_Display } from "next/font/google";
 import "./globals.css";
-import { WhatsappFab, RegistrateFab } from "@/components/whatsapp-button";
-import { SiteFooter } from "@/components/site-footer";
 import { WhatsappModalProvider } from "@/components/whatsapp-modal-provider";
+import { SiteChrome } from "@/components/site-chrome";
 import { LEGAL } from "@/lib/legal";
 import { SiteAnalytics } from "@/components/site-analytics";
 
@@ -174,9 +173,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <WhatsappModalProvider>
           {children}
-          <SiteFooter />
-          <WhatsappFab />
-          <RegistrateFab />
+          <SiteChrome />
         </WhatsappModalProvider>
         <SiteAnalytics measurementId={GA_ID} />
       </body>
