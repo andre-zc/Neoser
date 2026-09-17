@@ -317,6 +317,15 @@
     font-size: clamp(0.75rem, 1.05vw, 0.875rem);
   }
   .section-title { font-family: var(--font-playfair), "Noto Serif Display", Georgia, serif; font-size: clamp(32px,3.4vw,52px); color: var(--navy); font-weight: 700; font-style: italic; line-height: 1.15; letter-spacing: -0.01em; }
+  /* Landing de campaña: tipografía suave (Montserrat) para lectura más fácil */
+  .lp-campaign h1,
+  .lp-campaign h2,
+  .lp-campaign h3,
+  .lp-campaign .section-title {
+    font-family: var(--font-montserrat), "Montserrat", system-ui, sans-serif;
+    font-style: normal;
+    letter-spacing: -0.02em;
+  }
   .section-divider { width: 60px; height: 3px; background: linear-gradient(90deg,var(--pink),var(--blue)); border-radius: 3px; margin-left: auto; margin-right: auto; }
 
   /* -- Service Cards -- */

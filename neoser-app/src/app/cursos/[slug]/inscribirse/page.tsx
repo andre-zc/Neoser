@@ -88,10 +88,13 @@ export async function generateMetadata({
 
 export default async function InscribirsePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ from?: string }>;
 }) {
   const { slug } = await params;
+  const { from } = await searchParams;
 
   // Cursos sin checkout online: de vuelta al detalle, donde el CTA es WhatsApp.
   const cat = getCatalogCourse(slug);
@@ -106,12 +109,16 @@ export default async function InscribirsePage({
   }
 
   const notes = tierNotes(cat);
+  const backHref =
+    from === "lp" && slug === "neurobiologia-parto"
+      ? "/lp/neurobiologia-parto"
+      : (cat?.landingHref ?? `/cursos/${course.slug}`);
 
   return (
     <main className="min-h-screen bg-cream py-12 md:py-20">
       <div className="container-main">
         <Link
-          href={cat?.landingHref ?? `/cursos/${course.slug}`}
+          href={backHref}
           className="text-sm font-medium text-pink hover:underline"
         >
           ← Volver al curso

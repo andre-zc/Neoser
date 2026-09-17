@@ -48,6 +48,15 @@ export function CampaignLeadForm({
     const message =
       String(formData.get("message") || "").trim() || DEFAULT_MESSAGE;
 
+    const marketingConsent = formData.get("marketingConsent") === "on";
+    if (!marketingConsent) {
+      setStatus("error");
+      setError(
+        "Debes autorizar el contacto y el envío de información del curso.",
+      );
+      return;
+    }
+
     const payload = {
       fullName,
       phone,
@@ -55,7 +64,7 @@ export function CampaignLeadForm({
       message,
       source: "meta_ads" as const,
       waConsent: formData.get("waConsent") === "on",
-      marketingConsent: formData.get("marketingConsent") === "on",
+      marketingConsent: true,
       serviceInterest: COURSE_INTEREST,
     };
 
@@ -134,7 +143,8 @@ export function CampaignLeadForm({
       )}
 
       <MarketingOptIn
-        title="Autorizo el contacto y el envío de información del curso"
+        required
+        title="Autorizo el contacto y el envío de información del curso *"
         description="Necesario para que NeoSer pueda escribirte y hacer seguimiento de esta solicitud. Puedes darte de baja cuando quieras."
       />
 
@@ -179,7 +189,9 @@ export function CampaignLeadForm({
 
       {status === "success" && (
         <p className="text-sm text-green-700">
-          Datos registrados. Te abrimos WhatsApp para continuar con una asesora.
+          Listo: tus datos quedaron registrados y te redirigimos a WhatsApp para
+          seguir con una asesora. Si no se abrió, revisa que el navegador no
+          haya bloqueado la ventana emergente.
         </p>
       )}
       {status === "error" && <p className="text-sm text-red-600">{error}</p>}

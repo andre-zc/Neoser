@@ -22,7 +22,7 @@ import { LEGAL } from "@/lib/legal";
 import { getCatalogCourse } from "@/lib/courses-catalog";
 
 const course = getCatalogCourse("neurobiologia-parto")!;
-const ENROLL_HREF = "/cursos/neurobiologia-parto/inscribirse";
+const ENROLL_HREF = `/cursos/neurobiologia-parto/inscribirse?from=lp`;
 const WA_ASESORA = `https://wa.me/${LEGAL.whatsappManychat}?text=${encodeURIComponent(
   "Hola NeoSer, quiero contactarme con una asesora académica sobre el curso Neurobiología del Parto.",
 )}`;
@@ -88,7 +88,7 @@ export function NeurobiologiaCampaignLanding() {
   }, []);
 
   return (
-    <main className="bg-cream">
+    <main className="lp-campaign bg-cream">
       {/* Header: marca + ambos caminos */}
       <header className="sticky top-0 z-40 border-b border-navy/5 bg-cream/95 backdrop-blur-md">
         <div className="container-main flex items-center justify-between gap-3 py-3">
@@ -135,27 +135,8 @@ export function NeurobiologiaCampaignLanding() {
               <Sparkles className="h-3.5 w-3.5" />
               Curso virtual · Edición 2026 II · Cupos limitados
             </p>
-            <p
-              className="mb-1 text-pink-light"
-              style={{
-                fontFamily:
-                  'var(--font-playfair), "Noto Serif Display", Georgia, serif',
-                fontStyle: "italic",
-                fontWeight: 700,
-                fontSize: "clamp(2rem,4.5vw,3.2rem)",
-                lineHeight: 1,
-              }}
-            >
-              Neurobiología
-            </p>
-            <h1
-              className="text-2xl font-bold leading-tight md:text-3xl lg:text-4xl"
-              style={{
-                fontFamily:
-                  'var(--font-playfair), "Noto Serif Display", Georgia, serif',
-              }}
-            >
-              del Parto y Protocolos para un Nacimiento Humanizado
+            <h1 className="text-2xl font-bold leading-tight md:text-3xl lg:text-4xl">
+              Neurobiología del Parto y Protocolos para un Nacimiento Humanizado
             </h1>
             <p className="mt-4 text-base font-medium text-white/90 md:text-lg">
               {course.tagline}
@@ -309,10 +290,6 @@ export function NeurobiologiaCampaignLanding() {
                   </p>
                   <p
                     className="mt-1 text-2xl font-bold text-navy"
-                    style={{
-                      fontFamily:
-                        "var(--font-playfair), 'Noto Serif Display', Georgia, serif",
-                    }}
                   >
                     {t.value}
                   </p>
@@ -427,23 +404,23 @@ export function NeurobiologiaCampaignLanding() {
               Ambos caminos están abiertos: déjanos tus datos con autorización
               o reserva tu vacante con pago en línea.
             </p>
-            <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
-              <a href="#informacion" className="btn-pink-outline !border-white !text-white hover:!bg-white hover:!text-navy">
+            <div className="mt-8 flex flex-col items-stretch justify-center gap-3">
+              <a href="#informacion" className="btn-pink-outline !border-white !text-white hover:!bg-white hover:!text-navy justify-center">
                 Quiero recibir información
               </a>
               <Link href={ENROLL_HREF} className="btn-primary justify-center">
                 Quiero inscribirme ahora <ArrowRight className="h-4 w-4" />
               </Link>
+              <a
+                href={WA_ASESORA}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#25D366] bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#1ebe5d] hover:border-[#1ebe5d]"
+              >
+                <WhatsAppIcon className="h-5 w-5" />
+                Escríbenos por WhatsApp
+              </a>
             </div>
-            <a
-              href={WA_ASESORA}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[#7CFFB2] underline-offset-2 hover:underline"
-            >
-              <WhatsAppIcon className="h-4 w-4" />
-              O escríbele a una asesora académica por WhatsApp
-            </a>
           </div>
         </div>
       </section>
