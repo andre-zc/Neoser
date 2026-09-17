@@ -59,13 +59,25 @@ export const metadata: Metadata = {
   authors: [{ name: "NeoSer" }],
   creator: "NeoSer",
   publisher: "NeoSer",
+  applicationName: "NeoSer",
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "any" },
+      { url: "/assets/favicon-48.png", type: "image/png", sizes: "48x48" },
+      { url: "/assets/favicon-96.png", type: "image/png", sizes: "96x96" },
+      { url: "/assets/favicon-192.png", type: "image/png", sizes: "192x192" },
       { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      { url: "/favicon.ico", sizes: "any" },
     ],
-    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
-    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/assets/favicon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    shortcut: "/assets/favicon-48.png",
+  },
+  manifest: "/site.webmanifest",
+  other: {
+    "msapplication-TileColor": "#1b3a6b",
+    "msapplication-TileImage": "/assets/favicon-192.png",
   },
   alternates: {
     canonical: "/",
