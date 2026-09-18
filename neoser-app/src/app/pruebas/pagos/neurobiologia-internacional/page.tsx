@@ -1,25 +1,24 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { AlertTriangle, BadgeCheck, CreditCard, ShieldCheck } from "lucide-react";
+import { AlertTriangle, BadgeCheck, CreditCard, Globe2, ShieldCheck } from "lucide-react";
 import { CourseEnrollmentForm } from "@/components/course-enrollment-form";
 import { PaymentQaAccessForm } from "@/components/payment-qa-access-form";
 import {
   getCulqiEnvironment,
+  NEUROBIOLOGY_PAYMENT_QA_COURSE_ID,
+  NEUROBIOLOGY_PAYMENT_QA_PRICE_USD,
+  NEUROBIOLOGY_PAYMENT_QA_TITLE,
   PAYMENT_QA_COOKIE_NAME,
-  PAYMENT_QA_COURSE_ID,
-  PAYMENT_QA_PRICE_PEN,
-  PAYMENT_QA_PRICE_USD,
-  PAYMENT_QA_TITLE,
   verifyPaymentQaSession,
 } from "@/lib/payments/payment-qa";
 
 export const metadata: Metadata = {
-  title: "Prueba privada de pagos",
-  description: "Página interna para verificar cobros reales de NeoSer.",
+  title: "Prueba privada de pago internacional",
+  description: "Cobro interno en dólares para verificar Culqi en NeoSer.",
   robots: { index: false, follow: false, nocache: true },
 };
 
-export default async function ProtocolsPaymentQaPage() {
+export default async function NeurobiologyInternationalPaymentQaPage() {
   const cookieStore = await cookies();
   const hasAccess = verifyPaymentQaSession(
     cookieStore.get(PAYMENT_QA_COOKIE_NAME)?.value,
@@ -38,14 +37,14 @@ export default async function ProtocolsPaymentQaPage() {
           <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
             <div className="max-w-xl">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20">
-                <CreditCard className="h-7 w-7 text-pink-light" />
+                <Globe2 className="h-7 w-7 text-pink-light" />
               </div>
               <h1 className="mt-6 text-3xl leading-tight text-white sm:text-4xl">
-                Laboratorio de cobros de Protocolos
+                Prueba internacional de Neurobiología
               </h1>
               <p className="mt-4 text-sm leading-relaxed text-white/75 sm:text-base">
-                Esta página reproduce el checkout de Culqi sin modificar el
-                precio ni las inscripciones del curso publicado.
+                Comprueba un cargo con tarjeta en dólares sin modificar el
+                precio publicado ni generar una matrícula real.
               </p>
             </div>
             <div
@@ -84,56 +83,57 @@ export default async function ProtocolsPaymentQaPage() {
           <div>
             <p className="font-bold">
               {isLive
-                ? "Este formulario realizará un cobro real"
+                ? "Este formulario realizará un cobro real de USD 3"
                 : isConfigured
-                  ? "Este formulario todavía usa las llaves de prueba de Culqi"
+                  ? "Todavía se usan las llaves de prueba de Culqi"
                   : "Las llaves de Culqi no están configuradas correctamente"}
             </p>
             <p className="mt-1 text-sm leading-relaxed opacity-80">
               {isLive
-                ? "La tarjeta o Yape seleccionados serán debitados. Culqi descontará su comisión del abono."
+                ? "La tarjeta será debitada y Culqi descontará su comisión del abono. La cuenta debe tener habilitados los cobros en USD."
                 : isConfigured
-                  ? "Puedes revisar el flujo, pero no se debitará dinero hasta configurar las llaves live en DigitalOcean."
-                  : "Revisa que la llave pública y la llave secreta sean del mismo entorno antes de intentar un cobro."}
+                  ? "Podrás revisar el recorrido sin debitar dinero. Para una prueba real se requieren llaves live y cobros en USD habilitados."
+                  : "Revisa que la llave pública y la secreta correspondan al mismo entorno antes de intentar el cobro."}
             </p>
           </div>
         </section>
 
-        <div className="mt-6 grid gap-3 sm:grid-cols-2">
-          <div className="rounded-2xl border border-navy/10 bg-white p-5">
-            <p className="text-sm font-semibold text-gray-500">Prueba en soles</p>
-            <p className="mt-1 text-3xl font-bold text-navy">
-              S/ {PAYMENT_QA_PRICE_PEN.toFixed(2)}
+        <div className="mt-6 rounded-2xl border border-navy/10 bg-white p-6 sm:flex sm:items-center sm:justify-between sm:gap-6">
+          <div>
+            <p className="text-sm font-semibold text-gray-500">
+              Tarjeta internacional · cobro en dólares
             </p>
-            <p className="mt-2 text-xs leading-relaxed text-gray-500">
-              Tarjeta nacional o Yape.
-            </p>
-          </div>
-          <div className="rounded-2xl border border-navy/10 bg-white p-5">
-            <p className="text-sm font-semibold text-gray-500">Prueba en dólares</p>
-            <p className="mt-1 text-3xl font-bold text-navy">
-              USD {PAYMENT_QA_PRICE_USD.toFixed(2)}
-            </p>
-            <p className="mt-2 text-xs leading-relaxed text-gray-500">
-              Tarjeta con cobro en USD; requiere multimoneda activa.
+            <p className="mt-1 text-4xl font-bold text-navy">
+              USD {NEUROBIOLOGY_PAYMENT_QA_PRICE_USD.toFixed(2)}
             </p>
           </div>
+          <p className="mt-4 max-w-xs text-sm leading-relaxed text-gray-500 sm:mt-0">
+            El mínimo de CulqiOnline para tarjetas en USD es 3 dólares. Esta
+            prueba se registra aparte y no da acceso al curso.
+          </p>
         </div>
 
         <div className="mx-auto mt-6 max-w-2xl">
           <CourseEnrollmentForm
-            courseId={PAYMENT_QA_COURSE_ID}
-            courseTitle={PAYMENT_QA_TITLE}
-            coursePrice={PAYMENT_QA_PRICE_PEN}
-            courseCurrency="PEN"
-            priceUSD={PAYMENT_QA_PRICE_USD}
+            courseId={NEUROBIOLOGY_PAYMENT_QA_COURSE_ID}
+            courseTitle={NEUROBIOLOGY_PAYMENT_QA_TITLE}
+            coursePrice={NEUROBIOLOGY_PAYMENT_QA_PRICE_USD}
+            courseCurrency="USD"
+            priceUSD={NEUROBIOLOGY_PAYMENT_QA_PRICE_USD}
             allowPaypal={false}
             showMarketingOptIn={false}
-            submitLabel="Realizar cobro de prueba"
+            submitLabel="Pagar USD 3 de prueba"
             forceCulqiEnabled
+            allowedMethods={["culqi-usd"]}
             paymentQa
           />
         </div>
+
+        <p className="mx-auto mt-5 max-w-2xl text-center text-xs leading-relaxed text-gray-500">
+          <CreditCard className="mr-1 inline h-3.5 w-3.5 align-[-2px]" />
+          Solo tarjeta. No se enviarán correos de matrícula ni se habilitará el
+          acceso académico por este cobro interno.
+        </p>
       </div>
     </main>
   );

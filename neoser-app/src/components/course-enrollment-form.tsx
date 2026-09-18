@@ -40,6 +40,10 @@ type Props = {
   submitLabel?: string;
   /** Permite Culqi solo en una ruta privada aunque el checkout público esté apagado. */
   forceCulqiEnabled?: boolean;
+  /** Restringe los medios visibles; el servidor siempre valida moneda y monto. */
+  allowedMethods?: PayMethod[];
+  /** Evita presentar el cobro interno como una matrícula real. */
+  paymentQa?: boolean;
 };
 
 /** Vías de pago disponibles en el checkout. */
@@ -165,6 +169,8 @@ export function CourseEnrollmentForm({
   showMarketingOptIn = true,
   submitLabel,
   forceCulqiEnabled = false,
+  allowedMethods,
+  paymentQa = false,
 }: Props) {
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [error, setError] = useState<string>("");
@@ -173,7 +179,7 @@ export function CourseEnrollmentForm({
   const usdAvailable = typeof priceUSD === "number" && priceUSD > 0;
 
   // Opciones visibles según lo que esté configurado para este curso.
-  const methods: { id: PayMethod; label: string; detail: string }[] = [
+  const availableMethods: { id: PayMethod; label: string; detail: string }[] = [
     ...(culqiAvailable
       ? [
           {
@@ -202,6 +208,11 @@ export function CourseEnrollmentForm({
         ]
       : []),
   ];
+  const methods = allowedMethods
+    ? availableMethods.filter((paymentMethod) =>
+        allowedMethods.includes(paymentMethod.id),
+      )
+    : availableMethods;
 
   const [method, setMethod] = useState<PayMethod>(
     methods[0]?.id ?? "culqi-pen",
@@ -601,7 +612,7 @@ export function CourseEnrollmentForm({
       <div className="surface-card p-6 md:p-8">
         <div className="rounded-xl bg-cream p-4">
           <p className="text-xs uppercase tracking-wide text-gray-400">
-            Te estás inscribiendo en
+            {paymentQa ? "Prueba de cobro para" : "Te estás inscribiendo en"}
           </p>
           <p className="mt-1 font-semibold text-navy">{courseTitle}</p>
           <p className="course-price mt-1 text-2xl">
@@ -655,11 +666,11 @@ export function CourseEnrollmentForm({
       <form onSubmit={onSubmit} className="surface-card space-y-4 p-6 md:p-8">
         <div className="rounded-xl bg-cream p-4">
           <p className="text-xs uppercase tracking-wide text-gray-400">
-            Te estás inscribiendo en
+            {paymentQa ? "Prueba de cobro para" : "Te estás inscribiendo en"}
           </p>
           <p className="mt-1 font-semibold text-navy">{courseTitle}</p>
           <p className="course-price mt-1 text-2xl">{displayAmount}</p>
-          {isUsd && usdAvailable && (
+          {isUsd && usdAvailable && !paymentQa && (
             <p className="mt-1 text-xs text-gray-500">
               Tarifa internacional · equivale a{" "}
               {formatPrice(coursePrice, courseCurrency)} en Perú

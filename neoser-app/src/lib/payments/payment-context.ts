@@ -3,8 +3,7 @@ import "server-only";
 import QRCode from "qrcode";
 import { createServiceClient } from "@/lib/supabase/service";
 import {
-  isPaymentQaRawPayload,
-  PAYMENT_QA_COURSE_ID,
+  getPaymentQaProductByPurpose,
 } from "@/lib/payments/payment-qa";
 
 export const PROTOCOLS_COURSE_ID =
@@ -63,13 +62,15 @@ export async function getPaymentContext(
 
     if (paymentError || !payment) return null;
 
-    if (isPaymentQaRawPayload(payment.raw_payload)) {
+    const qaPayload = payment.raw_payload as Record<string, unknown> | null;
+    const qaProduct = getPaymentQaProductByPurpose(qaPayload?.purpose);
+    if (qaProduct) {
       return {
         kind: "payment_qa",
         status: payment.status,
         provider: payment.payment_provider,
-        courseId: PAYMENT_QA_COURSE_ID,
-        courseTitle: "Prueba operativa de pagos",
+        courseId: qaProduct.courseId,
+        courseTitle: qaProduct.title,
         amount: Number(payment.amount),
         currency: payment.currency,
         registrationCompleted: false,

@@ -32,8 +32,11 @@ Copiar `.env.example` a `.env.local` y completar:
 - `PROTOCOLS_WHATSAPP_GROUP_URL` (solo servidor; invitación al grupo del curso Protocolos)
 - `PAYMENTS_QA_ACCESS_KEY` (solo servidor; clave privada de la prueba de cobros)
 
-La prueba aislada de Culqi vive en `/pruebas/pagos/protocolos`. No aparece en
-el catálogo ni crea inscripciones, leads o sincronizaciones de CRM.
+Las pruebas aisladas de Culqi viven en `/pruebas/pagos/protocolos` (PEN y USD)
+y `/pruebas/pagos/neurobiologia-internacional` (solo tarjeta, USD 3). Comparten
+la misma clave `PAYMENTS_QA_ACCESS_KEY`. No aparecen en el catálogo ni crean
+inscripciones, leads o sincronizaciones de CRM. El importe del curso real de
+Neurobiología no cambia; el laboratorio solo confirma y registra el cargo de QA.
 
 ## Base de datos
 Ejecutar el esquema en Supabase SQL editor:

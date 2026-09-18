@@ -22,7 +22,7 @@ import {
   fulfillSuccessfulCharge,
   recordSuccessfulQaCharge,
 } from "@/lib/payments/culqi-fulfillment";
-import { PAYMENT_QA_PURPOSE } from "@/lib/payments/payment-qa";
+import { getPaymentQaProductByPurpose } from "@/lib/payments/payment-qa";
 
 export async function POST(request: NextRequest) {
   const rawBody = await request.text();
@@ -77,12 +77,14 @@ export async function POST(request: NextRequest) {
   if (newStatus === "approved") {
     const md = event.data.metadata ?? {};
 
-    if (md.paymentPurpose === PAYMENT_QA_PURPOSE) {
+    const qaProduct = getPaymentQaProductByPurpose(md.paymentPurpose);
+    if (qaProduct) {
       const qaResult = await recordSuccessfulQaCharge({
         chargeId: event.data.id,
         amountCents: event.data.amount ?? 0,
         currency: event.data.currency_code ?? "PEN",
         rawPayload: sanitizeCulqiPayload(event.data),
+        purpose: qaProduct.purpose,
       });
 
       if (!qaResult.ok) {
@@ -165,13 +167,29 @@ export async function POST(request: NextRequest) {
 
   // === refund.creation.succeeded → refunded ===
   if (newStatus === "refunded") {
+    const chargeReference = event.data.charge_id ?? event.data.id;
+    const { data: existingPayment } = await supabase
+      .from("payments")
+      .select("raw_payload")
+      .eq("provider_payment_id", chargeReference)
+      .maybeSingle();
+    const existingPayload = existingPayment?.raw_payload as
+      | Record<string, unknown>
+      | null;
+    const qaPurpose = getPaymentQaProductByPurpose(
+      existingPayload?.purpose,
+    )?.purpose;
+
     const { error } = await supabase
       .from("payments")
       .update({
         status: "refunded",
-        raw_payload: sanitizeCulqiPayload(event.data),
+        raw_payload: {
+          ...sanitizeCulqiPayload(event.data),
+          ...(qaPurpose ? { purpose: qaPurpose } : {}),
+        },
       })
-      .eq("provider_payment_id", event.data.charge_id ?? event.data.id);
+      .eq("provider_payment_id", chargeReference);
 
     if (error) {
       console.error("[culqi/webhook] actualización de devolución falló", {

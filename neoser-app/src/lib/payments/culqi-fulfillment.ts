@@ -17,7 +17,6 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { syncEnrollmentToHubspot } from "@/lib/hubspot";
 import { syncEnrollmentToBrevo } from "@/lib/brevo";
 import { sendEmail, buildEnrollmentConfirmationEmail } from "@/lib/email";
-import { PAYMENT_QA_PURPOSE } from "@/lib/payments/payment-qa";
 
 export type FulfillmentMetadata = {
   courseId: string;
@@ -62,6 +61,7 @@ export async function recordSuccessfulQaCharge(input: {
   amountCents: number;
   currency: string;
   rawPayload: unknown;
+  purpose: string;
 }): Promise<{ ok: boolean; paymentId?: string }> {
   const supabase = createServiceClient();
   const operationalPayload =
@@ -82,7 +82,7 @@ export async function recordSuccessfulQaCharge(input: {
         status: "approved",
         raw_payload: {
           ...operationalPayload,
-          purpose: PAYMENT_QA_PURPOSE,
+          purpose: input.purpose,
         },
         paid_at: new Date().toISOString(),
       },

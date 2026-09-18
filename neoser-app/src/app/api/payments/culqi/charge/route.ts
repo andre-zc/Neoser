@@ -19,10 +19,9 @@ import {
 } from "@/lib/payments/culqi-fulfillment";
 import {
   getPaymentQaAmount,
+  getPaymentQaProduct,
   isPaymentQaCourse,
   PAYMENT_QA_COOKIE_NAME,
-  PAYMENT_QA_PURPOSE,
-  PAYMENT_QA_TITLE,
   verifyPaymentQaSession,
 } from "@/lib/payments/payment-qa";
 
@@ -58,6 +57,7 @@ export async function POST(request: NextRequest) {
     } = parsed.data;
 
     const isQaCourse = isPaymentQaCourse(courseId);
+    const qaProduct = getPaymentQaProduct(courseId);
     const isAuthorizedQa =
       isQaCourse &&
       verifyPaymentQaSession(
@@ -68,6 +68,16 @@ export async function POST(request: NextRequest) {
     // reutiliza el curso publicado ni permite que el cliente decida el monto.
     if (isQaCourse && !isAuthorizedQa) {
       return NextResponse.json({ error: "Curso no disponible" }, { status: 404 });
+    }
+
+    const qaAmount = isAuthorizedQa
+      ? getPaymentQaAmount(courseId, currency)
+      : null;
+    if (isAuthorizedQa && qaAmount === null) {
+      return NextResponse.json(
+        { error: "Moneda no disponible para esta prueba" },
+        { status: 400 },
+      );
     }
 
     if (
@@ -94,10 +104,10 @@ export async function POST(request: NextRequest) {
     if (isAuthorizedQa) {
       course = {
         id: courseId,
-        title: PAYMENT_QA_TITLE,
-        price: getPaymentQaAmount("PEN"),
-        currency: "PEN",
-        slug: PAYMENT_QA_PURPOSE,
+        title: qaProduct!.title,
+        price: qaAmount!,
+        currency,
+        slug: qaProduct!.purpose,
         is_published: false,
       };
     } else {
@@ -127,7 +137,7 @@ export async function POST(request: NextRequest) {
     // cliente enviando "USD" para pagar menos.
     let amountValue: number;
     if (isAuthorizedQa) {
-      amountValue = getPaymentQaAmount(currency);
+      amountValue = qaAmount!;
     } else if (currency === "USD") {
       const catalogCourse = coursesCatalog.find((c) => c.id === course.id);
       if (!catalogCourse?.priceUSD || catalogCourse.priceUSD <= 0) {
@@ -160,10 +170,10 @@ export async function POST(request: NextRequest) {
       deviceFingerprintId,
       authentication3DS,
       description: isAuthorizedQa
-        ? "Prueba real de cobro NeoSer — Protocolos"
+        ? `Prueba real de cobro NeoSer — ${qaProduct!.title}`
         : `Inscripción: ${course.title}`,
       metadata: isAuthorizedQa
-        ? { paymentPurpose: PAYMENT_QA_PURPOSE }
+        ? { paymentPurpose: qaProduct!.purpose }
         : {
             courseId: course.id,
             courseTitle: course.title,
@@ -202,7 +212,7 @@ export async function POST(request: NextRequest) {
         amountCents,
         currency,
         rawPayload: charge.raw,
-        purpose: isAuthorizedQa ? PAYMENT_QA_PURPOSE : undefined,
+        purpose: isAuthorizedQa ? qaProduct!.purpose : undefined,
       });
       return NextResponse.json(
         {
@@ -223,6 +233,7 @@ export async function POST(request: NextRequest) {
         amountCents,
         currency,
         rawPayload: charge.raw,
+        purpose: qaProduct!.purpose,
       });
 
       return NextResponse.json({

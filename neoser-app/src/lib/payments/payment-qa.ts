@@ -10,7 +10,42 @@ export const PAYMENT_QA_TITLE = "Prueba de pago — Curso Protocolos";
 // reproduzca los mismos métodos disponibles que el curso publicado.
 export const PAYMENT_QA_PRICE_PEN = 6;
 export const PAYMENT_QA_PRICE_USD = 3;
+export const NEUROBIOLOGY_PAYMENT_QA_COURSE_ID =
+  "6a7b8c9d-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+export const NEUROBIOLOGY_PAYMENT_QA_PURPOSE =
+  "neurobiologia_usd_payment_qa";
+export const NEUROBIOLOGY_PAYMENT_QA_TITLE =
+  "Prueba de pago — Neurobiología del Parto";
+// Mínimo para tarjeta en USD según la tabla de límites de CulqiOnline.
+export const NEUROBIOLOGY_PAYMENT_QA_PRICE_USD = 3;
 export const PAYMENT_QA_COOKIE_NAME = "neoser_payment_qa";
+
+type PaymentQaProduct = {
+  courseId: string;
+  purpose: string;
+  title: string;
+  path: string;
+  pricePEN?: number;
+  priceUSD: number;
+};
+
+const qaProducts: PaymentQaProduct[] = [
+  {
+    courseId: PAYMENT_QA_COURSE_ID,
+    purpose: PAYMENT_QA_PURPOSE,
+    title: PAYMENT_QA_TITLE,
+    path: "/pruebas/pagos/protocolos",
+    pricePEN: PAYMENT_QA_PRICE_PEN,
+    priceUSD: PAYMENT_QA_PRICE_USD,
+  },
+  {
+    courseId: NEUROBIOLOGY_PAYMENT_QA_COURSE_ID,
+    purpose: NEUROBIOLOGY_PAYMENT_QA_PURPOSE,
+    title: NEUROBIOLOGY_PAYMENT_QA_TITLE,
+    path: "/pruebas/pagos/neurobiologia-internacional",
+    priceUSD: NEUROBIOLOGY_PAYMENT_QA_PRICE_USD,
+  },
+];
 
 const PAYMENT_QA_SESSION_TTL_SECONDS = 4 * 60 * 60;
 
@@ -77,13 +112,28 @@ export function verifyPaymentQaSession(candidate?: string): boolean {
 }
 
 export function isPaymentQaCourse(courseId: string): boolean {
-  return courseId === PAYMENT_QA_COURSE_ID;
+  return getPaymentQaProduct(courseId) !== null;
 }
 
-export function getPaymentQaAmount(currency: "PEN" | "USD"): number {
-  return currency === "USD"
-    ? PAYMENT_QA_PRICE_USD
-    : PAYMENT_QA_PRICE_PEN;
+export function getPaymentQaProduct(courseId: string): PaymentQaProduct | null {
+  return qaProducts.find((product) => product.courseId === courseId) ?? null;
+}
+
+export function getPaymentQaProductByPurpose(
+  purpose: unknown,
+): PaymentQaProduct | null {
+  return typeof purpose === "string"
+    ? qaProducts.find((product) => product.purpose === purpose) ?? null
+    : null;
+}
+
+export function getPaymentQaAmount(
+  courseId: string,
+  currency: "PEN" | "USD",
+): number | null {
+  const product = getPaymentQaProduct(courseId);
+  if (!product) return null;
+  return currency === "USD" ? product.priceUSD : product.pricePEN ?? null;
 }
 
 export function getCulqiEnvironment(): "live" | "test" | "invalid" {
@@ -101,7 +151,9 @@ export function getCulqiEnvironment(): "live" | "test" | "invalid" {
 
 export function isPaymentQaRawPayload(payload: unknown): boolean {
   if (!payload || typeof payload !== "object") return false;
-  return (
-    (payload as Record<string, unknown>).purpose === PAYMENT_QA_PURPOSE
+  return Boolean(
+    getPaymentQaProductByPurpose(
+      (payload as Record<string, unknown>).purpose,
+    ),
   );
 }

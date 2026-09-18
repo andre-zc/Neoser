@@ -21,6 +21,7 @@ import {
 } from "@/lib/payments/payment-context";
 import { ProtocolsRegistrationForm } from "@/components/protocols-registration-form";
 import { PurchaseAnalytics } from "@/components/purchase-analytics";
+import { getPaymentQaProduct } from "@/lib/payments/payment-qa";
 
 type SearchParams = Promise<{
   ref?: string;
@@ -49,7 +50,19 @@ function WhatsappIcon({ className }: { className?: string }) {
   );
 }
 
-function PaymentQaSuccessContent({ reference }: { reference: string }) {
+function PaymentQaSuccessContent({
+  reference,
+  courseTitle,
+  amount,
+  currency,
+  backHref,
+}: {
+  reference: string;
+  courseTitle: string;
+  amount: number;
+  currency: string;
+  backHref: string;
+}) {
   return (
     <main className="min-h-screen bg-cream py-10 sm:py-14 md:py-20">
       <div className="container-main mx-auto max-w-4xl">
@@ -68,6 +81,9 @@ function PaymentQaSuccessContent({ reference }: { reference: string }) {
               <p className="mt-5 max-w-md text-base leading-relaxed text-white/80">
                 El pago llegó al flujo real y quedó registrado como una prueba
                 operativa independiente.
+              </p>
+              <p className="mt-5 text-sm font-semibold text-white/85">
+                {courseTitle} · {currency} {amount.toFixed(2)}
               </p>
             </div>
 
@@ -118,7 +134,7 @@ function PaymentQaSuccessContent({ reference }: { reference: string }) {
             </div>
 
             <Link
-              href="/pruebas/pagos/protocolos"
+              href={backHref}
               className="btn-primary mt-8 justify-center"
             >
               Hacer otra prueba
@@ -432,7 +448,18 @@ export default async function CheckoutSuccessPage({
     ) : null;
 
   if (isPaymentQa && reference) {
-    return <PaymentQaSuccessContent reference={reference} />;
+    return (
+      <PaymentQaSuccessContent
+        reference={reference}
+        courseTitle={paymentContext.courseTitle}
+        amount={paymentContext.amount}
+        currency={paymentContext.currency}
+        backHref={
+          getPaymentQaProduct(paymentContext.courseId)?.path ??
+          "/pruebas/pagos/protocolos"
+        }
+      />
+    );
   }
 
   if (isProtocolsPayment && reference) {
