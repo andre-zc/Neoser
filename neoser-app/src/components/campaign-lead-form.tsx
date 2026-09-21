@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { MarketingOptIn } from "@/components/marketing-opt-in";
 import { LEGAL } from "@/lib/legal";
+import { sendMetaEvent } from "@/lib/analytics/meta-pixel";
 
 const COURSE_INTEREST =
   "Curso Neurobiología del Parto y Protocolos para un Nacimiento Humanizado";
@@ -79,6 +80,9 @@ export function CampaignLeadForm({
         const data = await response.json().catch(() => ({}));
         throw new Error(data.error || "No se pudo enviar");
       }
+
+      // No se envian a Meta nombres, telefono, email ni el contenido del mensaje.
+      sendMetaEvent("Lead");
 
       const text =
         whatsappText ||

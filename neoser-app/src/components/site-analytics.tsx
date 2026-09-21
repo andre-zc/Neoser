@@ -4,10 +4,20 @@ import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { captureCampaignAttribution } from "@/lib/analytics/attribution";
 import { isProductionAnalyticsHost } from "@/lib/analytics/ga4";
+import {
+  initializeMetaPixel,
+  sendMetaEvent,
+} from "@/lib/analytics/meta-pixel";
 
-export function SiteAnalytics({ measurementId }: { measurementId?: string }) {
+type Props = {
+  measurementId?: string;
+  metaPixelId?: string;
+};
+
+export function SiteAnalytics({ measurementId, metaPixelId }: Props) {
   const pathname = usePathname();
   const initialized = useRef(false);
+  const metaInitialized = useRef(false);
 
   useEffect(() => {
     captureCampaignAttribution();
@@ -48,6 +58,18 @@ export function SiteAnalytics({ measurementId }: { measurementId?: string }) {
       page_title: document.title,
     });
   }, [measurementId, pathname]);
+
+  useEffect(() => {
+    if (!metaPixelId || !isProductionAnalyticsHost()) return;
+
+    if (!metaInitialized.current) {
+      initializeMetaPixel(metaPixelId);
+      metaInitialized.current = true;
+    }
+
+    // App Router no recarga el documento: se registra cada cambio de ruta.
+    sendMetaEvent("PageView");
+  }, [metaPixelId, pathname]);
 
   return null;
 }

@@ -22,6 +22,10 @@ import { formatUsd } from "@/lib/payments/paypal";
 import { MarketingOptIn } from "@/components/marketing-opt-in";
 import { getCampaignAttribution } from "@/lib/analytics/attribution";
 import { sendGaEvent, sendGaEventOnce } from "@/lib/analytics/ga4";
+import {
+  sendMetaEvent,
+  sendMetaEventOnce,
+} from "@/lib/analytics/meta-pixel";
 
 type Props = {
   courseId: string;
@@ -250,6 +254,11 @@ export function CourseEnrollmentForm({
       currency: courseCurrency,
       value: Number(coursePrice),
       items: [item],
+    });
+    sendMetaEventOnce(`view_content_${courseId}`, "ViewContent");
+    sendMetaEventOnce(`initiate_checkout_${courseId}`, "InitiateCheckout", {
+      currency: courseCurrency,
+      value: Number(coursePrice),
     });
   }, [courseCurrency, courseId, coursePrice, courseTitle]);
 
@@ -596,6 +605,10 @@ export function CourseEnrollmentForm({
           quantity: 1,
         },
       ],
+    });
+    sendMetaEvent("AddPaymentInfo", {
+      currency: selectedCurrency,
+      value: selectedAmount,
     });
 
     if (method === "paypal") {

@@ -25,6 +25,9 @@ const playfair = Noto_Serif_Display({
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://neoser.pe";
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+// El ID del pixel es publico. La variable permite cambiarlo sin tocar codigo.
+const META_PIXEL_ID =
+  process.env.NEXT_PUBLIC_META_PIXEL_ID || "6381069198640066";
 const GSC_VERIFICATION = process.env.NEXT_PUBLIC_GSC_VERIFICATION;
 
 const SITE_DESCRIPTION =
@@ -197,7 +200,7 @@ export default function RootLayout({
           {children}
           <SiteChrome />
         </WhatsappModalProvider>
-        <SiteAnalytics measurementId={GA_ID} />
+        <SiteAnalytics measurementId={GA_ID} metaPixelId={META_PIXEL_ID} />
       </body>
     </html>
   );

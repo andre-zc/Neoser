@@ -124,6 +124,12 @@ export default function PrivacidadPage() {
         <li>
           <strong>Google Analytics</strong> — estadísticas de uso del sitio.
         </li>
+        <li>
+          <strong>Meta Pixel</strong> — medición de visitas y conversiones de
+          las campañas publicitarias de NeoSer en las plataformas de Meta. No
+          enviamos mediante el píxel los datos que escribes en formularios ni
+          información de salud.
+        </li>
       </ul>
       <p>
         Al aceptar esta política autorizas dicho flujo transfronterizo de datos,
@@ -167,9 +173,10 @@ export default function PrivacidadPage() {
       <h2>9. Cookies</h2>
       <p>
         Utilizamos cookies propias y de terceros para el funcionamiento del
-        sitio y para obtener estadísticas de uso. Puedes configurar tu navegador
-        para bloquearlas o eliminarlas; ten en cuenta que algunas funciones
-        podrían dejar de operar correctamente.
+        sitio, obtener estadísticas de uso y medir el resultado de nuestras
+        campañas publicitarias mediante Google Analytics y Meta Pixel. Puedes
+        configurar tu navegador para bloquearlas o eliminarlas; ten en cuenta
+        que algunas funciones podrían dejar de operar correctamente.
       </p>
 
       <h2>10. Menores de edad</h2>
