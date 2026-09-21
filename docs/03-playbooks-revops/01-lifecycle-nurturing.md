@@ -1,5 +1,7 @@
 # NeoSer — Nurturing por Ciclo de Vida Maternidad
 
+> **Estado: no aplicable a nuevos leads web.** Por privacidad, los formularios de captación ya no solicitan semanas de gestación ni fecha probable de parto, y la API no envía esos campos a HubSpot. No activar los flujos descritos abajo con leads nuevos. Si NeoSer desea un seguimiento clínico por etapa, debe diseñar un proceso separado, con finalidad y consentimiento específicos.
+
 ## Concepto
 
 A diferencia de un negocio genérico, NeoSer sabe **exactamente** en qué momento está cada lead (semana de gestación). Esto permite enviar el mensaje correcto en el momento correcto, sin que Diana piense qué decir.

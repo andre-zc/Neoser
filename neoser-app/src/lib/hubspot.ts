@@ -5,9 +5,7 @@ type HubspotLeadInput = {
   message: string;
   source: string;
   waConsent: boolean;
-  gestationWeeks?: number;
   serviceInterest?: string;
-  expectedDueDate?: string;
 };
 
 type HubspotBookingInput = {
@@ -98,9 +96,7 @@ export async function syncLeadToHubspot(input: HubspotLeadInput) {
     phone: input.phone,
     fuente_origen: input.source,
     wa_consent: input.waConsent ? "true" : "false",
-    semanas_gestacion: input.gestationWeeks?.toString(),
     neoser_servicio_interes: input.serviceInterest,
-    fecha_parto: input.expectedDueDate,
   });
 
   await createDeal({

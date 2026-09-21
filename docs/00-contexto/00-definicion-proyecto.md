@@ -40,7 +40,7 @@ NeoSer es un **sitio web institucional + capa inicial de operacion digital** par
 
 ## 4. ¿Qué datos maneja?
 
-**V1:** Leads (nombre, teléfono, email, semana de gestación, origen), reservas, cursos basicos e inscripciones
+**V1:** Leads (nombre, teléfono, email, origen y servicio de interés; sin solicitar semanas de gestación ni fecha probable de parto), reservas, cursos basicos e inscripciones
 
 **V2:** Cuentas de alumnas, progreso avanzado, pagos completos, foro, certificados
 

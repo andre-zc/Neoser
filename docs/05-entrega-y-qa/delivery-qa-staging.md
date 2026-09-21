@@ -142,10 +142,10 @@
 BASE="https://neoser.vercel.app"
 
 # --- CONTACT LEADS ---
-# Happy path (campos nuevos incluidos)
+# Happy path (sin datos de salud en captación)
 curl -X POST $BASE/api/contact-leads \
   -H "Content-Type: application/json" \
-  -d '{"fullName":"Maria Garcia","phone":"51978822368","message":"Quiero info de parto humanizado","source":"web","waConsent":true,"serviceInterest":"Parto Humanizado","gestationWeeks":28}'
+  -d '{"fullName":"Maria Garcia","phone":"51978822368","message":"Quiero info de parto humanizado","source":"web","waConsent":true,"serviceInterest":"Parto Humanizado"}'
 
 # Error path
 curl -X POST $BASE/api/contact-leads \

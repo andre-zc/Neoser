@@ -51,7 +51,7 @@ export default function PrivacidadPage() {
       <h3>Datos sensibles</h3>
       <p>
         Algunos formularios pueden incluir información relacionada con tu salud
-        (por ejemplo, semanas de gestación o motivo de consulta). La Ley N.º
+        (por ejemplo, el motivo de consulta). La Ley N.º
         29733 califica estos como <strong>datos sensibles</strong>. Solo los
         recopilamos cuando tú los proporcionas voluntariamente para poder
         brindarte la atención solicitada, y reciben el nivel más alto de

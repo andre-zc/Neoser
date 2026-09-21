@@ -77,9 +77,7 @@ export async function POST(request: Request) {
         marketing_consent_at: parsed.data.marketingConsent
           ? new Date().toISOString()
           : null,
-        gestation_weeks: parsed.data.gestationWeeks ?? null,
         service_interest: parsed.data.serviceInterest ?? null,
-        expected_due_date: parsed.data.expectedDueDate ?? null,
       })
       .select("id")
       .single();
@@ -97,9 +95,7 @@ export async function POST(request: Request) {
         message: parsed.data.message,
         source: parsed.data.source,
         waConsent: parsed.data.waConsent,
-        gestationWeeks: parsed.data.gestationWeeks,
         serviceInterest: parsed.data.serviceInterest,
-        expectedDueDate: parsed.data.expectedDueDate,
       });
     } catch (syncError) {
       console.error("HubSpot sync failed:", syncError);

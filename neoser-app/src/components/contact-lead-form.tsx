@@ -33,10 +33,6 @@ export function ContactLeadForm() {
       marketingConsent: formData.get("marketingConsent") === "on",
       email: (formData.get("email") as string) || undefined,
       serviceInterest: (formData.get("serviceInterest") as string) || undefined,
-      gestationWeeks: formData.get("gestationWeeks")
-        ? Number(formData.get("gestationWeeks"))
-        : undefined,
-      expectedDueDate: (formData.get("expectedDueDate") as string) || undefined,
     };
 
     try {
@@ -94,21 +90,6 @@ export function ContactLeadForm() {
         ))}
         <option value="Otro">Otro / No listado</option>
       </select>
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-        <input
-          name="gestationWeeks"
-          type="number"
-          min={0}
-          max={45}
-          placeholder="Semanas de gestacion"
-          className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm"
-        />
-        <input
-          name="expectedDueDate"
-          type="date"
-          className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm"
-        />
-      </div>
       <select
         name="source"
         defaultValue="web"
@@ -126,6 +107,9 @@ export function ContactLeadForm() {
         placeholder="Mensaje"
         className="min-h-28 w-full rounded-xl border border-gray-200 px-4 py-3 text-sm"
       />
+      <p className="text-xs text-gray-500">
+        No incluyas datos de salud en este formulario; te los solicitaremos por un canal adecuado si son necesarios para tu atención.
+      </p>
       <MarketingOptIn />
 
       <label className="flex items-start gap-2 text-xs text-gray-600">

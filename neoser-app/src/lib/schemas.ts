@@ -21,9 +21,7 @@ export const contactLeadSchema = z.object({
   // Consentimiento COMERCIAL (opt-in de campañas). Distinto de waConsent, que
   // solo habilita responder la consulta. Opcional y por defecto false.
   marketingConsent: z.boolean().optional().default(false),
-  gestationWeeks: z.number().int().min(0).max(45).optional(),
   serviceInterest: z.string().min(3).max(120).optional(),
-  expectedDueDate: z.string().date().optional(),
 });
 
 export const enrollmentSchema = z.object({

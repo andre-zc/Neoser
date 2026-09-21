@@ -1,5 +1,7 @@
 # NeoSer — Playbook de Reactivación de Leads "Perdidas"
 
+> **Nota para leads nuevos:** la web ya no recoge `fecha_parto`. La reactivación basada en esa fecha (nivel 3) no se ejecutará para contactos nuevos; usar únicamente las reglas por interés y consentimiento hasta definir un proceso separado para datos de salud.
+
 ## Por qué en maternidad "Perdida" no es "muerta"
 
 En un negocio normal, un lead perdido probablemente no vuelve. En maternidad es diferente:

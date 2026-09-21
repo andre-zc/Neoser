@@ -81,7 +81,6 @@ function WhatsappLeadModal({ onClose }: { onClose: () => void }) {
     const phone = String(formData.get("phone") || "");
     const email = String(formData.get("email") || "");
     const serviceInterest = String(formData.get("serviceInterest") || "");
-    const gestationWeeks = formData.get("gestationWeeks");
     const messageInput = String(formData.get("message") || "").trim();
     const marketingConsent = formData.get("marketingConsent") === "on";
 
@@ -96,7 +95,6 @@ function WhatsappLeadModal({ onClose }: { onClose: () => void }) {
       marketingConsent,
       email: email || undefined,
       serviceInterest: serviceInterest || undefined,
-      gestationWeeks: gestationWeeks ? Number(gestationWeeks) : undefined,
     };
 
     try {
@@ -196,20 +194,15 @@ function WhatsappLeadModal({ onClose }: { onClose: () => void }) {
             ))}
             <option value="Otro">Otro / No listado</option>
           </select>
-          <input
-            name="gestationWeeks"
-            type="number"
-            min={0}
-            max={45}
-            placeholder="Semanas de gestación (opcional)"
-            className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-[#25D366] focus:outline-none focus:ring-2 focus:ring-[#25D366]/20"
-          />
           <textarea
             name="message"
             placeholder="Mensaje (opcional)"
             rows={3}
             className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-[#25D366] focus:outline-none focus:ring-2 focus:ring-[#25D366]/20"
           />
+          <p className="text-xs text-gray-500">
+            No incluyas datos de salud aquí; podremos solicitarlos por un canal adecuado si son necesarios para tu atención.
+          </p>
           <MarketingOptIn />
 
           <p className="text-xs leading-relaxed text-gray-500">

@@ -28,8 +28,8 @@ Diana no necesita analytics complejos. Necesita 5 números cada lunes para saber
 - **Para qué**: saber dónde invertir más en ads y dónde recortar
 - **Acción**: si Meta Ads convierte 3x más que Google → mover presupuesto
 
-### 5. Leads "calientes" esta semana (próximas a parir + interesadas)
-- **Dónde verlo**: Vista "Próximas a parir (4 semanas)" + Vista "Interesadas"
+### 5. Leads "calientes" esta semana (interesadas)
+- **Dónde verlo**: Vista "Interesadas". La web ya no solicita fecha probable de parto a nuevos leads.
 - **Acción**: estas son prioridad absoluta de contacto esta semana
 
 ## Rutina del lunes (5 min)
@@ -47,9 +47,8 @@ Diana no necesita analytics complejos. Necesita 5 números cada lunes para saber
 
 ### Vistas guardadas necesarias:
 1. "Creados esta semana" — filtro: create_date = esta semana
-2. "Próximas a parir (4 semanas)" — filtro: fecha_parto entre hoy y +28 días
-3. "Interesadas sin propuesta" — filtro: etapa = Interesada, última actividad > 3 días
-4. "Perdidas reactivables" — filtro: etapa = Perdida, reactivation_count < 3
+2. "Interesadas sin propuesta" — filtro: etapa = Interesada, última actividad > 3 días
+3. "Perdidas reactivables" — filtro: etapa = Perdida, reactivation_count < 3
 
 ### Report (crear 1 vez):
 1. "Pipeline semanal" — tipo: Deal pipeline report, periodo = última semana
