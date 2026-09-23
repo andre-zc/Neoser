@@ -10,6 +10,7 @@ import {
 } from "react";
 import { services } from "@/lib/services";
 import { MarketingOptIn } from "@/components/marketing-opt-in";
+import { LEGAL } from "@/lib/legal";
 
 type ModalContextValue = {
   open: () => void;
@@ -30,7 +31,8 @@ export function useWhatsappModal() {
 }
 
 function getWhatsappUrl(name: string, serviceInterest?: string) {
-  const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "51978822368";
+  // WhatsApp Business oficial. ManyChat solo se usa en campañas Meta directas.
+  const number = LEGAL.whatsapp;
   const baseMsg = `Hola NeoSer, soy ${name}. Acabo de llenar el formulario en su web`;
   const fullMsg =
     serviceInterest && serviceInterest !== "Otro"

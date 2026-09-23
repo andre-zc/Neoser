@@ -140,8 +140,8 @@ const faqs = [
     a: "Un Certificado de Aprobación por 64 horas académicas, equivalentes a 4 créditos académicos, emitido por Maternidad y Medicina Humanizada NeoSer.",
   },
   {
-    q: "¿Hay un precio especial para egresadas NeoSer?",
-    a: "Sí. Si ya llevaste un curso con nosotros, la inversión es de S/ 220 para participantes en Perú y USD 60 para participantes del extranjero. Escríbenos por WhatsApp para aplicar tu tarifa.",
+    q: "¿Cuál es el precio pronto pago?",
+    a: "El precio pronto pago vigente para participantes en Perú es S/ 220 y se cobra al inscribirte online. Las egresadas NeoSer del extranjero tienen tarifa USD 60: escríbenos por WhatsApp para aplicarla.",
   },
   {
     q: "¿Cómo puedo pagar desde el extranjero?",
@@ -655,8 +655,8 @@ export function NeurobiologiaLanding() {
               Quiero reservar mi vacante <ArrowRight className="h-4 w-4" />
             </Link>
             <p className="mt-3 text-xs text-gray-400">
-              Cupos limitados · Pago con tarjeta o Yape · Tarifa de egresadas y pagos
-              desde el extranjero se coordinan por WhatsApp
+              Cupos limitados · Precio pronto pago S/ 220 · Pago con tarjeta o Yape ·
+              Pagos desde el extranjero se coordinan por WhatsApp
             </p>
           </div>
         </div>

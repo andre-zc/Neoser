@@ -23,7 +23,7 @@ import { getCatalogCourse } from "@/lib/courses-catalog";
 
 const course = getCatalogCourse("neurobiologia-parto")!;
 const ENROLL_HREF = `/cursos/neurobiologia-parto/inscribirse?from=lp`;
-const WA_ASESORA = `https://wa.me/${LEGAL.whatsappManychat}?text=${encodeURIComponent(
+const WA_ASESORA = `https://wa.me/${LEGAL.whatsapp}?text=${encodeURIComponent(
   "Hola NeoSer, quiero contactarme con una asesora académica sobre el curso Neurobiología del Parto.",
 )}`;
 

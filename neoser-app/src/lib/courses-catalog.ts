@@ -95,7 +95,7 @@ export const coursesCatalog: CatalogCourse[] = [
       "La ciencia del nacimiento ha evolucionado. Hoy comprendemos que los procesos biológicos que ocurren durante el embarazo, el parto y el nacimiento influyen en la salud presente y futura de la madre y el recién nacido.",
       "Este curso integra los avances en neurobiología, microbiota, epigenética, neurociencias y teoría del apego para fortalecer la práctica clínica mediante protocolos basados en evidencia científica.",
     ],
-    price: 300,
+    price: 220,
     currency: "PEN",
     // Tarifa del extranjero (PayPal). Coincide con el tier "Participantes del
     // extranjero" de abajo. Las egresadas (USD 60) se coordinan aparte.
@@ -103,8 +103,8 @@ export const coursesCatalog: CatalogCourse[] = [
     priceTiers: [
       {
         label: "Participantes en Perú",
-        value: "S/ 300",
-        note: "Egresadas de cursos NeoSer: S/ 220",
+        value: "S/ 220",
+        note: "Precio pronto pago",
         tone: "pink",
       },
       {

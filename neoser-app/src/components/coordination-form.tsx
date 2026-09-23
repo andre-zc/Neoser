@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { LEGAL } from "@/lib/legal";
 
 const reasons = [
   "Ponencia o conferencia",
@@ -27,7 +28,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
 }
 
 function getWhatsappUrl() {
-  const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "51978822368";
+  const number = LEGAL.whatsapp;
   const msg =
     "Hola. He enviado una solicitud de reunión de coordinación a través de la página web de NeoSer y deseo brindar información adicional. Gracias.";
   return `https://wa.me/${number}?text=${encodeURIComponent(msg)}`;

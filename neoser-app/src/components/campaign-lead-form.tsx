@@ -22,8 +22,9 @@ type Props = {
 };
 
 /**
- * Formulario de campaña: captación autorizada + puente a WhatsApp ManyChat.
+ * Formulario de campaña: captación autorizada + puente a WhatsApp Business.
  * Convive con el CTA de compra (checkout) en la misma landing.
+ * ManyChat solo se usa cuando Meta redirige la campaña directo al bot.
  */
 export function CampaignLeadForm({
   whatsappText,
@@ -90,7 +91,7 @@ export function CampaignLeadForm({
           `Hola NeoSer, soy ${fullName}. Quiero información sobre el curso Neurobiología del Parto.`,
         );
       window.open(
-        `https://wa.me/${LEGAL.whatsappManychat}?text=${text}`,
+        `https://wa.me/${LEGAL.whatsapp}?text=${text}`,
         "_blank",
         "noopener,noreferrer",
       );

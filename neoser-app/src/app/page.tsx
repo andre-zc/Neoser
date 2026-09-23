@@ -949,7 +949,7 @@ export default function HomePage() {
                   {[
                     { icon: MapPin, iconColor: "text-pink", iconBg: "bg-pink-light", label: "Dirección", value: "Calle Los Sauces 542, Urb. Santa Victoria, Chiclayo, Lambayeque, Perú" },
                     { icon: Phone, iconColor: "text-blue", iconBg: "bg-blue-light", label: "Teléfono", value: LEGAL.telefono, href: `tel:${LEGAL.telefonoLink}` },
-                    { icon: MessageCircle, iconColor: "text-pink", iconBg: "bg-pink-light", label: "WhatsApp", value: LEGAL.whatsappManychatLabel, href: `https://wa.me/${LEGAL.whatsappManychat}` },
+                    { icon: MessageCircle, iconColor: "text-pink", iconBg: "bg-pink-light", label: "WhatsApp", value: LEGAL.telefono, href: `https://wa.me/${LEGAL.whatsapp}` },
                     { icon: Mail, iconColor: "text-pink", iconBg: "bg-pink-light", label: "Email", value: LEGAL.email, href: `mailto:${LEGAL.email}` },
                     { icon: Clock, iconColor: "text-blue", iconBg: "bg-blue-light", label: "Horario", value: "Lunes a Sábado: 8:00 AM - 7:00 PM" },
                   ].map((c) => (

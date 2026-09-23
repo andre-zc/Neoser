@@ -10,7 +10,7 @@ export const PROTOCOLS_COURSE_ID =
   "9a8b7c6d-eeee-4eee-aeee-eeeeeeeeeeee";
 export const PROTOCOLS_COURSE_TITLE =
   "Protocolos para un Nacimiento Humanizado";
-export const PROTOCOLS_CONFIRMATION_WHATSAPP = "51959798948";
+export const PROTOCOLS_CONFIRMATION_WHATSAPP = "51932713071";
 
 export function getProtocolsWhatsappGroupUrl(): string | null {
   const configuredUrl = process.env.PROTOCOLS_WHATSAPP_GROUP_URL?.trim();

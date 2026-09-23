@@ -127,12 +127,12 @@ export function SiteFooter() {
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 flex-shrink-0 text-pink" />
                 <a
-                  href={`https://wa.me/${LEGAL.whatsappManychat}`}
+                  href={`https://wa.me/${LEGAL.whatsapp}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="transition hover:text-pink"
                 >
-                  WhatsApp {LEGAL.whatsappManychatLabel}
+                  WhatsApp {LEGAL.telefono}
                 </a>
               </li>
               <li className="flex items-center gap-2">

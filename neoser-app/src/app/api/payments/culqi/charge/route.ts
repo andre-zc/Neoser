@@ -131,10 +131,11 @@ export async function POST(request: NextRequest) {
       };
     }
 
-    // 2. Resolver el monto según la moneda elegida. El precio en soles vive en
-    // la BD; la tarifa internacional (USD) en el catálogo estático. En ambos
-    // casos lo decide el servidor para que no se pueda manipular desde el
-    // cliente enviando "USD" para pagar menos.
+    // 2. Resolver el monto según la moneda elegida. El catálogo estático es la
+    // fuente de verdad del precio publicado (landings / pasarela); la BD se usa
+    // como respaldo si el curso no está en el catálogo. Así no hay fricción
+    // entre el monto mostrado y el cobrado. En ambos casos lo decide el servidor
+    // para que no se pueda manipular desde el cliente.
     let amountValue: number;
     if (isAuthorizedQa) {
       amountValue = qaAmount!;
@@ -151,7 +152,11 @@ export async function POST(request: NextRequest) {
       }
       amountValue = catalogCourse.priceUSD;
     } else {
-      amountValue = Number(course.price);
+      const catalogCourse = coursesCatalog.find((c) => c.id === course.id);
+      amountValue =
+        catalogCourse?.price != null && catalogCourse.price > 0
+          ? catalogCourse.price
+          : Number(course.price);
     }
 
     // Culqi requiere el monto en céntimos enteros (de la moneda elegida).
