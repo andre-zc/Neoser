@@ -2,6 +2,7 @@ import "server-only";
 
 import QRCode from "qrcode";
 import { createServiceClient } from "@/lib/supabase/service";
+import { LEGAL } from "@/lib/legal";
 import {
   getPaymentQaProductByPurpose,
 } from "@/lib/payments/payment-qa";
@@ -10,7 +11,6 @@ export const PROTOCOLS_COURSE_ID =
   "9a8b7c6d-eeee-4eee-aeee-eeeeeeeeeeee";
 export const PROTOCOLS_COURSE_TITLE =
   "Protocolos para un Nacimiento Humanizado";
-export const PROTOCOLS_CONFIRMATION_WHATSAPP = "51932713071";
 
 export function getProtocolsWhatsappGroupUrl(): string | null {
   const configuredUrl = process.env.PROTOCOLS_WHATSAPP_GROUP_URL?.trim();
@@ -147,7 +147,7 @@ export function buildProtocolsWhatsappHref({
     ? `Hola NeoSer, ya realicé el pago por PayPal para el curso ${PROTOCOLS_COURSE_TITLE}.${referenceText} Adjunto mi comprobante para que puedan validar el pago y enviarme el acceso al grupo de WhatsApp del curso.`
     : `Hola NeoSer, ya realicé el pago y mi inscripción al curso ${PROTOCOLS_COURSE_TITLE} fue confirmada.${referenceText} Quisiera ingresar al grupo de WhatsApp del curso.`;
 
-  return `https://wa.me/${PROTOCOLS_CONFIRMATION_WHATSAPP}?text=${encodeURIComponent(
+  return `https://wa.me/${LEGAL.whatsapp}?text=${encodeURIComponent(
     message,
   )}`;
 }

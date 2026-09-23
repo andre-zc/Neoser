@@ -63,12 +63,12 @@
 |---|------|----------|-----|
 | 1 | Home carga sin errores | Hero con gradiente navy/blue, quote "Cada nacimiento es unico" | [ ] |
 | 2 | Seccion Servicios | 6 cards: Control Prenatal, Parto Humanizado, Tecnica Rebozo, Preparacion al Parto, Acompanamiento Postparto, Obstetricia General | [ ] |
-| 3 | Boton "Reserva tu Cita" | Abre `wa.me/51978822368` con mensaje prellenado, nueva pestana | [ ] |
+| 3 | Boton "Reserva tu Cita" | Abre `wa.me/51932713071` con mensaje prellenado, nueva pestana | [ ] |
 | 4 | Boton "Ver cursos e inscribirme" | Abre WhatsApp con texto cursos, nueva pestana | [ ] |
 | 5 | Seccion Cursos | Texto placeholder visible | [ ] |
 | 6 | Seccion Quienes Somos | Card con texto proposito NeoSer | [ ] |
 | 7 | Seccion Noticias | Texto "Lista para conectarse con datos reales" | [ ] |
-| 8 | Seccion Contacto - info | Datos: Chiclayo, +51 978 822 368, contacto@neoser.pe | [ ] |
+| 8 | Seccion Contacto - info | Datos: Chiclayo, +51 932 713 071, contacto@neoser.pe | [ ] |
 | 9 | Link "Ver mapa integrado" | Navega a `/contacto` | [ ] |
 | 10 | Navegacion anclas | #servicios, #cursos, #nosotros, #noticias, #contacto funcionan | [ ] |
 

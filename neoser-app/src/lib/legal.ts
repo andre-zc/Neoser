@@ -16,12 +16,6 @@ export const LEGAL = {
   telefonoLink: "+51932713071",
   /** WhatsApp Business oficial — CTAs web, landings y formularios. */
   whatsapp: "51932713071",
-  /**
-   * WhatsApp API + ManyChat. Solo para campañas Meta que redirigen directo al bot.
-   * No usar en landings ni en la web institucional.
-   */
-  whatsappManychat: "51959798948",
-  whatsappManychatLabel: "+51 959 798 948",
   // contacto@neoser.pe NO existe: el dominio neoser.pe no tiene registros MX,
   // asi que nadie recibiria nada. INDECOPI exige un canal de contacto operativo
   // en el Libro de Reclamaciones y Culqi lo verifica, de modo que se usa el
