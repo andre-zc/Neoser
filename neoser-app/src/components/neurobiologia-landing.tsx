@@ -141,13 +141,13 @@ const faqs = [
   },
   {
     q: "¿Cuál es el precio pronto pago?",
-    a: "El precio pronto pago vigente para participantes en Perú es S/ 220 y se cobra al inscribirte online. Las egresadas NeoSer del extranjero tienen tarifa USD 60: escríbenos por WhatsApp para aplicarla.",
+    a: "Hasta el 30 de septiembre: S/ 220 para participantes en Perú y USD 60 para el extranjero. Ambos se cobran al inscribirte online (tarjeta, Yape o PayPal).",
   },
   {
     q: "¿Cómo puedo pagar desde el extranjero?",
-    a: "Escríbenos por WhatsApp al " +
+    a: "En el formulario de inscripción elige tarjeta internacional (Culqi) o PayPal. La tarifa pronto pago es USD 60. Si necesitas otra opción, escríbenos por WhatsApp al " +
       CONTACT_PHONE +
-      " y coordinamos el medio de pago internacional que te resulte más cómodo.",
+      ".",
   },
   {
     q: "¿Aún tienes preguntas?",
@@ -655,8 +655,8 @@ export function NeurobiologiaLanding() {
               Quiero reservar mi vacante <ArrowRight className="h-4 w-4" />
             </Link>
             <p className="mt-3 text-xs text-gray-400">
-              Cupos limitados · Precio pronto pago S/ 220 · Pago con tarjeta o Yape ·
-              Pagos desde el extranjero se coordinan por WhatsApp
+              Cupos limitados · Pronto pago hasta el 30/09: S/ 220 · USD 60 ·
+              Pago con tarjeta, Yape o PayPal
             </p>
           </div>
         </div>

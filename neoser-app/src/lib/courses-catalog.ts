@@ -97,20 +97,19 @@ export const coursesCatalog: CatalogCourse[] = [
     ],
     price: 220,
     currency: "PEN",
-    // Tarifa del extranjero (PayPal). Coincide con el tier "Participantes del
-    // extranjero" de abajo. Las egresadas (USD 60) se coordinan aparte.
-    priceUSD: 75,
+    // Pronto pago vigente hasta el 30 de septiembre de 2026.
+    priceUSD: 60,
     priceTiers: [
       {
         label: "Participantes en Perú",
         value: "S/ 220",
-        note: "Precio pronto pago",
+        note: "Precio pronto pago · vigente hasta el 30 de septiembre",
         tone: "pink",
       },
       {
         label: "Participantes del extranjero",
-        value: "USD 75",
-        note: "Egresadas de cursos NeoSer: USD 60",
+        value: "USD 60",
+        note: "Precio pronto pago · vigente hasta el 30 de septiembre",
         tone: "blue",
       },
     ],
