@@ -15,20 +15,12 @@ export async function login(formData: FormData) {
 
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) {
-    redirect(`/login?error=${encodeURIComponent("No se pudo iniciar sesion")}`);
+    const errorCode =
+      error.code === "email_not_confirmed"
+        ? "email_not_confirmed"
+        : "invalid_credentials";
+    redirect(`/login?error=${errorCode}`);
   }
 
   redirect("/admin");
-}
-
-export async function signup(formData: FormData) {
-  const { email, password } = getCredentials(formData);
-  const supabase = await createClient();
-
-  const { error } = await supabase.auth.signUp({ email, password });
-  if (error) {
-    redirect(`/login?error=${encodeURIComponent("No se pudo crear la cuenta")}`);
-  }
-
-  redirect("/login?message=Revisa+tu+email+para+confirmar");
 }
