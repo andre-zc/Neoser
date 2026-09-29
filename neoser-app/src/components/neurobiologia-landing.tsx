@@ -140,12 +140,12 @@ const faqs = [
     a: "Un Certificado de Aprobación por 64 horas académicas, equivalentes a 4 créditos académicos, emitido por Maternidad y Medicina Humanizada NeoSer.",
   },
   {
-    q: "¿Cuál es el precio pronto pago?",
-    a: "Hasta el 30 de septiembre: S/ 220 para participantes en Perú y USD 60 para el extranjero. Ambos se cobran al inscribirte online (tarjeta, Yape o PayPal).",
+    q: "¿Cuál es la inversión del curso?",
+    a: "La inversión es S/ 300 para participantes en Perú y USD 75 para participantes del extranjero. Ambos montos se cobran al inscribirte online (tarjeta, Yape o PayPal).",
   },
   {
     q: "¿Cómo puedo pagar desde el extranjero?",
-    a: "En el formulario de inscripción elige tarjeta internacional (Culqi) o PayPal. La tarifa pronto pago es USD 60. Si necesitas otra opción, escríbenos por WhatsApp al " +
+    a: "En el formulario de inscripción elige tarjeta internacional (Culqi) o PayPal. La inversión es USD 75. Si necesitas otra opción, escríbenos por WhatsApp al " +
       CONTACT_PHONE +
       ".",
   },
@@ -655,8 +655,8 @@ export function NeurobiologiaLanding() {
               Quiero reservar mi vacante <ArrowRight className="h-4 w-4" />
             </Link>
             <p className="mt-3 text-xs text-gray-400">
-              Cupos limitados · Pronto pago hasta el 30/09: S/ 220 · USD 60 ·
-              Pago con tarjeta, Yape o PayPal
+              Cupos limitados · USD 75 internacional · S/ 300 en Perú · Pago
+              con tarjeta, Yape o PayPal
             </p>
           </div>
         </div>

@@ -142,6 +142,11 @@ export default async function InscribirsePage({
             coursePrice={Number(course.price)}
             courseCurrency={course.currency}
             priceUSD={cat?.priceUSD}
+            preferredMethod={
+              from === "lp" && slug === "neurobiologia-parto"
+                ? "culqi-usd"
+                : undefined
+            }
             whatsappHref={cat ? whatsappHref(cat.whatsappText) : undefined}
           />
 

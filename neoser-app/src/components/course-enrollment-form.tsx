@@ -46,6 +46,8 @@ type Props = {
   forceCulqiEnabled?: boolean;
   /** Restringe los medios visibles; el servidor siempre valida moneda y monto. */
   allowedMethods?: PayMethod[];
+  /** Medio que aparece seleccionado al abrir el formulario, si está disponible. */
+  preferredMethod?: PayMethod;
   /** Evita presentar el cobro interno como una matrícula real. */
   paymentQa?: boolean;
 };
@@ -174,6 +176,7 @@ export function CourseEnrollmentForm({
   submitLabel,
   forceCulqiEnabled = false,
   allowedMethods,
+  preferredMethod,
   paymentQa = false,
 }: Props) {
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
@@ -219,7 +222,9 @@ export function CourseEnrollmentForm({
     : availableMethods;
 
   const [method, setMethod] = useState<PayMethod>(
-    methods[0]?.id ?? "culqi-pen",
+    methods.some((paymentMethod) => paymentMethod.id === preferredMethod)
+      ? preferredMethod!
+      : (methods[0]?.id ?? "culqi-pen"),
   );
 
   const isPaypal = method === "paypal";

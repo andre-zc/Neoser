@@ -146,6 +146,19 @@ export function NeurobiologiaCampaignLanding() {
               microbiota, epigenética, neurociencias y teoría del apego.
             </p>
 
+            <div className="mt-5 inline-flex items-center gap-4 rounded-2xl bg-white px-5 py-3 text-navy shadow-lg ring-1 ring-white/40">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-blue">
+                  Inversión internacional
+                </p>
+                <p className="text-3xl font-bold leading-none">USD {course.priceUSD}</p>
+              </div>
+              <span className="h-10 w-px bg-navy/10" aria-hidden />
+              <p className="max-w-28 text-xs leading-snug text-gray-500">
+                Para participantes en Perú: <strong className="text-navy">S/ {course.price}</strong>
+              </p>
+            </div>
+
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
               {keyFacts.map((f) => (
                 <div
@@ -314,7 +327,8 @@ export function NeurobiologiaCampaignLanding() {
               Prefiero recibir información primero
             </a>
             <p className="mt-3 text-center text-xs text-gray-400">
-              Pago seguro con tarjeta o Yape · Cupos limitados
+              Pago internacional con tarjeta o PayPal · Pago en Perú con
+              tarjeta o Yape · Cupos limitados
             </p>
           </div>
         </div>
