@@ -3,6 +3,8 @@ import { login } from "./actions";
 const LOGIN_ERRORS: Record<string, string> = {
   invalid_credentials: "El correo o la contraseña no son correctos.",
   email_not_confirmed: "La cuenta todavía no ha sido confirmada.",
+  service_unavailable:
+    "No pudimos conectar con el servicio de acceso. Intenta nuevamente en un momento.",
 };
 
 export default async function LoginPage({

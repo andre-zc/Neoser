@@ -18,7 +18,9 @@ export async function login(formData: FormData) {
     const errorCode =
       error.code === "email_not_confirmed"
         ? "email_not_confirmed"
-        : "invalid_credentials";
+        : error.code === "invalid_credentials"
+          ? "invalid_credentials"
+          : "service_unavailable";
     redirect(`/login?error=${errorCode}`);
   }
 
