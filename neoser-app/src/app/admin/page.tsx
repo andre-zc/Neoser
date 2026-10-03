@@ -14,6 +14,13 @@ interface Lead {
   next_followup_at: string | null;
   assigned_to: string | null;
   wa_consent: boolean;
+  wa_consent_at: string | null;
+  identity_document: string | null;
+  country_code: string | null;
+  country: string | null;
+  profession: string | null;
+  workplace: string | null;
+  course_id: string | null;
   gestation_weeks: number | null;
   service_interest: string | null;
   expected_due_date: string | null;
@@ -55,6 +62,23 @@ const STATUS_LABELS: Record<string, string> = {
   inscrito: "Inscrito",
   perdido: "Perdido",
 };
+
+const SOURCE_LABELS: Record<string, string> = {
+  meta_ads: "Meta Ads",
+  google_ads: "Google Ads",
+  instagram_organico: "Instagram orgánico",
+  referida: "Referido",
+  web: "Sitio web",
+  whatsapp_button: "Botón de WhatsApp",
+  newsletter: "Newsletter",
+  course_enrollment: "Checkout del curso",
+  paypal_internacional: "PayPal internacional",
+  otro: "Otro",
+};
+
+function sourceLabel(source: string) {
+  return SOURCE_LABELS[source] || source.replaceAll("_", " ");
+}
 
 
 // ── Helpers ────────────────────────────────────────────────────────
@@ -105,28 +129,34 @@ function exportCSV(leads: Lead[]) {
     "Nombre",
     "Email",
     "Telefono",
+    "DNI o documento",
+    "Pais",
+    "Profesion",
+    "Centro laboral",
+    "Curso o interes",
     "Mensaje",
     "Fuente",
     "Estado",
     "Seguimiento",
     "WA Consent",
-    "Semanas gestacion",
-    "Interes",
-    "Fecha parto",
+    "Fecha consentimiento WA",
     "Creado",
   ];
   const rows = leads.map((l) => [
     l.full_name,
     l.email || "",
     l.phone,
+    l.identity_document || "",
+    l.country || "",
+    l.profession || "",
+    l.workplace || "",
+    l.service_interest || "",
     l.message.replace(/"/g, '""'),
-    l.source,
+    sourceLabel(l.source),
     STATUS_LABELS[l.lead_status] || l.lead_status,
     l.next_followup_at || "",
     l.wa_consent ? "Si" : "No",
-    l.gestation_weeks?.toString() || "",
-    l.service_interest || "",
-    l.expected_due_date || "",
+    l.wa_consent_at || "",
     l.created_at,
   ]);
 
@@ -184,7 +214,12 @@ export default function AdminCRMPage() {
       return (
         lead.full_name.toLowerCase().includes(q) ||
         lead.phone.includes(q) ||
-        (lead.email && lead.email.toLowerCase().includes(q))
+        (lead.email && lead.email.toLowerCase().includes(q)) ||
+        (lead.identity_document && lead.identity_document.includes(q)) ||
+        (lead.country && lead.country.toLowerCase().includes(q)) ||
+        (lead.profession && lead.profession.toLowerCase().includes(q)) ||
+        (lead.workplace && lead.workplace.toLowerCase().includes(q)) ||
+        (lead.service_interest && lead.service_interest.toLowerCase().includes(q))
       );
     }
     return true;
@@ -316,24 +351,29 @@ export default function AdminCRMPage() {
 
       {/* ── Source breakdown (mini) ────────────────────────────── */}
       {!loading && leads.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-4">
-          {Object.entries(stats.bySource)
-            .sort((a, b) => b[1] - a[1])
-            .map(([src, count]) => (
-              <button
-                key={src}
-                onClick={() =>
-                  setFilterSource(filterSource === src ? "" : src)
-                }
-                className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
-                  filterSource === src
-                    ? "bg-[var(--navy)] text-white border-[var(--navy)]"
-                    : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"
-                }`}
-              >
-                {src} ({count})
-              </button>
-            ))}
+        <div className="mb-4">
+          <p className="mb-2 text-xs text-gray-500">
+            Fuente indica por qué canal llegó cada contacto; no es el medio de pago.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {Object.entries(stats.bySource)
+              .sort((a, b) => b[1] - a[1])
+              .map(([src, count]) => (
+                <button
+                  key={src}
+                  onClick={() =>
+                    setFilterSource(filterSource === src ? "" : src)
+                  }
+                  className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
+                    filterSource === src
+                      ? "bg-[var(--navy)] text-white border-[var(--navy)]"
+                      : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"
+                  }`}
+                >
+                  {sourceLabel(src)} ({count})
+                </button>
+              ))}
+          </div>
         </div>
       )}
 
@@ -343,7 +383,7 @@ export default function AdminCRMPage() {
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Buscar nombre, telefono o email..."
+          placeholder="Buscar nombre, teléfono, DNI, país o curso..."
           className="rounded-lg border border-gray-300 px-3 py-2 text-sm bg-white flex-1 min-w-[200px]"
         />
 
@@ -376,6 +416,7 @@ export default function AdminCRMPage() {
                 <tr className="bg-[var(--navy)] text-white text-left">
                   <th className="px-3 py-2 rounded-tl-lg">Nombre</th>
                   <th className="px-3 py-2">Telefono</th>
+                  <th className="px-3 py-2">Curso / interés</th>
                   <th className="px-3 py-2">Fuente</th>
                   <th className="px-3 py-2">Estado</th>
                   <th className="px-3 py-2">Seguimiento</th>
@@ -406,9 +447,12 @@ export default function AdminCRMPage() {
                         )}
                       </td>
                       <td className="px-3 py-2.5">{lead.phone}</td>
+                      <td className="px-3 py-2.5 text-xs text-gray-600">
+                        {lead.service_interest || "—"}
+                      </td>
                       <td className="px-3 py-2.5">
                         <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
-                          {lead.source}
+                          {sourceLabel(lead.source)}
                         </span>
                       </td>
                       <td className="px-3 py-2.5">
@@ -458,30 +502,47 @@ export default function AdminCRMPage() {
                   <strong>Email:</strong> {selectedLead.email}
                 </p>
               )}
+              {selectedLead.identity_document && (
+                <p>
+                  <strong>DNI / documento:</strong>{" "}
+                  {selectedLead.identity_document}
+                </p>
+              )}
+              {selectedLead.country && (
+                <p>
+                  <strong>País:</strong> {selectedLead.country}
+                  {selectedLead.country_code
+                    ? ` (${selectedLead.country_code})`
+                    : ""}
+                </p>
+              )}
+              {selectedLead.profession && (
+                <p>
+                  <strong>Profesión:</strong> {selectedLead.profession}
+                </p>
+              )}
+              {selectedLead.workplace && (
+                <p>
+                  <strong>Centro laboral:</strong> {selectedLead.workplace}
+                </p>
+              )}
               <p>
                 <strong>Mensaje:</strong> {selectedLead.message}
               </p>
               {selectedLead.service_interest && (
                 <p>
-                  <strong>Interes:</strong> {selectedLead.service_interest}
-                </p>
-              )}
-              {selectedLead.gestation_weeks != null && (
-                <p>
-                  <strong>Semanas:</strong> {selectedLead.gestation_weeks}
-                </p>
-              )}
-              {selectedLead.expected_due_date && (
-                <p>
-                  <strong>FPP:</strong> {fmtDate(selectedLead.expected_due_date)}
+                  <strong>Curso / interés:</strong> {selectedLead.service_interest}
                 </p>
               )}
               <p>
-                <strong>WA Consent:</strong>{" "}
-                {selectedLead.wa_consent ? "Si" : "No"}
+                <strong>Consentimiento WhatsApp:</strong>{" "}
+                {selectedLead.wa_consent ? "Sí" : "No"}
+                {selectedLead.wa_consent_at
+                  ? ` · ${fmtDateTime(selectedLead.wa_consent_at)}`
+                  : ""}
               </p>
               <p>
-                <strong>Fuente:</strong> {selectedLead.source}
+                <strong>Fuente:</strong> {sourceLabel(selectedLead.source)}
               </p>
               <p>
                 <strong>Creado:</strong> {fmtDateTime(selectedLead.created_at)}

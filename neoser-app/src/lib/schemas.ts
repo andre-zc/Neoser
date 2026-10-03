@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { COUNTRY_CODES } from "@/lib/country-dial-codes";
 
 export const leadSourceSchema = z.enum([
   "meta_ads",
@@ -204,9 +205,24 @@ export const culqiChargeRequestSchema = z.object({
   courseId: z.string().uuid(),
   // Token emitido por Custom Checkout. Formato: tkn_test_xxx | tkn_live_xxx.
   token: z.string().min(8).max(80),
-  guestName: z.string().min(2).max(120),
-  guestEmail: z.string().email(),
-  guestPhone: z.string().min(7).max(20),
+  guestName: z.string().trim().min(2).max(120),
+  guestEmail: z.string().trim().email().max(254),
+  guestPhone: z
+    .string()
+    .trim()
+    .min(6)
+    .max(20)
+    .regex(/^[0-9()\- ]+$/, "Ingresa un número de WhatsApp válido"),
+  identityDocument: trimmedRequiredText(6, 30).regex(
+    /^[\p{L}\p{N}.\- ]+$/u,
+    "Ingresa un DNI o documento válido",
+  ),
+  countryCode: z.enum(COUNTRY_CODES),
+  profession: trimmedRequiredText(2, 120),
+  workplace: trimmedRequiredText(2, 160),
+  waConsent: z.boolean().refine((accepted) => accepted, {
+    message: "Debes autorizar el contacto por WhatsApp para continuar",
+  }),
   // Moneda elegida en el checkout. PEN = tarjeta/Yape (Perú); USD = tarjeta
   // internacional. El monto de cada una lo resuelve el backend, no el cliente.
   currency: z.enum(["PEN", "USD"]).default("PEN"),
@@ -240,11 +256,24 @@ export const culqiChargeRequestSchema = z.object({
 // el backend lo resuelve del catalogo para evitar manipulacion del precio.
 export const paypalIntentRequestSchema = z.object({
   courseId: z.string().uuid(),
-  guestName: z.string().min(2).max(120),
-  guestEmail: z.string().email(),
-  guestPhone: z.string().min(7).max(20),
-  /** Pais de residencia declarado; contexto util para Diana al verificar. */
-  country: z.string().min(2).max(60).optional(),
+  guestName: z.string().trim().min(2).max(120),
+  guestEmail: z.string().trim().email().max(254),
+  guestPhone: z
+    .string()
+    .trim()
+    .min(6)
+    .max(20)
+    .regex(/^[0-9()\- ]+$/, "Ingresa un número de WhatsApp válido"),
+  identityDocument: trimmedRequiredText(6, 30).regex(
+    /^[\p{L}\p{N}.\- ]+$/u,
+    "Ingresa un DNI o documento válido",
+  ),
+  countryCode: z.enum(COUNTRY_CODES),
+  profession: trimmedRequiredText(2, 120),
+  workplace: trimmedRequiredText(2, 160),
+  waConsent: z.boolean().refine((accepted) => accepted, {
+    message: "Debes autorizar el contacto por WhatsApp para continuar",
+  }),
   marketingConsent: z.boolean().optional().default(false),
   notes: z.string().max(500).optional(),
   ...campaignAttributionShape,

@@ -24,6 +24,12 @@ export type FulfillmentMetadata = {
   guestName: string;
   guestEmail: string;
   guestPhone: string;
+  identityDocument?: string;
+  countryCode?: string;
+  country?: string;
+  profession?: string;
+  workplace?: string;
+  waConsent: boolean;
   marketingConsent?: boolean;
   notes?: string;
   utmSource?: string;
@@ -137,6 +143,13 @@ export async function fulfillSuccessfulCharge(
         full_name: metadata.guestName,
         email: metadata.guestEmail,
         phone: metadata.guestPhone,
+        identity_document: metadata.identityDocument ?? null,
+        country_code: metadata.countryCode ?? null,
+        country: metadata.country ?? null,
+        profession: metadata.profession ?? null,
+        workplace: metadata.workplace ?? null,
+        course_id: metadata.courseId,
+        service_interest: metadata.courseTitle,
         message:
           metadata.notes ||
           `Inscripción en curso "${metadata.courseTitle}" (charge: ${chargeId})`,
@@ -147,7 +160,8 @@ export async function fulfillSuccessfulCharge(
         utm_content: metadata.utmContent ?? null,
         gclid: metadata.gclid ?? null,
         landing_path: metadata.landingPath ?? null,
-        wa_consent: false,
+        wa_consent: metadata.waConsent,
+        wa_consent_at: metadata.waConsent ? new Date().toISOString() : null,
         marketing_consent: metadata.marketingConsent ?? false,
         marketing_consent_at: metadata.marketingConsent
           ? new Date().toISOString()
@@ -169,6 +183,10 @@ export async function fulfillSuccessfulCharge(
         guest_name: metadata.guestName,
         guest_email: metadata.guestEmail,
         guest_phone: metadata.guestPhone,
+        identity_document: metadata.identityDocument ?? null,
+        profession: metadata.profession ?? null,
+        workplace: metadata.workplace ?? null,
+        country: metadata.country ?? null,
         notes: metadata.notes ?? null,
         status: "paid",
         lead_id: lead.id,

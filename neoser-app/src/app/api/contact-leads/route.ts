@@ -72,6 +72,9 @@ export async function POST(request: Request) {
         message: parsed.data.message,
         source: parsed.data.source,
         wa_consent: parsed.data.waConsent,
+        wa_consent_at: parsed.data.waConsent
+          ? new Date().toISOString()
+          : null,
         marketing_consent: parsed.data.marketingConsent ?? false,
         // Fecha del consentimiento: evidencia ante una fiscalizacion.
         marketing_consent_at: parsed.data.marketingConsent

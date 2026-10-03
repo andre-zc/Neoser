@@ -136,6 +136,9 @@ export async function POST(request: NextRequest) {
         guestName: md.guestName,
         guestEmail: md.guestEmail,
         guestPhone: md.guestPhone,
+        // Los datos privados adicionales no viajan por metadata de Culqi.
+        // La versión 2 identifica el checkout que exige consentimiento.
+        waConsent: md.checkoutDataVersion === "2",
         notes: md.notes,
         utmSource: md.utmSource,
         utmMedium: md.utmMedium,

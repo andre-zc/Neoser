@@ -26,6 +26,10 @@ import {
   sendMetaEvent,
   sendMetaEventOnce,
 } from "@/lib/analytics/meta-pixel";
+import {
+  COUNTRY_DIAL_OPTIONS,
+  getCountryDialOption,
+} from "@/lib/country-dial-codes";
 
 type Props = {
   courseId: string;
@@ -60,6 +64,11 @@ type ChargePayload = {
   guestName: string;
   guestEmail: string;
   guestPhone: string;
+  identityDocument: string;
+  countryCode: string;
+  profession: string;
+  workplace: string;
+  waConsent: boolean;
   currency: "PEN" | "USD";
   marketingConsent?: boolean;
   notes?: string;
@@ -150,6 +159,7 @@ function formatPrice(price: number, currency: string) {
 
 const inputClass =
   "w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-pink focus:outline-none focus:ring-2 focus:ring-pink/20";
+const labelClass = "mb-1.5 block text-sm font-semibold text-navy";
 
 function isCulqi3DSParameters(value: unknown): value is Culqi3DSParameters {
   if (!value || typeof value !== "object") return false;
@@ -181,6 +191,7 @@ export function CourseEnrollmentForm({
 }: Props) {
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [error, setError] = useState<string>("");
+  const [countryCode, setCountryCode] = useState("PE");
 
   const culqiAvailable = CULQI_ENABLED || forceCulqiEnabled;
   const usdAvailable = typeof priceUSD === "number" && priceUSD > 0;
@@ -229,6 +240,8 @@ export function CourseEnrollmentForm({
 
   const isPaypal = method === "paypal";
   const isUsd = method === "culqi-usd" || method === "paypal";
+  const selectedCountry =
+    getCountryDialOption(countryCode) ?? COUNTRY_DIAL_OPTIONS[0];
   const displayAmount = isUsd && usdAvailable
     ? formatUsd(priceUSD!)
     : formatPrice(coursePrice, courseCurrency);
@@ -393,7 +406,13 @@ export function CourseEnrollmentForm({
       guestName: String(formData.get("guestName") || "").trim(),
       guestEmail: String(formData.get("guestEmail") || "").trim(),
       guestPhone: String(formData.get("guestPhone") || "").trim(),
-      country: String(formData.get("country") || "").trim() || undefined,
+      identityDocument: String(
+        formData.get("identityDocument") || "",
+      ).trim(),
+      countryCode: String(formData.get("countryCode") || "PE"),
+      profession: String(formData.get("profession") || "").trim(),
+      workplace: String(formData.get("workplace") || "").trim(),
+      waConsent: formData.get("waConsent") === "on",
       marketingConsent: formData.get("marketingConsent") === "on",
       notes: String(formData.get("notes") || "").trim() || undefined,
     };
@@ -459,6 +478,11 @@ export function CourseEnrollmentForm({
       guestName: data.guestName,
       guestEmail: data.guestEmail,
       guestPhone: data.guestPhone,
+      identityDocument: data.identityDocument,
+      countryCode: data.countryCode,
+      profession: data.profession,
+      workplace: data.workplace,
+      waConsent: data.waConsent,
       currency: chargeCurrency,
       marketingConsent: data.marketingConsent,
       notes: data.notes,
@@ -739,44 +763,151 @@ export function CourseEnrollmentForm({
           </fieldset>
         )}
 
-        <input
-          name="guestName"
-          required
-          minLength={2}
-          maxLength={120}
-          placeholder="Nombre completo"
-          className={inputClass}
-        />
-        <input
-          name="guestEmail"
-          type="email"
-          required
-          pattern={EMAIL_PATTERN}
-          placeholder="Correo electrónico"
-          className={inputClass}
-        />
-        <input
-          name="guestPhone"
-          required
-          minLength={7}
-          maxLength={20}
-          placeholder="Teléfono / WhatsApp (con código de país)"
-          className={inputClass}
-        />
-        {isPaypal && (
+        <div>
+          <label htmlFor="guestName" className={labelClass}>
+            Nombres y apellidos completos
+          </label>
           <input
-            name="country"
-            maxLength={60}
-            placeholder="País de residencia (opcional)"
+            id="guestName"
+            name="guestName"
+            autoComplete="name"
+            required
+            minLength={2}
+            maxLength={120}
+            placeholder="Ej. Ana Torres López"
             className={inputClass}
           />
-        )}
+        </div>
+
+        <div>
+          <label htmlFor="identityDocument" className={labelClass}>
+            DNI o documento de identidad
+          </label>
+          <input
+            id="identityDocument"
+            name="identityDocument"
+            autoComplete="off"
+            required
+            minLength={6}
+            maxLength={30}
+            placeholder="DNI, cédula o pasaporte"
+            className={inputClass}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="guestEmail" className={labelClass}>
+            Correo electrónico
+          </label>
+          <input
+            id="guestEmail"
+            name="guestEmail"
+            type="email"
+            autoComplete="email"
+            required
+            pattern={EMAIL_PATTERN}
+            placeholder="nombre@correo.com"
+            className={inputClass}
+          />
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)]">
+          <div>
+            <label htmlFor="countryCode" className={labelClass}>
+              País
+            </label>
+            <select
+              id="countryCode"
+              name="countryCode"
+              value={countryCode}
+              onChange={(event) => setCountryCode(event.target.value)}
+              required
+              className={inputClass}
+            >
+              {COUNTRY_DIAL_OPTIONS.map((country) => (
+                <option key={country.code} value={country.code}>
+                  {country.name} (+{country.dialCode})
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="guestPhone" className={labelClass}>
+              Número de WhatsApp
+            </label>
+            <div className="flex overflow-hidden rounded-xl border border-gray-200 focus-within:border-pink focus-within:ring-2 focus-within:ring-pink/20">
+              <span className="flex items-center border-r border-gray-200 bg-gray-50 px-3 text-sm font-semibold text-navy">
+                +{selectedCountry.dialCode}
+              </span>
+              <input
+                id="guestPhone"
+                name="guestPhone"
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel-national"
+                required
+                minLength={6}
+                maxLength={20}
+                pattern="[0-9()\- ]{6,20}"
+                placeholder="Número sin prefijo"
+                className="min-w-0 flex-1 px-4 py-3 text-sm outline-none"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="profession" className={labelClass}>
+            Profesión u ocupación actual
+          </label>
+          <input
+            id="profession"
+            name="profession"
+            autoComplete="organization-title"
+            required
+            minLength={2}
+            maxLength={120}
+            placeholder="Ej. Obstetra"
+            className={inputClass}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="workplace" className={labelClass}>
+            Centro laboral
+          </label>
+          <input
+            id="workplace"
+            name="workplace"
+            autoComplete="organization"
+            required
+            minLength={2}
+            maxLength={160}
+            placeholder="Institución o centro donde labora"
+            className={inputClass}
+          />
+        </div>
+
         <textarea
           name="notes"
           placeholder="Notas o consultas (opcional)"
           maxLength={500}
           className={`min-h-24 ${inputClass}`}
         />
+
+        <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-pink/30 bg-pink-light/50 p-4">
+          <input
+            name="waConsent"
+            type="checkbox"
+            required
+            className="mt-1 h-5 w-5 shrink-0 accent-pink"
+          />
+          <span className="text-sm leading-relaxed text-navy">
+            <strong>Autorizo el contacto por WhatsApp.</strong>{" "}
+            NeoSer podrá escribirme para gestionar esta inscripción y enviarme
+            la información necesaria del curso.
+          </span>
+        </label>
 
         {showMarketingOptIn ? (
           <MarketingOptIn description="Novedades de nuestros programas, nuevas ediciones y recursos para tu práctica profesional." />

@@ -19,6 +19,10 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { paypalIntentRequestSchema } from "@/lib/schemas";
 import { coursesCatalog } from "@/lib/courses-catalog";
 import {
+  getCountryDialOption,
+  normalizeInternationalPhone,
+} from "@/lib/country-dial-codes";
+import {
   buildPaypalMeUrl,
   buildPaypalReference,
   PAYPAL_CURRENCY,
@@ -44,6 +48,17 @@ export async function POST(request: Request) {
     }
 
     const d = parsed.data;
+    const country = getCountryDialOption(d.countryCode);
+    const guestPhone = normalizeInternationalPhone(
+      d.countryCode,
+      d.guestPhone,
+    );
+    if (!country || !guestPhone) {
+      return NextResponse.json(
+        { error: "Número de WhatsApp inválido para el país seleccionado" },
+        { status: 400 },
+      );
+    }
 
     // Precio resuelto en el servidor desde el catálogo (nunca del cliente).
     const course = coursesCatalog.find((c) => c.id === d.courseId);
@@ -76,11 +91,18 @@ export async function POST(request: Request) {
       .insert({
         full_name: d.guestName,
         email: d.guestEmail,
-        phone: d.guestPhone,
+        phone: guestPhone,
+        identity_document: d.identityDocument,
+        country_code: d.countryCode,
+        country: country.name,
+        profession: d.profession,
+        workplace: d.workplace,
+        course_id: d.courseId,
+        service_interest: course.title,
         message:
           d.notes ||
           `Inscripción internacional (PayPal ${reference}) — ${course.title}` +
-            (d.country ? ` · País: ${d.country}` : ""),
+            ` · País: ${country.name}`,
         source: d.utmSource || "paypal_internacional",
         utm_source: d.utmSource ?? null,
         utm_medium: d.utmMedium ?? null,
@@ -88,7 +110,8 @@ export async function POST(request: Request) {
         utm_content: d.utmContent ?? null,
         gclid: d.gclid ?? null,
         landing_path: d.landingPath ?? null,
-        wa_consent: false,
+        wa_consent: d.waConsent,
+        wa_consent_at: d.waConsent ? new Date().toISOString() : null,
         marketing_consent: d.marketingConsent ?? false,
         marketing_consent_at: d.marketingConsent
           ? new Date().toISOString()
@@ -112,7 +135,11 @@ export async function POST(request: Request) {
         course_id: d.courseId,
         guest_name: d.guestName,
         guest_email: d.guestEmail,
-        guest_phone: d.guestPhone,
+        guest_phone: guestPhone,
+        identity_document: d.identityDocument,
+        profession: d.profession,
+        workplace: d.workplace,
+        country: country.name,
         notes: d.notes ?? null,
         status: "pending",
         lead_id: lead.id,
@@ -140,7 +167,8 @@ export async function POST(request: Request) {
       raw_payload: {
         reference,
         paypalUrl,
-        country: d.country ?? null,
+        country: country.name,
+        countryCode: d.countryCode,
         courseTitle: course.title,
       },
     });
@@ -152,11 +180,11 @@ export async function POST(request: Request) {
     const emailInput = {
       guestName: d.guestName,
       guestEmail: d.guestEmail,
-      guestPhone: d.guestPhone,
+      guestPhone,
       courseTitle: course.title,
       amountUsd,
       reference,
-      country: d.country,
+      country: country.name,
       paypalUrl,
     };
 
@@ -186,11 +214,11 @@ export async function POST(request: Request) {
       await syncPendingPaypalEnrollmentToHubspot({
         fullName: d.guestName,
         email: d.guestEmail,
-        phone: d.guestPhone,
+        phone: guestPhone,
         courseName: course.title,
         amount: amountUsd,
         reference,
-        country: d.country,
+        country: country.name,
       });
     } catch (err) {
       console.error("HubSpot pending enrollment sync failed:", err);
@@ -200,7 +228,7 @@ export async function POST(request: Request) {
       await syncEnrollmentToBrevo({
         email: d.guestEmail,
         fullName: d.guestName,
-        phone: d.guestPhone,
+        phone: guestPhone,
         courseName: course.title,
         amount: amountUsd,
         marketingConsent: d.marketingConsent,

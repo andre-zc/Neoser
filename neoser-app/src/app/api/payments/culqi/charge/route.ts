@@ -13,6 +13,10 @@ import { culqiChargeRequestSchema } from "@/lib/schemas";
 import { coursesCatalog } from "@/lib/courses-catalog";
 import { createCulqiCharge } from "@/lib/payments/culqi";
 import {
+  getCountryDialOption,
+  normalizeInternationalPhone,
+} from "@/lib/country-dial-codes";
+import {
   fulfillSuccessfulCharge,
   recordFailedCharge,
   recordSuccessfulQaCharge,
@@ -42,7 +46,12 @@ export async function POST(request: NextRequest) {
       token,
       guestName,
       guestEmail,
-      guestPhone,
+      guestPhone: guestPhoneInput,
+      identityDocument,
+      countryCode,
+      profession,
+      workplace,
+      waConsent,
       currency,
       deviceFingerprintId,
       authentication3DS,
@@ -55,6 +64,18 @@ export async function POST(request: NextRequest) {
       gclid,
       landingPath,
     } = parsed.data;
+
+    const country = getCountryDialOption(countryCode);
+    const guestPhone = normalizeInternationalPhone(
+      countryCode,
+      guestPhoneInput,
+    );
+    if (!country || !guestPhone) {
+      return NextResponse.json(
+        { error: "Número de WhatsApp inválido para el país seleccionado" },
+        { status: 400 },
+      );
+    }
 
     const isQaCourse = isPaymentQaCourse(courseId);
     const qaProduct = getPaymentQaProduct(courseId);
@@ -183,6 +204,7 @@ export async function POST(request: NextRequest) {
             courseId: course.id,
             courseTitle: course.title,
             courseSlug: course.slug,
+            checkoutDataVersion: "2",
             guestName,
             guestEmail,
             guestPhone,
@@ -261,6 +283,12 @@ export async function POST(request: NextRequest) {
         guestName,
         guestEmail,
         guestPhone,
+        identityDocument,
+        countryCode,
+        country: country.name,
+        profession,
+        workplace,
+        waConsent,
         marketingConsent,
         notes,
         utmSource,

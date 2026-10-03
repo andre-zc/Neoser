@@ -56,6 +56,22 @@ create table if not exists public.contact_leads (
   message text not null,
   source text not null default 'web',
   wa_consent boolean not null default false,
+  wa_consent_at timestamptz,
+  identity_document text check (
+    identity_document is null
+    or char_length(btrim(identity_document)) between 6 and 30
+  ),
+  country_code text check (country_code is null or country_code ~ '^[A-Z]{2}$'),
+  country text check (
+    country is null or char_length(btrim(country)) between 2 and 100
+  ),
+  profession text check (
+    profession is null or char_length(btrim(profession)) between 2 and 120
+  ),
+  workplace text check (
+    workplace is null or char_length(btrim(workplace)) between 2 and 160
+  ),
+  course_id uuid references public.courses(id) on delete set null,
   gestation_weeks smallint check (gestation_weeks between 0 and 45),
   service_interest text,
   expected_due_date date,
@@ -68,8 +84,13 @@ create table if not exists public.contact_leads (
   utm_content text,
   gclid text,
   landing_path text,
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  constraint contact_leads_wa_consent_evidence_check
+    check (wa_consent = false or wa_consent_at is not null)
 );
+
+create index if not exists contact_leads_course_id_idx
+  on public.contact_leads(course_id);
 
 -- Auto-create profile on signup
 create or replace function public.handle_new_user()
