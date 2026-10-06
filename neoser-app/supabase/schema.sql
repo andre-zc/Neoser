@@ -76,6 +76,7 @@ create table if not exists public.contact_leads (
   service_interest text,
   expected_due_date date,
   lead_status text not null default 'nuevo' check (lead_status in ('nuevo','contactado','interesado','propuesta_enviada','inscrito','perdido')),
+  status_updated_at timestamptz not null default now(),
   next_followup_at timestamptz,
   assigned_to uuid references auth.users(id) on delete set null,
   utm_source text,
@@ -91,6 +92,45 @@ create table if not exists public.contact_leads (
 
 create index if not exists contact_leads_course_id_idx
   on public.contact_leads(course_id);
+
+create index if not exists contact_leads_status_updated_at_idx
+  on public.contact_leads(lead_status, status_updated_at desc);
+
+create table if not exists public.contact_course_interests (
+  lead_id uuid not null references public.contact_leads(id) on delete cascade,
+  course_id uuid not null references public.courses(id) on delete cascade,
+  relationship text not null default 'interes'
+    check (relationship in ('interes', 'inscrito')),
+  created_at timestamptz not null default now(),
+  primary key (lead_id, course_id)
+);
+
+create index if not exists contact_course_interests_course_id_idx
+  on public.contact_course_interests(course_id);
+
+alter table public.contact_course_interests enable row level security;
+
+revoke all on table public.contact_course_interests from anon, authenticated;
+grant select, insert, update, delete
+  on table public.contact_course_interests
+  to authenticated;
+
+create policy "Admin manage contact course interests"
+on public.contact_course_interests
+for all
+to authenticated
+using (
+  exists (
+    select 1 from public.profiles
+    where profiles.id = (select auth.uid()) and profiles.role = 'admin'
+  )
+)
+with check (
+  exists (
+    select 1 from public.profiles
+    where profiles.id = (select auth.uid()) and profiles.role = 'admin'
+  )
+);
 
 -- Auto-create profile on signup
 create or replace function public.handle_new_user()

@@ -26,17 +26,15 @@ export function CountUp({
   const suffix = match?.[3] ?? "";
 
   useEffect(() => {
-    // Si no hay número parseable o el usuario prefiere menos movimiento, no animar.
-    if (isNaN(target)) {
-      setDisplay(value);
-      return;
-    }
+    // Si no hay número parseable, el render usa directamente el valor recibido.
+    if (isNaN(target)) return;
+
     const prefersReduced =
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) {
-      setDisplay(value);
-      return;
+      const reducedMotionFrame = requestAnimationFrame(() => setDisplay(value));
+      return () => cancelAnimationFrame(reducedMotionFrame);
     }
 
     const el = ref.current;
@@ -80,7 +78,7 @@ export function CountUp({
 
   return (
     <span ref={ref} className={className}>
-      {display}
+      {isNaN(target) ? value : display}
     </span>
   );
 }

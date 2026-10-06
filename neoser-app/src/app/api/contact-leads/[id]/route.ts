@@ -36,7 +36,10 @@ export async function PATCH(
     }
 
     const updates: Record<string, unknown> = {};
-    if (parsed.data.leadStatus !== undefined) updates.lead_status = parsed.data.leadStatus;
+    if (parsed.data.leadStatus !== undefined) {
+      updates.lead_status = parsed.data.leadStatus;
+      updates.status_updated_at = new Date().toISOString();
+    }
     if (parsed.data.nextFollowupAt !== undefined) updates.next_followup_at = parsed.data.nextFollowupAt;
     if (parsed.data.assignedTo !== undefined) updates.assigned_to = parsed.data.assignedTo;
 

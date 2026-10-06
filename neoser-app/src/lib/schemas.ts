@@ -51,6 +51,16 @@ export const createLeadNoteSchema = z.object({
   body: z.string().min(1).max(2000),
 });
 
+export const contactCourseRelationshipSchema = z.enum([
+  "interes",
+  "inscrito",
+]);
+
+export const contactCourseInterestSchema = z.object({
+  courseId: z.string().uuid(),
+  relationship: contactCourseRelationshipSchema,
+});
+
 export const bookingStatusSchema = z.enum([
   "pending",
   "confirmed",

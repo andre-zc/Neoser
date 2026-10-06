@@ -144,16 +144,8 @@ const faqs = [
   },
 ];
 
-function Countdown() {
-  const [secs, setSecs] = useState(60 * 60);
-  useEffect(() => {
-    const t = setInterval(() => setSecs((s) => (s > 0 ? s - 1 : 0)), 1000);
-    return () => clearInterval(t);
-  }, []);
-  const hh = String(Math.floor(secs / 3600)).padStart(2, "0");
-  const mm = String(Math.floor((secs % 3600) / 60)).padStart(2, "0");
-  const ss = String(secs % 60).padStart(2, "0");
-  const Cell = ({ v, label }: { v: string; label: string }) => (
+function CountdownCell({ v, label }: { v: string; label: string }) {
+  return (
     <div className="flex flex-col items-center">
       <span
         className="rounded-xl bg-pink-light px-3 py-2 text-3xl font-bold text-navy md:text-4xl"
@@ -164,13 +156,24 @@ function Countdown() {
       <span className="mt-1 text-[10px] uppercase tracking-wide text-gray-400">{label}</span>
     </div>
   );
+}
+
+function Countdown() {
+  const [secs, setSecs] = useState(60 * 60);
+  useEffect(() => {
+    const t = setInterval(() => setSecs((s) => (s > 0 ? s - 1 : 0)), 1000);
+    return () => clearInterval(t);
+  }, []);
+  const hh = String(Math.floor(secs / 3600)).padStart(2, "0");
+  const mm = String(Math.floor((secs % 3600) / 60)).padStart(2, "0");
+  const ss = String(secs % 60).padStart(2, "0");
   return (
     <div className="flex items-start justify-center gap-3">
-      <Cell v={hh} label="Horas" />
+      <CountdownCell v={hh} label="Horas" />
       <span className="pt-2 text-3xl font-bold text-pink md:text-4xl">:</span>
-      <Cell v={mm} label="Minutos" />
+      <CountdownCell v={mm} label="Minutos" />
       <span className="pt-2 text-3xl font-bold text-pink md:text-4xl">:</span>
-      <Cell v={ss} label="Segundos" />
+      <CountdownCell v={ss} label="Segundos" />
     </div>
   );
 }

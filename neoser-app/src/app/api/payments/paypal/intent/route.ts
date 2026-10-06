@@ -154,6 +154,22 @@ export async function POST(request: Request) {
       );
     }
 
+    const { error: courseInterestError } = await supabase
+      .from("contact_course_interests")
+      .upsert(
+        {
+          lead_id: lead.id,
+          course_id: d.courseId,
+          relationship: "interes",
+        },
+        { onConflict: "lead_id,course_id" },
+      );
+    if (courseInterestError && courseInterestError.code !== "42P01") {
+      console.error("[paypal] relación de curso no guardada", {
+        errorCode: courseInterestError.code,
+      });
+    }
+
     // 3. Payment PENDIENTE. provider_payment_id = nuestra referencia, porque
     //    PayPal.me no nos entrega un id de transacción.
     const { error: paymentError } = await supabase.from("payments").insert({

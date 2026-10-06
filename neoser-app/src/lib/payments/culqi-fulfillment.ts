@@ -200,6 +200,24 @@ export async function fulfillSuccessfulCharge(
       );
     }
 
+    // La relación múltiple alimenta el filtro de cursos del CRM. No bloquea
+    // el cobro si la migración aún no fue aplicada durante un despliegue.
+    const { error: courseInterestError } = await supabase
+      .from("contact_course_interests")
+      .upsert(
+        {
+          lead_id: lead.id,
+          course_id: metadata.courseId,
+          relationship: "inscrito",
+        },
+        { onConflict: "lead_id,course_id" },
+      );
+    if (courseInterestError && courseInterestError.code !== "42P01") {
+      console.error("[culqi/fulfillment] relación de curso no guardada", {
+        errorCode: courseInterestError.code,
+      });
+    }
+
     // 4. Upsert payment con status=approved.
     // onConflict provider_payment_id => si el endpoint /charge ya insertó
     // una fila pending, la actualizamos en lugar de crear duplicado.

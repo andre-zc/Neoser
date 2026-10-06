@@ -39,12 +39,84 @@ export async function GET(request: NextRequest) {
       query = query.eq("source", source);
     }
 
-    const { data, error } = await query;
+    const { data: leads, error } = await query;
     if (error) {
       return NextResponse.json({ error: "Error al obtener leads" }, { status: 500 });
     }
 
-    return NextResponse.json(data);
+    const leadIds = (leads ?? []).map((lead) => lead.id);
+    const [{ data: savedInterests }, { data: enrollments }] = leadIds.length
+      ? await Promise.all([
+          supabase
+            .from("contact_course_interests")
+            .select("lead_id, course_id, relationship")
+            .in("lead_id", leadIds),
+          supabase
+            .from("enrollments")
+            .select("lead_id, course_id, status")
+            .in("lead_id", leadIds),
+        ])
+      : [{ data: [] }, { data: [] }];
+
+    type Relationship = "interes" | "inscrito";
+    type CourseLink = {
+      lead_id: string;
+      course_id: string;
+      relationship: Relationship;
+    };
+
+    const links = new Map<string, CourseLink>();
+    const keepStrongestRelationship = (link: CourseLink) => {
+      const key = `${link.lead_id}:${link.course_id}`;
+      const current = links.get(key);
+      if (!current || link.relationship === "inscrito") links.set(key, link);
+    };
+
+    for (const item of savedInterests ?? []) {
+      keepStrongestRelationship(item as CourseLink);
+    }
+    for (const item of enrollments ?? []) {
+      if (!item.lead_id) continue;
+      keepStrongestRelationship({
+        lead_id: item.lead_id,
+        course_id: item.course_id,
+        relationship: item.status === "paid" ? "inscrito" : "interes",
+      });
+    }
+    for (const lead of leads ?? []) {
+      if (!lead.course_id) continue;
+      keepStrongestRelationship({
+        lead_id: lead.id,
+        course_id: lead.course_id,
+        relationship: lead.lead_status === "inscrito" ? "inscrito" : "interes",
+      });
+    }
+
+    const courseIds = [...new Set([...links.values()].map((item) => item.course_id))];
+    const { data: courses } = courseIds.length
+      ? await supabase
+          .from("courses")
+          .select("id, title, slug")
+          .in("id", courseIds)
+      : { data: [] };
+    const coursesById = new Map((courses ?? []).map((course) => [course.id, course]));
+
+    return NextResponse.json(
+      (leads ?? []).map((lead) => ({
+        ...lead,
+        courses: [...links.values()]
+          .filter((item) => item.lead_id === lead.id)
+          .map((item) => {
+            const course = coursesById.get(item.course_id);
+            return {
+              id: item.course_id,
+              title: course?.title ?? lead.service_interest ?? "Curso",
+              slug: course?.slug ?? null,
+              relationship: item.relationship,
+            };
+          }),
+      })),
+    );
   } catch {
     return NextResponse.json({ error: "Error inesperado" }, { status: 500 });
   }
