@@ -141,7 +141,7 @@ const faqs = [
   },
   {
     q: "¿Cuál es la inversión del curso?",
-    a: "La inversión es S/ 300 para participantes en Perú y USD 75 para participantes del extranjero. Ambos montos se cobran al inscribirte online (tarjeta, Yape o PayPal).",
+    a: "La inversión es S/ 220 para participantes en Perú y USD 75 para participantes del extranjero. Ambos montos se cobran al inscribirte online (tarjeta, Yape o PayPal).",
   },
   {
     q: "¿Cómo puedo pagar desde el extranjero?",
@@ -655,7 +655,7 @@ export function NeurobiologiaLanding() {
               Quiero reservar mi vacante <ArrowRight className="h-4 w-4" />
             </Link>
             <p className="mt-3 text-xs text-gray-400">
-              Cupos limitados · USD 75 internacional · S/ 300 en Perú · Pago
+              Cupos limitados · USD 75 internacional · S/ 220 en Perú · Pago
               con tarjeta, Yape o PayPal
             </p>
           </div>

@@ -95,7 +95,7 @@ export const coursesCatalog: CatalogCourse[] = [
       "La ciencia del nacimiento ha evolucionado. Hoy comprendemos que los procesos biológicos que ocurren durante el embarazo, el parto y el nacimiento influyen en la salud presente y futura de la madre y el recién nacido.",
       "Este curso integra los avances en neurobiología, microbiota, epigenética, neurociencias y teoría del apego para fortalecer la práctica clínica mediante protocolos basados en evidencia científica.",
     ],
-    price: 300,
+    price: 220,
     currency: "PEN",
     priceUSD: 75,
     priceTiers: [
@@ -106,7 +106,7 @@ export const coursesCatalog: CatalogCourse[] = [
       },
       {
         label: "Participantes en Perú",
-        value: "S/ 300",
+        value: "S/ 220",
         tone: "pink",
       },
     ],
