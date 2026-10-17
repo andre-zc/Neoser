@@ -20,6 +20,7 @@ import {
 import { CampaignLeadForm } from "@/components/campaign-lead-form";
 import { LEGAL } from "@/lib/legal";
 import { getCatalogCourse } from "@/lib/courses-catalog";
+import { BELTRAN_LARES } from "@/lib/docentes";
 
 const course = getCatalogCourse("neurobiologia-parto")!;
 const ENROLL_HREF = `/cursos/neurobiologia-parto/inscribirse?from=lp`;
@@ -49,7 +50,7 @@ const reasons = [
 const keyFacts = [
   { icon: Calendar, label: "Inicio", value: course.startLabel! },
   { icon: Clock, label: "Horario", value: course.scheduleLabel! },
-  { icon: Laptop, label: "Modalidad", value: "Virtual sincrónica" },
+  { icon: Laptop, label: "Modalidad", value: course.mode },
   { icon: GraduationCap, label: "Certificación", value: "64 h · 4 créditos" },
 ];
 
@@ -133,7 +134,7 @@ export function NeurobiologiaCampaignLanding() {
           <div className="text-white" data-aos="fade-up">
             <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-pink-light ring-1 ring-white/15">
               <Sparkles className="h-3.5 w-3.5" />
-              Curso virtual · Edición 2026 II · Cupos limitados
+              Curso virtual asincrónico · Edición 2026 II · Acceso inmediato
             </p>
             <h1 className="text-2xl font-bold leading-tight md:text-3xl lg:text-4xl">
               Neurobiología del Parto y Protocolos para un Nacimiento Humanizado
@@ -284,7 +285,7 @@ export function NeurobiologiaCampaignLanding() {
           >
             <p className="section-tag mb-2">Inversión · Inscripción online</p>
             <h2 className="section-title mb-6 text-2xl md:text-3xl">
-              Reserva tu vacante ahora
+              Inscríbete y accede hoy
             </h2>
             <div className="mb-6 grid gap-3 sm:grid-cols-2">
               {(course.priceTiers ?? []).map((t) => (
@@ -328,7 +329,7 @@ export function NeurobiologiaCampaignLanding() {
             </a>
             <p className="mt-3 text-center text-xs text-gray-400">
               Pago internacional con tarjeta o PayPal · Pago en Perú con
-              tarjeta o Yape · Cupos limitados
+              tarjeta o Yape · Clases grabadas en Google Classroom
             </p>
           </div>
         </div>
@@ -383,8 +384,8 @@ export function NeurobiologiaCampaignLanding() {
           >
             <div className="mx-auto h-28 w-28 overflow-hidden rounded-full border-4 border-white shadow md:mx-0">
               <Image
-                src="/assets/cursos/dr-beltran-lares.jpg"
-                alt="Dr. Beltrán Lares"
+                src={BELTRAN_LARES.photo}
+                alt={BELTRAN_LARES.name}
                 width={224}
                 height={224}
                 className="h-full w-full object-cover"
@@ -394,14 +395,21 @@ export function NeurobiologiaCampaignLanding() {
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
                 Docente
               </p>
-              <h3 className="mt-1 text-xl font-bold text-navy">Dr. Beltrán Lares</h3>
+              <h3 className="mt-1 text-xl font-bold text-navy">{BELTRAN_LARES.name}</h3>
               <p className="mb-2 text-sm font-semibold text-pink">
-                Médico ginecólogo-obstetra · AuroraMadre Academia (Argentina)
+                Gineco-obstetra · {BELTRAN_LARES.affiliation}
               </p>
               <p className="text-sm leading-relaxed text-gray-500">
-                Más de 30 años de experiencia clínica y docente en humanización
-                del nacimiento, integrando evidencia científica y fisiología.
+                {BELTRAN_LARES.summary}
               </p>
+              <ul className="mt-4 space-y-1.5">
+                {BELTRAN_LARES.highlights.slice(1, 5).map((h) => (
+                  <li key={h} className="flex items-start gap-2">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-pink" />
+                    <span className="text-xs leading-snug text-gray-600">{h}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
@@ -416,7 +424,7 @@ export function NeurobiologiaCampaignLanding() {
             </h2>
             <p className="mt-3 text-sm text-white/70">
               Ambos caminos están abiertos: déjanos tus datos con autorización
-              o reserva tu vacante con pago en línea.
+              o inscríbete con pago en línea y accede a las clases grabadas.
             </p>
             <div className="mt-8 flex flex-col items-stretch justify-center gap-3">
               <a href="#informacion" className="btn-pink-outline !border-white !text-white hover:!bg-white hover:!text-navy justify-center">

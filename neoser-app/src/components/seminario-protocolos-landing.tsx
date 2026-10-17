@@ -30,6 +30,7 @@ import {
   getCatalogCourse,
   whatsappHref,
 } from "@/lib/courses-catalog";
+import { BELTRAN_LARES } from "@/lib/docentes";
 
 const course = getCatalogCourse("seminario-protocolos-nacimiento-humanizado")!;
 
@@ -296,30 +297,39 @@ export function SeminarioProtocolosLanding() {
           </div>
 
           <div
-            className="surface-card mx-auto grid max-w-4xl items-center gap-8 p-6 md:grid-cols-[auto_1fr] md:p-10"
+            className="surface-card mx-auto grid max-w-4xl items-start gap-8 p-6 md:grid-cols-[auto_1fr] md:p-10"
             data-aos="fade-up"
           >
             <div className="mx-auto h-40 w-40 overflow-hidden rounded-full border-4 border-white shadow-lg md:mx-0">
               <Image
-                src="/assets/cursos/dr-beltran-lares.jpg"
-                alt="Dr. Beltrán Lares Díaz"
+                src={BELTRAN_LARES.photo}
+                alt={BELTRAN_LARES.name}
                 width={320}
                 height={320}
                 className="h-full w-full object-cover"
               />
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-navy">Dr. Beltrán Lares Díaz</h3>
-              <p className="mb-4 text-sm font-semibold text-pink">
-                Director Aurora Madre · Médico ginecólogo-obstetra
+              <h3 className="text-2xl font-bold text-navy">{BELTRAN_LARES.name}</h3>
+              <p className="mb-1 text-sm font-semibold text-pink">
+                {BELTRAN_LARES.role}
               </p>
-              <p className="text-sm leading-relaxed text-gray-500">
-                Con más de 30 años de experiencia clínica y docente, ha dedicado su
-                trayectoria a la formación de profesionales de la salud y al
-                desarrollo de modelos de atención centrados en la fisiología del
-                nacimiento, promoviendo una práctica clínica sustentada en evidencia
-                científica.
-              </p>
+              <p className="mb-4 text-sm text-gray-400">{BELTRAN_LARES.affiliation}</p>
+              <div className="space-y-3">
+                {BELTRAN_LARES.bio.map((p) => (
+                  <p key={p} className="text-sm leading-relaxed text-gray-500">
+                    {p}
+                  </p>
+                ))}
+              </div>
+              <ul className="mt-5 grid gap-2 sm:grid-cols-2">
+                {BELTRAN_LARES.highlights.map((h) => (
+                  <li key={h} className="flex items-start gap-2">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-pink" />
+                    <span className="text-xs leading-snug text-gray-600">{h}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>

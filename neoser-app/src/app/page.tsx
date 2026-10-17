@@ -545,8 +545,8 @@ export default function HomePage() {
             <h3 className="mb-8 text-center text-2xl font-bold text-navy">Próximos Eventos</h3>
             <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-3">
               {[
-                { id: "seminario-protocolos", month: "8 de septiembre 2026", title: <>Protocolos para un<br />Nacimiento Humanizado</>, desc: "Virtual en vivo, 4 seminarios online. Inscripciones abiertas." },
-                { id: "neurobiologia", month: "08 de octubre 2026", title: <>Neurobiología del Parto<br />Edición 2026 II</>, desc: "Virtual sincrónica, jueves 7–9 p. m. Inscripciones abiertas." },
+                { id: "seminario-protocolos", month: "12 de noviembre 2026", title: <>Protocolos para un<br />Nacimiento Humanizado</>, desc: "Virtual en vivo, 4 seminarios online. Inscripciones abiertas." },
+                { id: "neurobiologia", month: "Acceso inmediato", title: <>Neurobiología del Parto<br />Edición 2026 II</>, desc: "Virtual asincrónica: clases grabadas en el aula virtual, a tu ritmo. Inscripciones abiertas." },
                 { id: "rebozo-presencial", month: "Edición 2026", title: <>El Arte del Rebozo<br />Programa de Formación</>, desc: "64 h académicas, semipresencial. Fechas en programación: consulta por WhatsApp." },
               ].map((ev) => (
                 <div key={ev.id} className="group relative overflow-hidden rounded-2xl border border-navy/5 bg-cream p-6 transition duration-300 hover:-translate-y-1 hover:shadow-lg">

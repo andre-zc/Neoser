@@ -90,7 +90,7 @@ export const coursesCatalog: CatalogCourse[] = [
     navTitle: "Neurobiología del Parto",
     tagline: "Actualizar la atención del nacimiento comienza por comprender su biología.",
     summary:
-      "Edición 2026 II. Neurobiología, microbiota, epigenética y teoría del apego aplicadas a protocolos clínicos basados en evidencia.",
+      "Edición 2026 II en modalidad virtual asincrónica: accede a las clases grabadas a tu ritmo. Neurobiología, microbiota, epigenética y teoría del apego aplicadas a protocolos clínicos basados en evidencia.",
     description: [
       "La ciencia del nacimiento ha evolucionado. Hoy comprendemos que los procesos biológicos que ocurren durante el embarazo, el parto y el nacimiento influyen en la salud presente y futura de la madre y el recién nacido.",
       "Este curso integra los avances en neurobiología, microbiota, epigenética, neurociencias y teoría del apego para fortalecer la práctica clínica mediante protocolos basados en evidencia científica.",
@@ -110,10 +110,12 @@ export const coursesCatalog: CatalogCourse[] = [
         tone: "pink",
       },
     ],
-    mode: "Virtual sincrónica",
+    // El curso inició en vivo el 08/10/2026; desde octubre se promociona en
+    // modalidad asincrónica con acceso a las grabaciones en el aula virtual.
+    mode: "Virtual asincrónica",
     durationLabel: "2 meses · 64 horas académicas · 4 créditos",
-    startLabel: "Jueves 08 de octubre de 2026",
-    scheduleLabel: "Jueves · 7:00 – 9:00 p. m. (hora Perú), una vez a la semana",
+    startLabel: "Acceso inmediato al inscribirte",
+    scheduleLabel: "A tu ritmo · clases grabadas disponibles en el aula virtual",
     audience:
       "Obstetras, médicos gineco-obstetras, neonatólogos, pediatras y profesionales vinculados a la atención materno-perinatal.",
     certification:
@@ -121,12 +123,12 @@ export const coursesCatalog: CatalogCourse[] = [
     image: "/assets/cursos/neurobiologia-parto.jpg",
     icon: "Brain",
     includes: [
-      "8 sesiones académicas en vivo",
-      "Campus Virtual NeoSer durante 12 meses",
+      "8 sesiones académicas grabadas",
+      "Aula virtual NeoSer (Google Classroom) durante 12 meses",
       "NeoSer Workbook",
       "Bibliografía científica",
       "Casos clínicos y prácticas guiadas",
-      "Grabaciones disponibles durante 12 meses",
+      "Avanza a tu propio ritmo, desde cualquier lugar",
       "Comunidad Académica NeoSer",
       "Certificación académica (64 h · 4 créditos)",
     ],
@@ -205,7 +207,7 @@ export const coursesCatalog: CatalogCourse[] = [
     tagline:
       "Actualización profesional desde la evidencia científica y la protección de la fisiología del nacimiento.",
     summary:
-      "Seminario Internacional virtual en vivo. 4 seminarios online. Inicio: 8 de septiembre de 2026. Perú: S/ 150 · Internacional: USD 60.",
+      "Seminario Internacional virtual en vivo. 4 seminarios online. Inicio: jueves 12 de noviembre de 2026. Perú: S/ 150 · Internacional: USD 60.",
     description: [
       "El Seminario Internacional Protocolos para un Nacimiento Humanizado propone un espacio de actualización y reflexión sobre diferentes prácticas de atención durante el parto, nacimiento y primeras horas de vida, a la luz de la evidencia científica, la fisiología, microbiota, epigenética y el respeto de los procesos biológicos de la madre y su bebé.",
       "Este seminario constituye la segunda parte de la formación iniciada con Neurobiología del Parto, llevando sus fundamentos hacia el análisis de protocolos, rutinas e intervenciones presentes en la práctica clínica.",
@@ -228,7 +230,7 @@ export const coursesCatalog: CatalogCourse[] = [
     ],
     mode: "Virtual en vivo",
     durationLabel: "32 horas académicas · 4 seminarios",
-    startLabel: "Martes 08 de septiembre de 2026",
+    startLabel: "Jueves 12 de noviembre de 2026",
     scheduleLabel: "Martes y jueves · 7:00 – 9:00 p. m. (hora Perú)",
     audience:
       "Obstetras, médicos y profesionales vinculados a la salud materno-perinatal interesados en fortalecer su práctica desde la evidencia científica, la fisiología y la humanización del nacimiento.",

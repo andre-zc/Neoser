@@ -8,13 +8,13 @@ import { NeurobiologiaCampaignLanding } from "@/components/neurobiologia-campaig
 export const metadata: Metadata = {
   title: "Neurobiología del Parto | Curso virtual NeoSer",
   description:
-    "Curso virtual Edición 2026 II. Neurobiología, protocolos y nacimiento humanizado. Recibe información o inscríbete ahora.",
+    "Curso virtual asincrónico Edición 2026 II. Neurobiología, protocolos y nacimiento humanizado. Recibe información o inscríbete y accede hoy a las clases grabadas.",
   alternates: { canonical: "/lp/neurobiologia-parto" },
   robots: { index: false, follow: true },
   openGraph: {
     title: "Neurobiología del Parto y Protocolos para un Nacimiento Humanizado",
     description:
-      "Actualiza tu práctica clínica con evidencia científica. Inicio: 08 de octubre de 2026. Modalidad virtual.",
+      "Actualiza tu práctica clínica con evidencia científica. Modalidad virtual asincrónica, a tu ritmo.",
     images: ["/assets/cursos/neurobiologia-parto.jpg"],
     url: "/lp/neurobiologia-parto",
   },

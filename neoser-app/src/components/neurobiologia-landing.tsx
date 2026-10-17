@@ -37,6 +37,7 @@ import {
   getCatalogCourse,
   whatsappHref,
 } from "@/lib/courses-catalog";
+import { BELTRAN_LARES } from "@/lib/docentes";
 
 const course = getCatalogCourse("neurobiologia-parto")!;
 
@@ -77,13 +78,13 @@ const moduleIcons = [Baby, Brain, ShieldCheck, Stethoscope];
 const perks = [
   {
     icon: Video,
-    title: "8 sesiones académicas en vivo",
-    text: "Clases sincrónicas donde podrás interactuar con el docente, resolver consultas y profundizar en los contenidos del programa.",
+    title: "8 sesiones académicas grabadas",
+    text: "Las clases completas del programa, disponibles desde el primer día para que avances a tu ritmo y las repitas cuando lo necesites.",
   },
   {
     icon: Laptop,
-    title: "Campus Virtual NeoSer",
-    text: "Accede durante 12 meses a las sesiones, materiales académicos y recursos complementarios desde una plataforma diseñada para acompañar tu proceso de aprendizaje.",
+    title: "Aula virtual NeoSer",
+    text: "Accede durante 12 meses, desde Google Classroom, a las sesiones, materiales académicos y recursos complementarios del programa.",
   },
   {
     icon: NotebookPen,
@@ -102,8 +103,8 @@ const perks = [
   },
   {
     icon: Clock,
-    title: "Grabaciones disponibles 12 meses",
-    text: "Revisa cada sesión a tu propio ritmo y refuerza los contenidos cuando lo necesites durante un año.",
+    title: "Estudia a tu ritmo",
+    text: "Sin horarios fijos: organiza tu estudio según tu agenda clínica y refuerza los contenidos cuando lo necesites durante un año.",
   },
   {
     icon: MessagesSquare,
@@ -120,10 +121,10 @@ const perks = [
 const keyInfo = [
   { icon: Calendar, label: "Inicio", value: course.startLabel! },
   { icon: Clock, label: "Horario", value: course.scheduleLabel! },
-  { icon: Laptop, label: "Modalidad", value: "Virtual sincrónica" },
+  { icon: Laptop, label: "Modalidad", value: course.mode },
   { icon: GraduationCap, label: "Duración", value: course.durationLabel },
   { icon: Users, label: "Dirigido a", value: course.audience! },
-  { icon: Library, label: "Campus Virtual", value: "Acceso durante 12 meses" },
+  { icon: Library, label: "Aula virtual", value: "Google Classroom · acceso durante 12 meses" },
 ];
 
 const faqs = [
@@ -132,8 +133,12 @@ const faqs = [
     a: "A obstetras, médicos gineco-obstetras, neonatólogos, pediatras y profesionales vinculados a la atención materno-perinatal que buscan actualizar su práctica clínica con evidencia científica reciente.",
   },
   {
-    q: "¿Qué pasa si no puedo asistir a una sesión en vivo?",
-    a: "Todas las sesiones quedan grabadas y disponibles en el Campus Virtual NeoSer durante 12 meses, para que puedas revisarlas a tu ritmo.",
+    q: "¿El curso ya empezó? ¿Todavía puedo inscribirme?",
+    a: "Sí. El curso inició el 08 de octubre de 2026 y ahora está disponible en modalidad virtual asincrónica: al inscribirte te damos acceso al aula virtual (Google Classroom) con todas las clases grabadas, para que avances a tu ritmo.",
+  },
+  {
+    q: "¿Cómo recibo el acceso a las clases?",
+    a: "Después de confirmar tu pago, el equipo NeoSer te envía el acceso al aula virtual en Google Classroom. Ahí encontrarás las sesiones grabadas, los materiales y la bibliografía durante 12 meses.",
   },
   {
     q: "¿Qué certificación recibo?",
@@ -181,7 +186,7 @@ export function NeurobiologiaLanding() {
         <div className="container-main relative">
           <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
             <span className="rounded-full bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-navy shadow-sm">
-              Curso virtual · Edición 2026 II
+              Curso virtual asincrónico · Edición 2026 II
             </span>
             <span className="inline-flex items-center gap-2 rounded-full bg-pink-light px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-pink-dark">
               <Sparkles className="h-3.5 w-3.5" /> Inscripciones abiertas
@@ -223,9 +228,9 @@ export function NeurobiologiaLanding() {
               <div className="mt-6 flex flex-wrap gap-2">
                 {[
                   `Inicio: ${course.startLabel}`,
-                  "🌎 Virtual sincrónica",
+                  "🌎 Virtual asincrónica",
                   "64 h académicas · 4 créditos",
-                  "Campus Virtual 12 meses",
+                  "Aula virtual 12 meses",
                 ].map((chip) => (
                   <span
                     key={chip}
@@ -238,7 +243,7 @@ export function NeurobiologiaLanding() {
 
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link href={ENROLL_HREF} className="btn-primary">
-                  Reservar mi vacante <ArrowRight className="h-4 w-4" />
+                  Inscribirme ahora <ArrowRight className="h-4 w-4" />
                 </Link>
                 <a
                   href={BROCHURE_HREF}
@@ -270,7 +275,7 @@ export function NeurobiologiaLanding() {
                   Edición 2026 II
                   <br />
                   <span className="text-xs font-normal text-gray-400">
-                    Cupos limitados
+                    Clases grabadas · a tu ritmo
                   </span>
                 </p>
               </div>
@@ -494,13 +499,13 @@ export function NeurobiologiaLanding() {
 
           {/* Docente */}
           <div
-            className="surface-card mx-auto grid max-w-4xl items-center gap-8 p-6 md:grid-cols-[auto_1fr] md:p-10"
+            className="surface-card mx-auto grid max-w-4xl items-start gap-8 p-6 md:grid-cols-[auto_1fr] md:p-10"
             data-aos="fade-up"
           >
             <div className="mx-auto h-40 w-40 overflow-hidden rounded-full border-4 border-white shadow-lg md:mx-0">
               <Image
-                src="/assets/cursos/dr-beltran-lares.jpg"
-                alt="Dr. Beltrán Lares, médico ginecólogo-obstetra"
+                src={BELTRAN_LARES.photo}
+                alt={`${BELTRAN_LARES.name}, médico ginecólogo-obstetra`}
                 width={320}
                 height={320}
                 className="h-full w-full object-cover"
@@ -510,21 +515,26 @@ export function NeurobiologiaLanding() {
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
                 Docente del programa
               </p>
-              <h3 className="mt-1 text-2xl font-bold text-navy">Dr. Beltrán Lares</h3>
+              <h3 className="mt-1 text-2xl font-bold text-navy">{BELTRAN_LARES.name}</h3>
               <p className="mb-1 text-sm font-semibold text-pink">
-                Médico ginecólogo-obstetra
+                {BELTRAN_LARES.role}
               </p>
-              <p className="mb-4 text-sm text-gray-400">
-                Director de AuroraMadre Academia — Buenos Aires, Argentina
-              </p>
-              <p className="text-sm leading-relaxed text-gray-500">
-                Con más de 30 años de experiencia clínica y docente, ha dedicado su
-                trayectoria a la formación de profesionales de la salud y al
-                desarrollo de modelos de atención centrados en la fisiología del
-                nacimiento. Su trabajo integra los avances en neurobiología del
-                parto, microbiota, epigenética, teoría del apego y neurociencias,
-                promoviendo una práctica clínica sustentada en evidencia científica.
-              </p>
+              <p className="mb-4 text-sm text-gray-400">{BELTRAN_LARES.affiliation}</p>
+              <div className="space-y-3">
+                {BELTRAN_LARES.bio.map((p) => (
+                  <p key={p} className="text-sm leading-relaxed text-gray-500">
+                    {p}
+                  </p>
+                ))}
+              </div>
+              <ul className="mt-5 grid gap-2 sm:grid-cols-2">
+                {BELTRAN_LARES.highlights.map((h) => (
+                  <li key={h} className="flex items-start gap-2">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-pink" />
+                    <span className="text-xs leading-snug text-gray-600">{h}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 
@@ -609,7 +619,7 @@ export function NeurobiologiaLanding() {
           >
             <p className="section-tag mb-2">Inversión</p>
             <h2 className="section-title mb-6">
-              Reserva tu vacante en la <span className="text-pink">Edición 2026 II.</span>
+              Accede hoy a la <span className="text-pink">Edición 2026 II.</span>
             </h2>
 
             <div className="mx-auto mb-8 grid max-w-md gap-4 sm:grid-cols-2">
@@ -652,11 +662,11 @@ export function NeurobiologiaLanding() {
             </div>
 
             <Link href={ENROLL_HREF} className="btn-primary mx-auto justify-center">
-              Quiero reservar mi vacante <ArrowRight className="h-4 w-4" />
+              Quiero inscribirme <ArrowRight className="h-4 w-4" />
             </Link>
             <p className="mt-3 text-xs text-gray-400">
-              Cupos limitados · USD 75 internacional · S/ 220 en Perú · Pago
-              con tarjeta, Yape o PayPal
+              Acceso inmediato a las clases grabadas · USD 75 internacional ·
+              S/ 220 en Perú · Pago con tarjeta, Yape o PayPal
             </p>
           </div>
         </div>
