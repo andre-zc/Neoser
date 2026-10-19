@@ -123,7 +123,7 @@ export const coursesCatalog: CatalogCourse[] = [
     image: "/assets/cursos/neurobiologia-parto.jpg",
     icon: "Brain",
     includes: [
-      "8 sesiones académicas grabadas",
+      "9 sesiones académicas grabadas",
       "Aula virtual NeoSer (Google Classroom) durante 12 meses",
       "NeoSer Workbook",
       "Bibliografía científica",

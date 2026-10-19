@@ -78,7 +78,7 @@ const moduleIcons = [Baby, Brain, ShieldCheck, Stethoscope];
 const perks = [
   {
     icon: Video,
-    title: "8 sesiones académicas grabadas",
+    title: "9 sesiones académicas grabadas",
     text: "Las clases completas del programa, disponibles desde el primer día para que avances a tu ritmo y las repitas cuando lo necesites.",
   },
   {
