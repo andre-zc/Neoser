@@ -125,6 +125,26 @@ export default function HomePage() {
 
   const news = [
     {
+      day: "21",
+      month: "Oct 2026",
+      title: "Hormonas del parto y parto respetado",
+      desc: "El Dr. Beltrán Lares brindó el seminario «Hormonas del parto y parto respetado» en la 5.ª edición del Curso Internacional de Neurobiología del Parto.",
+      icon: Brain,
+      img: "/assets/cursos/dr-beltran-lares.jpg",
+      logo: false,
+      full: [
+        "Comprender la fisiología para acompañar mejor el nacimiento. En el marco del Curso Internacional de Neurobiología del Parto y Protocolos para un Nacimiento Humanizado (5.ª edición), desarrollado bajo la coordinación académica de la Obsta. Diana Silva, el Dr. Beltrán Lares brindó el Seminario «Hormonas del parto y parto respetado».",
+        "Durante el encuentro profundizamos en el extraordinario entramado hormonal que acompaña el parto y el nacimiento, con especial atención a las múltiples funciones de la oxitocina, mucho más allá de su conocida participación en la contractilidad uterina.",
+        "El seminario permitió comprender cómo la oxitocina participa también en procesos relacionados con la calma, la conexión, la lactancia y el vínculo temprano, y cómo su liberación puede verse favorecida por condiciones del entorno como la seguridad, la confianza, el apoyo, la calidez, la empatía y el contacto físico.",
+        "También se abordó la importancia de la succión temprana después del nacimiento y su relación con los pulsos de oxitocina durante la lactancia, así como el papel de esta hormona durante la primera hora posparto, un periodo especialmente significativo para favorecer estados de calma y conexión entre madre y bebé.",
+        "Otro aspecto especialmente interesante fue la oxitocina en los padres y su relación con las conductas de cuidado, el contacto, la estimulación táctil, la mirada, el sostén, la comunicación y la capacidad de responder a las necesidades del recién nacido.",
+        "Desde esta comprensión neurobiológica, el seminario invitó también a reflexionar sobre la práctica clínica: respetar la fisiología no significa evitar las intervenciones necesarias, sino comprender profundamente los procesos naturales para decidir con mayor precisión cuándo acompañar, cuándo esperar y cuándo intervenir.",
+        "En este contexto se analizaron aspectos como la maduración cervical, la inducción del trabajo de parto y la evaluación minuciosa de las condiciones materno-fetales, incluida la posición fetal, destacando la importancia de fundamentar cada intervención en una valoración clínica cuidadosa.",
+        "Comprender las hormonas del parto nos permite mirar el nacimiento desde una perspectiva más amplia: no solamente como un acontecimiento obstétrico, sino como un proceso neuroendocrino, fisiológico y vincular que continúa después del nacimiento.",
+        "Porque nacer y vivir con amor cambia el mundo.",
+      ],
+    },
+    {
       day: "18",
       month: "Ago 2026",
       title: "Apertura del Curso de Neurobiología del Parto",

@@ -22,7 +22,7 @@ export const BELTRAN_LARES: Docente = {
   shortName: "Dr. Beltrán Lares",
   photo: "/assets/cursos/dr-beltran-lares.jpg",
   role: "Médico gineco-obstetra · Pionero del parto humanizado",
-  affiliation: "Fundador de AuroraMadre",
+  affiliation: "Director de AuroraMadre Academia · Buenos Aires, Argentina",
   summary:
     "Pionero de la humanización del parto en Venezuela desde 1989, con más de 30 años de experiencia en obstetricia y ginecología.",
   bio: [

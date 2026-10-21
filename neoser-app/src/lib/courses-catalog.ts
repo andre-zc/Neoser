@@ -189,7 +189,7 @@ export const coursesCatalog: CatalogCourse[] = [
         ],
       },
     ],
-    brochureHref: "/assets/cursos/brochure-neurobiologia-parto.pdf",
+    brochureHref: "/assets/cursos/brochure-neurobiologia-asincronico.pdf",
     landingHref: "/cursos/neurobiologia-parto",
     enrollment: "checkout",
     whatsappText:
