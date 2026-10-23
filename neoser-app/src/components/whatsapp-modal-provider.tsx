@@ -10,6 +10,7 @@ import {
 } from "react";
 import { services } from "@/lib/services";
 import { MarketingOptIn } from "@/components/marketing-opt-in";
+import { CountryPhoneFields } from "@/components/country-phone-fields";
 import { LEGAL } from "@/lib/legal";
 
 type ModalContextValue = {
@@ -89,6 +90,7 @@ function WhatsappLeadModal({ onClose }: { onClose: () => void }) {
     const payload = {
       fullName,
       phone,
+      countryCode: String(formData.get("countryCode") || "PE"),
       message:
         messageInput ||
         `Contacto por WhatsApp${serviceInterest ? ` - interesada en ${serviceInterest}` : ""}`,
@@ -171,11 +173,9 @@ function WhatsappLeadModal({ onClose }: { onClose: () => void }) {
             placeholder="Nombre completo *"
             className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-[#25D366] focus:outline-none focus:ring-2 focus:ring-[#25D366]/20"
           />
-          <input
-            name="phone"
-            required
+          <CountryPhoneFields
             placeholder="Teléfono *"
-            className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-[#25D366] focus:outline-none focus:ring-2 focus:ring-[#25D366]/20"
+            inputClassName="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm focus:border-[#25D366] focus:outline-none focus:ring-2 focus:ring-[#25D366]/20"
           />
           <input
             name="email"

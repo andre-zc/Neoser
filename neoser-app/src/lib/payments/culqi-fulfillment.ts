@@ -17,6 +17,7 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { syncEnrollmentToHubspot } from "@/lib/hubspot";
 import { syncEnrollmentToBrevo } from "@/lib/brevo";
 import { sendEmail, buildEnrollmentConfirmationEmail } from "@/lib/email";
+import { upsertCrmContact } from "@/lib/crm/contacts";
 
 export type FulfillmentMetadata = {
   courseId: string;
@@ -136,44 +137,35 @@ export async function fulfillSuccessfulCharge(
   }
 
   try {
-    // 2. Crear lead
-    const { data: lead, error: leadError } = await supabase
-      .from("contact_leads")
-      .insert({
-        full_name: metadata.guestName,
-        email: metadata.guestEmail,
-        phone: metadata.guestPhone,
-        identity_document: metadata.identityDocument ?? null,
-        country_code: metadata.countryCode ?? null,
-        country: metadata.country ?? null,
-        profession: metadata.profession ?? null,
-        workplace: metadata.workplace ?? null,
-        course_id: metadata.courseId,
-        service_interest: metadata.courseTitle,
-        message:
-          metadata.notes ||
-          `Inscripción en curso "${metadata.courseTitle}" (charge: ${chargeId})`,
-        source: metadata.utmSource || "course_enrollment",
-        utm_source: metadata.utmSource ?? null,
-        utm_medium: metadata.utmMedium ?? null,
-        utm_campaign: metadata.utmCampaign ?? null,
-        utm_content: metadata.utmContent ?? null,
-        gclid: metadata.gclid ?? null,
-        landing_path: metadata.landingPath ?? null,
-        wa_consent: metadata.waConsent,
-        wa_consent_at: metadata.waConsent ? new Date().toISOString() : null,
-        marketing_consent: metadata.marketingConsent ?? false,
-        marketing_consent_at: metadata.marketingConsent
-          ? new Date().toISOString()
-          : null,
-        lead_status: "inscrito",
-      })
-      .select("id")
-      .single();
-
-    if (leadError || !lead) {
-      throw new Error(`No se pudo crear lead: ${leadError?.message}`);
-    }
+    // 2. Crear o completar la ficha canónica. Si esta persona ya conversó por
+    // ManyChat o dejó un formulario web, conserva una sola identidad en el CRM.
+    const contact = await upsertCrmContact(supabase, {
+      fullName: metadata.guestName,
+      email: metadata.guestEmail,
+      phone: metadata.guestPhone,
+      countryCode: metadata.countryCode,
+      country: metadata.country,
+      identityDocument: metadata.identityDocument,
+      profession: metadata.profession,
+      workplace: metadata.workplace,
+      courseId: metadata.courseId,
+      serviceInterest: metadata.courseTitle,
+      message:
+        metadata.notes || `Inscripción confirmada en "${metadata.courseTitle}".`,
+      sourceDetail: metadata.utmSource || "course_enrollment",
+      originType: "website",
+      channel: "checkout",
+      waConsent: metadata.waConsent,
+      marketingConsent: metadata.marketingConsent,
+      leadStatus: "inscrito",
+      utmSource: metadata.utmSource,
+      utmMedium: metadata.utmMedium,
+      utmCampaign: metadata.utmCampaign,
+      utmContent: metadata.utmContent,
+      gclid: metadata.gclid,
+      landingPath: metadata.landingPath,
+    });
+    const lead = contact.lead;
 
     // 3. Crear enrollment (status=paid)
     const { data: enrollment, error: enrollmentError } = await supabase

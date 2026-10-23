@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { MarketingOptIn } from "@/components/marketing-opt-in";
+import { CountryPhoneFields } from "@/components/country-phone-fields";
 
 /**
  * Formulario de suscripción a novedades (modelo Spinning Babies / Toulouse).
@@ -32,6 +33,7 @@ export function NewsletterSignupForm() {
     const payload = {
       fullName,
       phone: String(formData.get("phone") || "").trim(),
+      countryCode: String(formData.get("countryCode") || "PE"),
       email: String(formData.get("email") || "").trim(),
       message: "Suscripción a novedades y próximas capacitaciones NeoSer.",
       source: "newsletter" as const,
@@ -96,12 +98,9 @@ export function NewsletterSignupForm() {
         placeholder="Correo electrónico"
         className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-pink"
       />
-      <input
-        name="phone"
-        required
-        autoComplete="tel"
+      <CountryPhoneFields
         placeholder="WhatsApp / teléfono"
-        className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-pink"
+        inputClassName="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm outline-none transition focus:border-pink"
       />
 
       <MarketingOptIn required />

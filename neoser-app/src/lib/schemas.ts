@@ -9,6 +9,7 @@ export const leadSourceSchema = z.enum([
   "web",
   "whatsapp_button",
   "newsletter",
+  "manychat",
   "otro",
 ]);
 
@@ -16,6 +17,7 @@ export const contactLeadSchema = z.object({
   fullName: z.string().min(2).max(120),
   email: z.string().email().optional().or(z.literal("")),
   phone: z.string().min(7).max(20),
+  countryCode: z.enum(COUNTRY_CODES).optional().default("PE"),
   message: z.string().min(5).max(2000),
   source: leadSourceSchema.default("web"),
   waConsent: z.boolean(),
@@ -24,6 +26,61 @@ export const contactLeadSchema = z.object({
   marketingConsent: z.boolean().optional().default(false),
   serviceInterest: z.string().min(3).max(120).optional(),
 });
+
+// ManyChat llama este endpoint desde una acción External Request. No se acepta
+// el texto completo de la conversación ni campos clínicos: solo identidad,
+// consentimiento y contexto operativo de campaña/flujo.
+const integrationBoolean = z.preprocess((value) => {
+  if (typeof value !== "string") return value;
+  const normalized = value.trim().toLowerCase();
+  if (["true", "1", "yes", "sí", "si"].includes(normalized)) return true;
+  if (["false", "0", "no", ""].includes(normalized)) return false;
+  return value;
+}, z.boolean());
+
+export const manychatCrmEventSchema = z
+  .object({
+    eventId: z.string().trim().min(3).max(160).optional(),
+    subscriberId: z.string().trim().min(1).max(120),
+    eventType: z
+      .string()
+      .trim()
+      .min(2)
+      .max(80)
+      .regex(/^[a-z0-9_.-]+$/i),
+    channel: z
+      .string()
+      .trim()
+      .min(2)
+      .max(40)
+      .regex(/^[a-z0-9_-]+$/i)
+      .default("whatsapp"),
+    occurredAt: z.string().datetime({ offset: true }).optional(),
+    fullName: z
+      .string()
+      .trim()
+      .max(120)
+      .optional()
+      .transform((value) => value || undefined),
+    phone: z.string().trim().min(7).max(24),
+    email: z.string().trim().email().max(254).optional().or(z.literal("")),
+    countryCode: z.enum(COUNTRY_CODES).optional(),
+    whatsappConsent: integrationBoolean.optional().default(false),
+    marketingConsent: integrationBoolean.optional().default(false),
+    campaignName: z.string().trim().min(1).max(160).optional(),
+    flowId: z.string().trim().min(1).max(120).optional(),
+    flowName: z.string().trim().min(1).max(160).optional(),
+    selectedOption: z.string().trim().min(1).max(160).optional(),
+    courseInterest: z.string().trim().min(2).max(160).optional(),
+    courseSlug: z
+      .string()
+      .trim()
+      .min(2)
+      .max(160)
+      .regex(/^[a-z0-9-]+$/)
+      .optional(),
+  })
+  .strict();
 
 export const enrollmentSchema = z.object({
   courseId: z.string().uuid(),

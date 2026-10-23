@@ -53,6 +53,9 @@ create table if not exists public.contact_leads (
   full_name text not null,
   email text,
   phone text not null,
+  phone_e164 text check (
+    phone_e164 is null or phone_e164 ~ '^\+[1-9][0-9]{6,14}$'
+  ),
   message text not null,
   source text not null default 'web',
   wa_consent boolean not null default false,
@@ -85,6 +88,7 @@ create table if not exists public.contact_leads (
   utm_content text,
   gclid text,
   landing_path text,
+  last_activity_at timestamptz not null default now(),
   created_at timestamptz not null default now(),
   constraint contact_leads_wa_consent_evidence_check
     check (wa_consent = false or wa_consent_at is not null)
@@ -95,6 +99,13 @@ create index if not exists contact_leads_course_id_idx
 
 create index if not exists contact_leads_status_updated_at_idx
   on public.contact_leads(lead_status, status_updated_at desc);
+
+create index if not exists contact_leads_phone_e164_idx
+  on public.contact_leads(phone_e164)
+  where phone_e164 is not null;
+
+create index if not exists contact_leads_last_activity_idx
+  on public.contact_leads(last_activity_at desc);
 
 create table if not exists public.contact_course_interests (
   lead_id uuid not null references public.contact_leads(id) on delete cascade,
@@ -108,12 +119,62 @@ create table if not exists public.contact_course_interests (
 create index if not exists contact_course_interests_course_id_idx
   on public.contact_course_interests(course_id);
 
+create table if not exists public.crm_contact_origins (
+  id uuid primary key default gen_random_uuid(),
+  lead_id uuid not null references public.contact_leads(id) on delete cascade,
+  origin_type text not null check (origin_type in ('website', 'manychat')),
+  source_detail text not null default 'web',
+  channel text not null default 'website',
+  external_contact_id text,
+  campaign_name text,
+  flow_id text,
+  flow_name text,
+  first_seen_at timestamptz not null default now(),
+  last_seen_at timestamptz not null default now(),
+  unique (lead_id, origin_type, source_detail, channel)
+);
+
+create unique index if not exists crm_contact_origins_external_id_idx
+  on public.crm_contact_origins(origin_type, channel, external_contact_id)
+  where external_contact_id is not null;
+
+create index if not exists crm_contact_origins_lead_id_idx
+  on public.crm_contact_origins(lead_id, last_seen_at desc);
+
+create table if not exists public.crm_contact_events (
+  id uuid primary key default gen_random_uuid(),
+  lead_id uuid not null references public.contact_leads(id) on delete cascade,
+  event_key text not null unique,
+  origin_type text not null default 'manychat'
+    check (origin_type in ('website', 'manychat')),
+  event_type text not null,
+  channel text not null,
+  campaign_name text,
+  flow_id text,
+  flow_name text,
+  selected_option text,
+  occurred_at timestamptz not null,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists crm_contact_events_lead_occurred_idx
+  on public.crm_contact_events(lead_id, occurred_at desc);
+
 alter table public.contact_course_interests enable row level security;
+alter table public.crm_contact_origins enable row level security;
+alter table public.crm_contact_events enable row level security;
 
 revoke all on table public.contact_course_interests from anon, authenticated;
 grant select, insert, update, delete
   on table public.contact_course_interests
   to authenticated;
+
+revoke all on table public.crm_contact_origins from anon, authenticated;
+revoke all on table public.crm_contact_events from anon, authenticated;
+grant select on table public.crm_contact_origins to authenticated;
+grant select on table public.crm_contact_events to authenticated;
+grant all on table public.crm_contact_origins to service_role;
+grant all on table public.crm_contact_events to service_role;
 
 create policy "Admin manage contact course interests"
 on public.contact_course_interests
@@ -126,6 +187,28 @@ using (
   )
 )
 with check (
+  exists (
+    select 1 from public.profiles
+    where profiles.id = (select auth.uid()) and profiles.role = 'admin'
+  )
+);
+
+create policy "Admin read CRM contact origins"
+on public.crm_contact_origins
+for select
+to authenticated
+using (
+  exists (
+    select 1 from public.profiles
+    where profiles.id = (select auth.uid()) and profiles.role = 'admin'
+  )
+);
+
+create policy "Admin read CRM contact events"
+on public.crm_contact_events
+for select
+to authenticated
+using (
   exists (
     select 1 from public.profiles
     where profiles.id = (select auth.uid()) and profiles.role = 'admin'

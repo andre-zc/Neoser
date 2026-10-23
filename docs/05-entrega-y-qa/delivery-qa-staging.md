@@ -33,6 +33,7 @@
 | `HUBSPOT_ACCESS_TOKEN` | Secret | No | Sync CRM se omite si falta (no bloqueante) |
 | `WHATSAPP_API_KEY` | Secret | No | Endpoints WA devuelven error si falta, pero no rompe el sitio |
 | `WHATSAPP_WEBHOOK_SECRET` | Secret | No | Necesario para verificacion webhook 360dialog |
+| `MANYCHAT_WEBHOOK_SECRET` | Secret | No* | *Obligatorio al activar la sincronización ManyChat → CRM; mínimo 32 caracteres |
 
 ### Environment Variables nuevas V1 (Cal + Email + Adapter WA)
 

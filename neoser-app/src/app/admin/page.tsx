@@ -9,6 +9,8 @@ import {
   Download,
   FileText,
   FilterX,
+  Globe2,
+  MessageCircle,
   Plus,
   RefreshCw,
   Search,
@@ -27,11 +29,38 @@ interface LeadCourse {
   relationship: CourseRelationship;
 }
 
+interface LeadOrigin {
+  id: string;
+  lead_id: string;
+  origin_type: "website" | "manychat";
+  source_detail: string;
+  channel: string;
+  external_contact_id: string | null;
+  campaign_name: string | null;
+  flow_id: string | null;
+  flow_name: string | null;
+  first_seen_at: string;
+  last_seen_at: string;
+}
+
+interface LeadEvent {
+  id: string;
+  lead_id: string;
+  event_type: string;
+  channel: string;
+  campaign_name: string | null;
+  flow_id: string | null;
+  flow_name: string | null;
+  selected_option: string | null;
+  occurred_at: string;
+}
+
 interface Lead {
   id: string;
   full_name: string;
   email: string | null;
   phone: string;
+  phone_e164: string | null;
   message: string;
   source: string;
   lead_status: string;
@@ -52,6 +81,10 @@ interface Lead {
   utm_content: string | null;
   landing_path: string | null;
   created_at: string;
+  last_activity_at: string;
+  merged_lead_ids: string[];
+  origins: LeadOrigin[];
+  manychat_events: LeadEvent[];
   courses: LeadCourse[];
 }
 
@@ -81,7 +114,13 @@ const SOURCE_LABELS: Record<string, string> = {
   newsletter: "Newsletter",
   course_enrollment: "Checkout del curso",
   paypal_internacional: "PayPal internacional",
+  manychat: "ManyChat",
   otro: "Otro",
+};
+
+const ORIGIN_LABELS: Record<LeadOrigin["origin_type"], string> = {
+  website: "Sitio web",
+  manychat: "ManyChat",
 };
 
 const EDITABLE_STATUSES = [
@@ -92,6 +131,28 @@ const EDITABLE_STATUSES = [
 
 function sourceLabel(source: string) {
   return SOURCE_LABELS[source] || source.replaceAll("_", " ");
+}
+
+function originLabel(origin: LeadOrigin["origin_type"]) {
+  return ORIGIN_LABELS[origin];
+}
+
+function originClass(origin: LeadOrigin["origin_type"]) {
+  return origin === "manychat"
+    ? "bg-emerald-50 text-emerald-700 ring-emerald-600/15"
+    : "bg-blue-50 text-blue-700 ring-blue-600/15";
+}
+
+function eventLabel(eventType: string) {
+  const labels: Record<string, string> = {
+    conversation_started: "Inició conversación",
+    flow_entered: "Entró al flujo",
+    menu_shown: "Vio el menú",
+    option_selected: "Eligió una opción",
+    flow_completed: "Completó el flujo",
+    payment_started: "Inició pago",
+  };
+  return labels[eventType] ?? eventType.replaceAll("_", " ");
 }
 
 function operationalStatus(
@@ -160,7 +221,8 @@ function exportCSV(leads: Lead[]) {
     "Profesión",
     "Centro laboral",
     "Cursos o intereses",
-    "Fuente",
+    "Procedencias",
+    "Detalle de procedencia",
     "Estado",
     "Seguimiento",
     "Consentimiento WhatsApp",
@@ -176,7 +238,20 @@ function exportCSV(leads: Lead[]) {
     lead.profession || "",
     lead.workplace || "",
     leadCourseNames(lead).join(" | "),
-    sourceLabel(lead.source),
+    [...new Set(lead.origins.map((origin) => originLabel(origin.origin_type)))].join(
+      " | ",
+    ),
+    lead.origins
+      .map((origin) =>
+        [
+          sourceLabel(origin.source_detail),
+          origin.campaign_name,
+          origin.flow_name,
+        ]
+          .filter(Boolean)
+          .join(" · "),
+      )
+      .join(" | "),
     statusLabel(lead.lead_status),
     lead.next_followup_at || "",
     lead.wa_consent ? "Sí" : "No",
@@ -258,6 +333,7 @@ export default function AdminCRMPage() {
     let propuestas = 0;
     let inscritos = 0;
     let followups = 0;
+    let mixed = 0;
     const now = new Date();
 
     for (const lead of leads) {
@@ -268,10 +344,22 @@ export default function AdminCRMPage() {
       if (lead.next_followup_at && new Date(lead.next_followup_at) <= now) {
         followups += 1;
       }
-      bySource[lead.source] = (bySource[lead.source] || 0) + 1;
+      const originTypes = new Set(lead.origins.map((origin) => origin.origin_type));
+      if (originTypes.size > 1) mixed += 1;
+      for (const origin of originTypes) {
+        bySource[origin] = (bySource[origin] || 0) + 1;
+      }
     }
 
-    return { total: leads.length, nuevos, propuestas, inscritos, followups, bySource };
+    return {
+      total: leads.length,
+      nuevos,
+      propuestas,
+      inscritos,
+      followups,
+      mixed,
+      bySource,
+    };
   }, [leads]);
 
   const interestOptions = useMemo(() => {
@@ -301,7 +389,12 @@ export default function AdminCRMPage() {
         ) {
           return false;
         }
-        if (sourceFilter && lead.source !== sourceFilter) return false;
+        if (
+          sourceFilter &&
+          !lead.origins.some((origin) => origin.origin_type === sourceFilter)
+        ) {
+          return false;
+        }
         if (courseFilter.startsWith("course:")) {
           const id = courseFilter.slice(7);
           if (!lead.courses.some((course) => course.id === id)) return false;
@@ -323,6 +416,11 @@ export default function AdminCRMPage() {
           lead.profession,
           lead.workplace,
           lead.service_interest,
+          ...lead.origins.flatMap((origin) => [
+            origin.source_detail,
+            origin.campaign_name,
+            origin.flow_name,
+          ]),
           ...lead.courses.map((course) => course.title),
         ].some((value) => value?.toLowerCase().includes(query));
       }),
@@ -365,26 +463,47 @@ export default function AdminCRMPage() {
     const byDay = new Map<string, { contacts: number; enrolled: number }>();
     let proposals = 0;
     const enrolled = periodEnrolledLeads.length;
+    const manychatEvents = leads.flatMap((lead) => lead.manychat_events).filter((event) => {
+      const occurred = new Date(event.occurred_at);
+      const start = new Date(`${dateFrom}T00:00:00`);
+      const end = new Date(`${dateTo}T23:59:59.999`);
+      return occurred >= start && occurred <= end;
+    });
 
     for (const lead of campaignLeads) {
       const isEnrolled = operationalStatus(lead.lead_status) === "inscrito";
       if (operationalStatus(lead.lead_status) === "propuesta_enviada") proposals += 1;
 
-      const source = sourceLabel(lead.source);
-      const sourceRow = bySource.get(source) ?? { contacts: 0, enrolled: 0 };
-      sourceRow.contacts += 1;
-      if (isEnrolled) sourceRow.enrolled += 1;
-      bySource.set(source, sourceRow);
+      const contactSources = new Set(
+        lead.origins.map((origin) => originLabel(origin.origin_type)),
+      );
+      for (const source of contactSources) {
+        const sourceRow = bySource.get(source) ?? { contacts: 0, enrolled: 0 };
+        sourceRow.contacts += 1;
+        if (isEnrolled) sourceRow.enrolled += 1;
+        bySource.set(source, sourceRow);
+      }
 
-      const campaign = lead.utm_campaign || "Sin campaña UTM";
-      const campaignRow = byCampaign.get(campaign) ?? {
-        source: lead.utm_source || source,
-        contacts: 0,
-        enrolled: 0,
-      };
-      campaignRow.contacts += 1;
-      if (isEnrolled) campaignRow.enrolled += 1;
-      byCampaign.set(campaign, campaignRow);
+      const campaigns = new Map<string, string>();
+      if (lead.utm_campaign) {
+        campaigns.set(lead.utm_campaign, lead.utm_source || "Sitio web");
+      }
+      for (const origin of lead.origins) {
+        if (origin.campaign_name) {
+          campaigns.set(origin.campaign_name, originLabel(origin.origin_type));
+        }
+      }
+      if (!campaigns.size) campaigns.set("Sin campaña identificada", "Directo");
+      for (const [campaign, source] of campaigns) {
+        const campaignRow = byCampaign.get(campaign) ?? {
+          source,
+          contacts: 0,
+          enrolled: 0,
+        };
+        campaignRow.contacts += 1;
+        if (isEnrolled) campaignRow.enrolled += 1;
+        byCampaign.set(campaign, campaignRow);
+      }
 
       const names = leadCourseNames(lead);
       for (const name of new Set(names.length ? names : ["Sin curso indicado"])) {
@@ -413,6 +532,7 @@ export default function AdminCRMPage() {
     return {
       proposals,
       enrolled,
+      manychatEvents: manychatEvents.length,
       conversion,
       bySource: [...bySource.entries()].sort((a, b) => b[1].contacts - a[1].contacts),
       byCampaign: [...byCampaign.entries()].sort(
@@ -421,7 +541,7 @@ export default function AdminCRMPage() {
       byCourse: [...byCourse.entries()].sort((a, b) => b[1].contacts - a[1].contacts),
       byDay: [...byDay.entries()].sort((a, b) => a[0].localeCompare(b[0])),
     };
-  }, [campaignLeads, periodEnrolledLeads]);
+  }, [campaignLeads, dateFrom, dateTo, leads, periodEnrolledLeads]);
 
   function selectStatus(status: OperationalStatus) {
     setStatusFilter(status);
@@ -450,7 +570,12 @@ export default function AdminCRMPage() {
       return;
     }
     try {
-      const response = await fetch(`/api/lead-notes?leadId=${lead.id}`);
+      const ids = lead.merged_lead_ids.length
+        ? lead.merged_lead_ids.join(",")
+        : lead.id;
+      const response = await fetch(
+        `/api/lead-notes?leadIds=${encodeURIComponent(ids)}`,
+      );
       if (response.ok) setNotes(await response.json());
     } catch {
       setNotes([]);
@@ -469,11 +594,11 @@ export default function AdminCRMPage() {
       const updated = (await response.json()) as Lead;
       setLeads((current) =>
         current.map((lead) =>
-          lead.id === id ? { ...updated, courses: lead.courses } : lead,
+          lead.id === id ? { ...lead, ...updated } : lead,
         ),
       );
       setSelectedLead((current) =>
-        current?.id === id ? { ...updated, courses: current.courses } : current,
+        current?.id === id ? { ...current, ...updated } : current,
       );
     } catch {
       setError("No se pudo actualizar el contacto.");
@@ -568,7 +693,7 @@ export default function AdminCRMPage() {
               CRM NeoSer
             </h1>
             <p className="mt-2 max-w-2xl text-sm text-slate-600 sm:text-base">
-              Contactos, cursos y resultados comerciales en un solo lugar.
+              Una persona, una ficha: web, ManyChat, cursos y seguimiento en un solo lugar.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -647,6 +772,9 @@ export default function AdminCRMPage() {
                 <UsersRound size={22} className="mb-5 text-[#f3b0bd]" aria-hidden="true" />
                 <span className="block text-4xl font-bold">{stats.total}</span>
                 <span className="mt-1 block text-sm text-white/75">Todos los contactos</span>
+                <span className="mt-2 block text-xs text-white/55">
+                  {stats.mixed} {stats.mixed === 1 ? "llegó" : "llegaron"} por ambos canales
+                </span>
               </button>
               <StatusCard
                 label="Nuevos"
@@ -685,7 +813,7 @@ export default function AdminCRMPage() {
                 <div>
                   <h2 className="font-semibold">Encuentra el contacto correcto</h2>
                   <p className="mt-1 text-xs text-slate-500">
-                    Elegir una etapa o fuente reinicia los otros filtros para evitar resultados vacíos.
+                    Un contacto puede pertenecer a Sitio web y ManyChat al mismo tiempo.
                   </p>
                 </div>
                 {activeFilters ? (
@@ -761,7 +889,7 @@ export default function AdminCRMPage() {
                           : "border-slate-200 text-slate-600 hover:border-slate-400"
                       }`}
                     >
-                      {sourceLabel(source)} ({count})
+                      {source === "website" ? "Sitio web" : "ManyChat"} ({count})
                     </button>
                   ))}
               </div>
@@ -801,9 +929,9 @@ export default function AdminCRMPage() {
                           <th className="px-5 py-3 font-semibold">Contacto</th>
                           <th className="px-4 py-3 font-semibold">WhatsApp</th>
                           <th className="px-4 py-3 font-semibold">Cursos / intereses</th>
-                          <th className="px-4 py-3 font-semibold">Fuente</th>
+                          <th className="px-4 py-3 font-semibold">Procedencia</th>
                           <th className="px-4 py-3 font-semibold">Etapa</th>
-                          <th className="px-4 py-3 font-semibold">Registro</th>
+                          <th className="px-4 py-3 font-semibold">Última actividad</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
@@ -840,8 +968,19 @@ export default function AdminCRMPage() {
                                 )}
                               </div>
                             </td>
-                            <td className="px-4 py-4 text-xs text-slate-600">
-                              {sourceLabel(lead.source)}
+                            <td className="max-w-[220px] px-4 py-4">
+                              <div className="flex flex-wrap gap-1.5">
+                                {[...new Set(lead.origins.map((origin) => origin.origin_type))].map(
+                                  (origin) => (
+                                    <span
+                                      key={origin}
+                                      className={`rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset ${originClass(origin)}`}
+                                    >
+                                      {originLabel(origin)}
+                                    </span>
+                                  ),
+                                )}
+                              </div>
                             </td>
                             <td className="px-4 py-4">
                               <span
@@ -853,7 +992,7 @@ export default function AdminCRMPage() {
                               </span>
                             </td>
                             <td className="px-4 py-4 text-xs text-slate-500">
-                              {fmtDate(lead.created_at)}
+                              {fmtDate(lead.last_activity_at || lead.created_at)}
                             </td>
                           </tr>
                         ))}
@@ -869,7 +1008,7 @@ export default function AdminCRMPage() {
                     <div>
                       <h2 className="font-serif text-2xl font-bold">{selectedLead.full_name}</h2>
                       <p className="mt-1 text-xs text-slate-500">
-                        Registrado {fmtDateTime(selectedLead.created_at)}
+                        Primer registro {fmtDateTime(selectedLead.created_at)}
                       </p>
                     </div>
                     <button
@@ -902,8 +1041,80 @@ export default function AdminCRMPage() {
                       label="Consentimiento WhatsApp"
                       value={selectedLead.wa_consent ? "Sí" : "No"}
                     />
-                    <ContactDetail label="Fuente" value={sourceLabel(selectedLead.source)} />
+                    <ContactDetail
+                      label="Última actividad"
+                      value={fmtDateTime(selectedLead.last_activity_at)}
+                    />
                   </dl>
+
+                  <section className="mt-6 border-t border-slate-100 pt-5">
+                    <h3 className="font-semibold">Procedencias</h3>
+                    <p className="mt-1 text-xs text-slate-500">
+                      Una misma persona puede aparecer en más de un canal sin duplicarse.
+                    </p>
+                    <div className="mt-3 space-y-2">
+                      {selectedLead.origins.map((origin) => (
+                        <article
+                          key={origin.id}
+                          className="rounded-xl border border-slate-200 p-3"
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <span
+                              className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset ${originClass(origin.origin_type)}`}
+                            >
+                              {origin.origin_type === "manychat" ? (
+                                <MessageCircle size={13} aria-hidden="true" />
+                              ) : (
+                                <Globe2 size={13} aria-hidden="true" />
+                              )}
+                              {originLabel(origin.origin_type)}
+                            </span>
+                            <span className="text-[11px] text-slate-400">
+                              {fmtDateTime(origin.last_seen_at)}
+                            </span>
+                          </div>
+                          <p className="mt-2 text-xs text-slate-600">
+                            {sourceLabel(origin.source_detail)} · {origin.channel}
+                          </p>
+                          {origin.campaign_name || origin.flow_name ? (
+                            <p className="mt-1 text-xs text-slate-500">
+                              {[origin.campaign_name, origin.flow_name]
+                                .filter(Boolean)
+                                .join(" · ")}
+                            </p>
+                          ) : null}
+                        </article>
+                      ))}
+                    </div>
+                  </section>
+
+                  {selectedLead.manychat_events.length ? (
+                    <section className="mt-6 border-t border-slate-100 pt-5">
+                      <h3 className="font-semibold">Actividad de ManyChat</h3>
+                      <div className="mt-3 max-h-48 space-y-3 overflow-y-auto pr-1">
+                        {selectedLead.manychat_events.map((event) => (
+                          <div
+                            key={event.id}
+                            className="relative border-l-2 border-emerald-200 pl-3 text-xs"
+                          >
+                            <p className="font-semibold text-slate-700">
+                              {eventLabel(event.event_type)}
+                            </p>
+                            {event.selected_option ? (
+                              <p className="mt-0.5 text-slate-600">
+                                Opción: {event.selected_option}
+                              </p>
+                            ) : null}
+                            <p className="mt-0.5 text-slate-400">
+                              {[event.campaign_name, event.flow_name, fmtDateTime(event.occurred_at)]
+                                .filter(Boolean)
+                                .join(" · ")}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                  ) : null}
 
                   <div className="mt-5 rounded-xl bg-[#fbf7f4] p-3 text-sm text-slate-600">
                     <span className="mb-1 block text-xs font-semibold text-slate-500">
@@ -1137,7 +1348,7 @@ export default function AdminCRMPage() {
               </div>
             </div>
 
-            <div className="mb-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="mb-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
               <CampaignMetric
                 label="Contactos nuevos"
                 value={campaignLeads.length.toString()}
@@ -1158,6 +1369,11 @@ export default function AdminCRMPage() {
                 value={`${campaignAnalysis.conversion.toFixed(1)}%`}
                 note="Inscritos sobre contactos"
                 accent
+              />
+              <CampaignMetric
+                label="Interacciones ManyChat"
+                value={campaignAnalysis.manychatEvents.toString()}
+                note="Eventos recibidos en el periodo"
               />
             </div>
 
@@ -1230,10 +1446,10 @@ export default function AdminCRMPage() {
             </div>
 
             <div className="mt-5 rounded-[1.35rem] border border-[#17345f]/10 bg-[#eef4fb] p-5 text-sm text-slate-600">
-              <strong className="text-[#17345f]">Qué se analiza aquí:</strong> actividad del CRM,
-              fuentes, campañas UTM y cursos. El reporte de ingresos en PEN/USD, tráfico GA4 y
-              métricas manuales de ManyChat continúa en Google Sheets para mantener separados los
-              datos personales y los indicadores financieros.
+              <strong className="text-[#17345f]">Qué se analiza aquí:</strong> contactos únicos,
+              procedencias web/ManyChat, campañas UTM, flujos e inscripciones. Google Sheets sigue
+              siendo el reporte financiero y de tráfico agregado; el CRM conserva la operación por
+              persona sin copiar conversaciones completas.
             </div>
           </section>
         )}

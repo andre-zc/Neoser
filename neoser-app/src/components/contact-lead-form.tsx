@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { services } from "@/lib/services";
 import { MarketingOptIn } from "@/components/marketing-opt-in";
+import { CountryPhoneFields } from "@/components/country-phone-fields";
 
 const sourceOptions = [
   { value: "web", label: "Sitio web" },
@@ -27,6 +28,7 @@ export function ContactLeadForm() {
     const payload = {
       fullName: String(formData.get("fullName") || ""),
       phone: String(formData.get("phone") || ""),
+      countryCode: String(formData.get("countryCode") || "PE"),
       message: String(formData.get("message") || ""),
       source: String(formData.get("source") || "web"),
       waConsent: formData.get("waConsent") === "on",
@@ -65,11 +67,8 @@ export function ContactLeadForm() {
         placeholder="Nombre completo"
         className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm"
       />
-      <input
-        name="phone"
-        required
-        placeholder="Telefono"
-        className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm"
+      <CountryPhoneFields
+        inputClassName="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm"
       />
       <input
         name="email"

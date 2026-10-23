@@ -14,6 +14,7 @@
 | `NEXT_PUBLIC_SUPABASE_URL` | Si | Si | Si | Alvaro | Anual | Proyecto Supabase por entorno |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Si | Si | Si | Alvaro | Anual | Solo cliente publico |
 | `SUPABASE_SERVICE_ROLE_KEY` | Si | Si | Si | Alvaro | Trimestral | Solo server, nunca exponer |
+| `MANYCHAT_WEBHOOK_SECRET` | Si | Si | Si | Alvaro | Trimestral | Secreto propio para ManyChat → CRM; no es la API key |
 | `HUBSPOT_ACCESS_TOKEN` | Opcional | Si | Si | Diana + Alvaro | Semestral | Integracion CRM |
 | `CAL_API_KEY` | Opcional | Si | Si | Diana + Alvaro | Semestral | Webhooks y operaciones de reserva |
 | `CAL_WEBHOOK_SIGNING_KEY` | No | Si | Si | Alvaro | Trimestral | Verificacion de firma de eventos |
@@ -51,6 +52,7 @@
 - Registrar cambios de keys/tokens con fecha y responsable.
 - Mantener separacion de credenciales por entorno.
 - Todo secreto server-side debe vivir en Vercel como secret.
+- En el despliegue productivo vigente, los secretos server-side deben estar cifrados y limitados a Run time en DigitalOcean.
 
 ## 5) Checklist de habilitacion inicial
 
@@ -62,4 +64,5 @@
 - [ ] Prueba de webhook Cal.com OK.
 - [ ] Prueba de envio de email OK.
 - [ ] Prueba de webhook/provider WhatsApp OK.
+- [ ] Prueba de External Request ManyChat → CRM OK (200/201 y 401 con secreto incorrecto).
 

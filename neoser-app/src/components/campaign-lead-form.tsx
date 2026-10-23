@@ -6,6 +6,7 @@ import { ArrowRight, Loader2 } from "lucide-react";
 import { MarketingOptIn } from "@/components/marketing-opt-in";
 import { LEGAL } from "@/lib/legal";
 import { sendMetaEvent } from "@/lib/analytics/meta-pixel";
+import { CountryPhoneFields } from "@/components/country-phone-fields";
 
 const COURSE_INTEREST =
   "Curso Neurobiología del Parto y Protocolos para un Nacimiento Humanizado";
@@ -62,6 +63,7 @@ export function CampaignLeadForm({
     const payload = {
       fullName,
       phone,
+      countryCode: String(formData.get("countryCode") || "PE"),
       email: email || undefined,
       message,
       source: "meta_ads" as const,
@@ -124,13 +126,7 @@ export function CampaignLeadForm({
         placeholder="Nombre completo *"
         className={field}
       />
-      <input
-        name="phone"
-        required
-        autoComplete="tel"
-        placeholder="WhatsApp / teléfono *"
-        className={field}
-      />
+      <CountryPhoneFields inputClassName={field} />
       <input
         name="email"
         type="email"

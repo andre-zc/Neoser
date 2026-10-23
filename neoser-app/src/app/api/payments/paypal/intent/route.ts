@@ -34,6 +34,7 @@ import {
   buildPaypalPendingInternalEmail,
   buildPaypalInstructionsEmail,
 } from "@/lib/email";
+import { upsertCrmContact } from "@/lib/crm/contacts";
 
 export async function POST(request: Request) {
   try {
@@ -84,49 +85,37 @@ export async function POST(request: Request) {
 
     const supabase = createServiceClient();
 
-    // 1. Lead — 'propuesta_enviada': se le entregó el enlace de pago pero
-    //    todavía no está inscrito (eso sería 'inscrito').
-    const { data: lead, error: leadError } = await supabase
-      .from("contact_leads")
-      .insert({
-        full_name: d.guestName,
-        email: d.guestEmail,
-        phone: guestPhone,
-        identity_document: d.identityDocument,
-        country_code: d.countryCode,
-        country: country.name,
-        profession: d.profession,
-        workplace: d.workplace,
-        course_id: d.courseId,
-        service_interest: course.title,
-        message:
-          d.notes ||
-          `Inscripción internacional (PayPal ${reference}) — ${course.title}` +
-            ` · País: ${country.name}`,
-        source: d.utmSource || "paypal_internacional",
-        utm_source: d.utmSource ?? null,
-        utm_medium: d.utmMedium ?? null,
-        utm_campaign: d.utmCampaign ?? null,
-        utm_content: d.utmContent ?? null,
-        gclid: d.gclid ?? null,
-        landing_path: d.landingPath ?? null,
-        wa_consent: d.waConsent,
-        wa_consent_at: d.waConsent ? new Date().toISOString() : null,
-        marketing_consent: d.marketingConsent ?? false,
-        marketing_consent_at: d.marketingConsent
-          ? new Date().toISOString()
-          : null,
-        lead_status: "propuesta_enviada",
-      })
-      .select("id")
-      .single();
-
-    if (leadError || !lead) {
-      return NextResponse.json(
-        { error: "No se pudo registrar la inscripción" },
-        { status: 500 },
-      );
-    }
+    // 1. Contacto canónico — 'propuesta_enviada': recibió el enlace, pero el
+    // pago PayPal todavía debe verificarse. Se une con formularios/ManyChat si
+    // comparten el mismo teléfono internacional.
+    const contact = await upsertCrmContact(supabase, {
+      fullName: d.guestName,
+      email: d.guestEmail,
+      phone: guestPhone,
+      countryCode: d.countryCode,
+      country: country.name,
+      identityDocument: d.identityDocument,
+      profession: d.profession,
+      workplace: d.workplace,
+      courseId: d.courseId,
+      serviceInterest: course.title,
+      message:
+        d.notes ||
+        `Inscripción internacional pendiente por PayPal — ${course.title}.`,
+      sourceDetail: d.utmSource || "paypal_internacional",
+      originType: "website",
+      channel: "checkout",
+      waConsent: d.waConsent,
+      marketingConsent: d.marketingConsent,
+      leadStatus: "propuesta_enviada",
+      utmSource: d.utmSource,
+      utmMedium: d.utmMedium,
+      utmCampaign: d.utmCampaign,
+      utmContent: d.utmContent,
+      gclid: d.gclid,
+      landingPath: d.landingPath,
+    });
+    const lead = contact.lead;
 
     // 2. Enrollment PENDIENTE
     const { data: enrollment, error: enrollmentError } = await supabase
