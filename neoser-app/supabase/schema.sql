@@ -122,7 +122,7 @@ create index if not exists contact_course_interests_course_id_idx
 create table if not exists public.crm_contact_origins (
   id uuid primary key default gen_random_uuid(),
   lead_id uuid not null references public.contact_leads(id) on delete cascade,
-  origin_type text not null check (origin_type in ('website', 'manychat')),
+  origin_type text not null check (origin_type in ('website', 'manychat', 'manual')),
   source_detail text not null default 'web',
   channel text not null default 'website',
   external_contact_id text,

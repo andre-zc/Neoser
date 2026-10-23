@@ -1,7 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { normalizePhoneIdentity } from "@/lib/country-dial-codes";
 
-export type CrmOriginType = "website" | "manychat";
+export type CrmOriginType = "website" | "manychat" | "manual";
 
 export type CrmContactInput = {
   fullName: string;
@@ -129,7 +129,13 @@ async function saveOrigin(
   occurredAt: string,
 ) {
   const sourceDetail = cleanOptional(input.sourceDetail) ?? "web";
-  const channel = cleanOptional(input.channel) ?? (input.originType === "manychat" ? "whatsapp" : "website");
+  const channel =
+    cleanOptional(input.channel) ??
+    (input.originType === "manychat"
+      ? "whatsapp"
+      : input.originType === "manual"
+        ? "crm_admin"
+        : "website");
   const externalContactId = cleanOptional(input.externalContactId);
 
   if (externalContactId) {

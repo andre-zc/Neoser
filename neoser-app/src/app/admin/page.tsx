@@ -19,6 +19,7 @@ import {
   UsersRound,
   X,
 } from "lucide-react";
+import { ManualContactModal } from "@/components/admin/manual-contact-modal";
 
 type CourseRelationship = "interes" | "inscrito";
 
@@ -32,7 +33,7 @@ interface LeadCourse {
 interface LeadOrigin {
   id: string;
   lead_id: string;
-  origin_type: "website" | "manychat";
+  origin_type: "website" | "manychat" | "manual";
   source_detail: string;
   channel: string;
   external_contact_id: string | null;
@@ -99,6 +100,7 @@ interface CourseOption {
   id: string;
   title: string;
   slug: string;
+  is_published?: boolean;
 }
 
 type OperationalStatus = "all" | "nuevo" | "propuesta_enviada" | "inscrito";
@@ -115,12 +117,14 @@ const SOURCE_LABELS: Record<string, string> = {
   course_enrollment: "Checkout del curso",
   paypal_internacional: "PayPal internacional",
   manychat: "ManyChat",
+  registro_manual: "Registro manual",
   otro: "Otro",
 };
 
 const ORIGIN_LABELS: Record<LeadOrigin["origin_type"], string> = {
   website: "Sitio web",
   manychat: "ManyChat",
+  manual: "Registro manual",
 };
 
 const EDITABLE_STATUSES = [
@@ -138,9 +142,13 @@ function originLabel(origin: LeadOrigin["origin_type"]) {
 }
 
 function originClass(origin: LeadOrigin["origin_type"]) {
-  return origin === "manychat"
-    ? "bg-emerald-50 text-emerald-700 ring-emerald-600/15"
-    : "bg-blue-50 text-blue-700 ring-blue-600/15";
+  if (origin === "manychat") {
+    return "bg-emerald-50 text-emerald-700 ring-emerald-600/15";
+  }
+  if (origin === "manual") {
+    return "bg-violet-50 text-violet-700 ring-violet-600/15";
+  }
+  return "bg-blue-50 text-blue-700 ring-blue-600/15";
 }
 
 function eventLabel(eventType: string) {
@@ -290,6 +298,8 @@ export default function AdminCRMPage() {
   const [newCourseId, setNewCourseId] = useState("");
   const [newCourseRelationship, setNewCourseRelationship] =
     useState<CourseRelationship>("interes");
+  const [manualContactOpen, setManualContactOpen] = useState(false);
+  const [notice, setNotice] = useState("");
   const [dateFrom, setDateFrom] = useState(() => {
     const date = new Date();
     date.setDate(date.getDate() - 29);
@@ -303,7 +313,7 @@ export default function AdminCRMPage() {
     try {
       const [leadResponse, courseResponse] = await Promise.all([
         fetch("/api/contact-leads"),
-        fetch("/api/courses"),
+        fetch("/api/admin/courses"),
       ]);
       if (!leadResponse.ok || !courseResponse.ok) throw new Error();
       const [leadData, courseData] = await Promise.all([
@@ -562,6 +572,23 @@ export default function AdminCRMPage() {
     setSearch("");
   }
 
+  async function handleManualContactSaved(phoneE164: string) {
+    setManualContactOpen(false);
+    clearFilters();
+    setSearch(phoneE164);
+    setNotice(`Contacto ${phoneE164} creado correctamente.`);
+    await fetchData();
+  }
+
+  function openExistingContact(contactId: string) {
+    const contact = leads.find((lead) =>
+      lead.id === contactId || lead.merged_lead_ids.includes(contactId),
+    );
+    setManualContactOpen(false);
+    clearFilters();
+    if (contact) void selectLead(contact);
+  }
+
   async function selectLead(lead: Lead | null) {
     setSelectedLead(lead);
     setNewCourseId("");
@@ -693,10 +720,21 @@ export default function AdminCRMPage() {
               CRM NeoSer
             </h1>
             <p className="mt-2 max-w-2xl text-sm text-slate-600 sm:text-base">
-              Una persona, una ficha: web, ManyChat, cursos y seguimiento en un solo lugar.
+              Una persona, una ficha: web, ManyChat, registro manual, cursos y seguimiento.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                setNotice("");
+                setManualContactOpen(true);
+              }}
+              className="inline-flex items-center gap-2 rounded-full bg-[#e8879b] px-4 py-2 text-sm font-semibold text-white hover:bg-[#d66f87]"
+            >
+              <UserPlus size={16} aria-hidden="true" />
+              Añadir contacto
+            </button>
             <button
               type="button"
               onClick={() => void fetchData()}
@@ -756,6 +794,15 @@ export default function AdminCRMPage() {
           </div>
         ) : null}
 
+        {notice ? (
+          <div className="mb-5 flex items-center justify-between rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+            <span>{notice}</span>
+            <button type="button" onClick={() => setNotice("")} aria-label="Cerrar aviso">
+              <X size={18} />
+            </button>
+          </div>
+        ) : null}
+
         {view === "contactos" ? (
           <>
             <section
@@ -773,7 +820,7 @@ export default function AdminCRMPage() {
                 <span className="block text-4xl font-bold">{stats.total}</span>
                 <span className="mt-1 block text-sm text-white/75">Todos los contactos</span>
                 <span className="mt-2 block text-xs text-white/55">
-                  {stats.mixed} {stats.mixed === 1 ? "llegó" : "llegaron"} por ambos canales
+                  {stats.mixed} {stats.mixed === 1 ? "tiene" : "tienen"} más de una procedencia
                 </span>
               </button>
               <StatusCard
@@ -813,7 +860,7 @@ export default function AdminCRMPage() {
                 <div>
                   <h2 className="font-semibold">Encuentra el contacto correcto</h2>
                   <p className="mt-1 text-xs text-slate-500">
-                    Un contacto puede pertenecer a Sitio web y ManyChat al mismo tiempo.
+                    Un contacto puede reunir sitio web, ManyChat y registro manual sin duplicarse.
                   </p>
                 </div>
                 {activeFilters ? (
@@ -889,7 +936,7 @@ export default function AdminCRMPage() {
                           : "border-slate-200 text-slate-600 hover:border-slate-400"
                       }`}
                     >
-                      {source === "website" ? "Sitio web" : "ManyChat"} ({count})
+                      {originLabel(source as LeadOrigin["origin_type"])} ({count})
                     </button>
                   ))}
               </div>
@@ -1064,8 +1111,10 @@ export default function AdminCRMPage() {
                             >
                               {origin.origin_type === "manychat" ? (
                                 <MessageCircle size={13} aria-hidden="true" />
-                              ) : (
+                              ) : origin.origin_type === "website" ? (
                                 <Globe2 size={13} aria-hidden="true" />
+                              ) : (
+                                <ContactRound size={13} aria-hidden="true" />
                               )}
                               {originLabel(origin.origin_type)}
                             </span>
@@ -1447,13 +1496,22 @@ export default function AdminCRMPage() {
 
             <div className="mt-5 rounded-[1.35rem] border border-[#17345f]/10 bg-[#eef4fb] p-5 text-sm text-slate-600">
               <strong className="text-[#17345f]">Qué se analiza aquí:</strong> contactos únicos,
-              procedencias web/ManyChat, campañas UTM, flujos e inscripciones. Google Sheets sigue
+              procedencias web/ManyChat/manuales, campañas UTM, flujos e inscripciones. Google Sheets sigue
               siendo el reporte financiero y de tráfico agregado; el CRM conserva la operación por
               persona sin copiar conversaciones completas.
             </div>
           </section>
         )}
       </div>
+      {manualContactOpen ? (
+        <ManualContactModal
+          contacts={leads}
+          courses={courses}
+          onClose={() => setManualContactOpen(false)}
+          onSaved={handleManualContactSaved}
+          onOpenExisting={openExistingContact}
+        />
+      ) : null}
     </main>
   );
 }

@@ -18,6 +18,21 @@ panel por el equipo NeoSer.
 - Mostrar campaña, flujo, canal y actividad reciente en el CRM administrativo.
 - Añadir selector de país en formularios web que capturan teléfono.
 
+### Ampliación aprobada — 23/10/2026
+
+Solicitud directa del equipo NeoSer para incorporar al CRM personas que no
+pasaron por el sitio web ni por ManyChat:
+
+- Crear contactos manualmente desde el panel administrativo.
+- Comprobar el teléfono internacional mientras se escribe y volver a validarlo
+  en el servidor antes de guardar para no crear una segunda ficha.
+- Registrar datos de identidad y trabajo, etapa, seguimiento, consentimientos y
+  una nota interna sin exponerlos en logs.
+- Asociar en el mismo alta uno o varios cursos, distinguiendo entre interés e
+  inscripción, incluidos cursos históricos no publicados.
+- Identificar la procedencia como `Registro manual`, separada de Sitio web y
+  ManyChat.
+
 ## Fuera de alcance
 
 - Guardar el texto completo de conversaciones de WhatsApp.
@@ -44,6 +59,10 @@ panel por el equipo NeoSer.
 5. Un secreto incorrecto obtiene HTTP 401 y no registra información.
 6. Sin la migración aplicada, el flujo público web conserva compatibilidad y
    la integración ManyChat informa que todavía no está inicializada.
+7. Al ingresar un teléfono ya registrado, el formulario impide crear otra
+   ficha y permite abrir el contacto existente.
+8. Un contacto creado manualmente puede quedar vinculado a varios cursos como
+   interés o inscripción sin crear pagos ni inscripciones financieras falsas.
 
 ## Despliegue y reversión
 

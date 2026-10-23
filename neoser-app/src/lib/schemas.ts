@@ -118,6 +118,46 @@ export const contactCourseInterestSchema = z.object({
   relationship: contactCourseRelationshipSchema,
 });
 
+const optionalManualText = (minimum: number, maximum: number) =>
+  z.string().trim().min(minimum).max(maximum).optional().or(z.literal(""));
+
+export const manualCrmContactSchema = z
+  .object({
+    fullName: z.string().trim().min(2).max(120),
+    email: z.string().trim().email().max(254).optional().or(z.literal("")),
+    phone: z.string().trim().min(6).max(24),
+    countryCode: z.enum(COUNTRY_CODES),
+    identityDocument: optionalManualText(6, 30),
+    profession: optionalManualText(2, 120),
+    workplace: optionalManualText(2, 160),
+    serviceInterest: optionalManualText(2, 160),
+    leadStatus: z.enum(["nuevo", "propuesta_enviada", "inscrito"]),
+    nextFollowupAt: z.string().datetime({ offset: true }).nullable().optional(),
+    waConsent: z.boolean().default(false),
+    marketingConsent: z.boolean().default(false),
+    note: optionalManualText(1, 2000),
+    courses: z
+      .array(
+        z.object({
+          courseId: z.string().uuid(),
+          relationship: contactCourseRelationshipSchema,
+        }),
+      )
+      .max(50)
+      .default([]),
+  })
+  .superRefine((data, context) => {
+    const courseIds = data.courses.map((course) => course.courseId);
+    if (new Set(courseIds).size !== courseIds.length) {
+      context.addIssue({
+        code: "custom",
+        path: ["courses"],
+        message: "No se puede repetir un curso",
+      });
+    }
+  })
+  .strict();
+
 export const bookingStatusSchema = z.enum([
   "pending",
   "confirmed",

@@ -27,7 +27,7 @@ type RawLead = Record<string, unknown> & {
 type OriginRow = {
   id: string;
   lead_id: string;
-  origin_type: "website" | "manychat";
+  origin_type: "website" | "manychat" | "manual";
   source_detail: string;
   channel: string;
   external_contact_id: string | null;
