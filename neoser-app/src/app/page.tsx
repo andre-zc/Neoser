@@ -130,7 +130,7 @@ export default function HomePage() {
       title: "Hormonas del parto y parto respetado",
       desc: "El Dr. Beltrán Lares brindó el seminario «Hormonas del parto y parto respetado» en la 5.ª edición del Curso Internacional de Neurobiología del Parto.",
       icon: Brain,
-      img: "/assets/cursos/dr-beltran-lares.jpg",
+      img: "/assets/noticia-oxitocina-conexion-lactea.jpg",
       logo: false,
       full: [
         "Comprender la fisiología para acompañar mejor el nacimiento. En el marco del Curso Internacional de Neurobiología del Parto y Protocolos para un Nacimiento Humanizado (5.ª edición), desarrollado bajo la coordinación académica de la Obsta. Diana Silva, el Dr. Beltrán Lares brindó el Seminario «Hormonas del parto y parto respetado».",
