@@ -54,7 +54,7 @@ export type CatalogCourse = {
   mode: string;
   durationLabel: string;
   startLabel?: string; // "Martes 18 de agosto de 2026"
-  scheduleLabel?: string; // "Martes y jueves · 7:00 – 9:00 p. m."
+  scheduleLabel?: string; // "Jueves · 7:00 – 9:00 p. m."
   audience?: string; // dirigido a
   certification?: string;
   /** Poster oficial del curso (4:5). */
@@ -231,7 +231,7 @@ export const coursesCatalog: CatalogCourse[] = [
     mode: "Virtual en vivo",
     durationLabel: "32 horas académicas · 4 seminarios",
     startLabel: "Jueves 12 de noviembre de 2026",
-    scheduleLabel: "Martes y jueves · 7:00 – 9:00 p. m. (hora Perú)",
+    scheduleLabel: "Jueves · 7:00 – 9:00 p. m. (hora Perú)",
     audience:
       "Obstetras, médicos y profesionales vinculados a la salud materno-perinatal interesados en fortalecer su práctica desde la evidencia científica, la fisiología y la humanización del nacimiento.",
     certification:
